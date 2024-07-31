@@ -30,6 +30,7 @@ class Paciente extends Model
                             'persona.documento as documento',
                             'persona.nombres as nombres',
                             'persona.apellidos as apellidos',
+                            'persona.genero as genero',
                             'persona.fecha_nacimiento as fecha_nacimiento',
                             'obra_social.nombre as obra_social')
             ->join('persona_plan as pp', 'persona.id', '=', 'pp.persona_id')
@@ -41,14 +42,34 @@ class Paciente extends Model
             ->get();
     }
 
-    //Obtener Pacientes
+    public static function findByDni($dni)
+    {
+        return self::select(
+                'persona.id as id',
+                'persona.documento as documento',
+                'persona.nombres as nombres',
+                'persona.apellidos as apellidos',
+                'persona.fecha_nacimiento as fecha_nacimiento',
+                'persona.genero as genero',
+                'obra_social.nombre as obra_social')
+            ->join('persona_plan as pp', 'persona.id', '=', 'pp.persona_id')
+            ->join('plan as pl', 'pp.plan_id', '=', 'pl.id')
+            ->join('obra_social as obra_social', 'pl.obra_social_id', '=', 'obra_social.id')
+            ->join('persona_plan_por_defecto as pppd', 'pp.id', '=', 'pppd.persona_plan_id')
+            ->where('persona.documento', $dni) // Ajustado para buscar por DNI exacto
+            ->first(); // Retorna un solo resultado
+    }
+
+
+
+    //Obtener Profesionales
 
     public static function getProfessionals()
     {
         $professionalIds = [198041, 106780];
         
         return self::select(
-                'persona.id as persona_id', // Cambia 'id' a 'persona.id' para evitar ambigüedad
+                'persona.id as profesional_id', // Cambia 'id' a 'persona.id' para evitar ambigüedad
                 'persona.nombres',
                 'persona.apellidos'
             )
@@ -59,6 +80,26 @@ class Paciente extends Model
             ->whereIn('persona.id', $professionalIds)
             ->distinct()
             ->get();
+    }
+
+
+
+    public static function findById($id)
+    {
+        return self::select(
+                'persona.id as id',
+                'persona.documento as documento',
+                'persona.nombres as nombres',
+                'persona.apellidos as apellidos',
+                'persona.fecha_nacimiento as fecha_nacimiento',
+                'persona.genero as genero',
+                'obra_social.nombre as obra_social')
+            ->join('persona_plan as pp', 'persona.id', '=', 'pp.persona_id')
+            ->join('plan as pl', 'pp.plan_id', '=', 'pl.id')
+            ->join('obra_social as obra_social', 'pl.obra_social_id', '=', 'obra_social.id')
+            ->join('persona_plan_por_defecto as pppd', 'pp.id', '=', 'pppd.persona_plan_id')
+            ->where('persona.id', $id) // Ajustado para buscar por DNI exacto
+            ->first(); // Retorna un solo resultado
     }
 
 

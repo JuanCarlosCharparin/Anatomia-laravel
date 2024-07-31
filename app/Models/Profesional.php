@@ -9,6 +9,7 @@ class Profesional extends Model
     use HasFactory;
 
     protected $table = 'profesional';
+    public $timestamps = false;
 
     protected $fillable = [
         'profesional_salutte_id',

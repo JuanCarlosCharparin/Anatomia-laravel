@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="search-input">DNI o Nombre: </label>
                 <div class="input-group">
-                    <input type="text" id="search-input" name="dni" class="form-control" placeholder="Ingrese DNI o nombre">
+                    <input type="text" id="search-input" name="documento" class="form-control" placeholder="Ingrese DNI o nombre">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" id="search-button">
                             Buscar
@@ -41,7 +41,7 @@
 
             <div id="results"></div>
             <p></p>
-            <input type="text" id="selected-person" class="form-control" placeholder="Nombre del paciente seleccionado">
+            <input type="text" id="selected-person" name="paciente" class="form-control" placeholder="Nombre del paciente seleccionado">
             <p></p>
             
 
@@ -49,10 +49,10 @@
             <div class="form-group">
                 <label for="professional-select">Seleccionar Profesional: </label>
     
-                <select id="professional-select" name="professional_id" class="form-control">
+                <select id="professional-select" name="profesional_salutte_id" class="form-control">
                     <option value="">Seleccione un profesional</option>
                     @foreach ($professionals as $professional)
-                        <option value="{{ $professional->id }}">
+                        <option value="{{ $professional->profesional_id }}">
                             {{ $professional->nombres }} {{ $professional->apellidos }}
                         </option>
                     @endforeach
@@ -65,7 +65,9 @@
                 <select id="servicio-select" name="servicio_salutte_id" class="form-control">
                     <option value="">Seleccione un servicio</option>
                     @foreach ($servicios as $servicio)
-                        <option value="{{ $servicio->id }}">{{ $servicio->nombre_servicio }}</option>
+                        <option value="{{ $servicio->servicio_salutte_id }}" {{ old('servicio_salutte_id') == $servicio->servicio_salutte_id ? 'selected' : '' }}>
+                            {{ $servicio->nombre_servicio }}
+                        </option>
                     @endforeach
                 </select>
             </div>

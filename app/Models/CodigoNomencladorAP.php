@@ -9,6 +9,7 @@ class CodigoNomencladorAP extends Model
     use HasFactory;
 
     protected $table = 'codigo_nomenclador_ap';
+    public $timestamps = false;
 
     protected $fillable = [
         'nro_servicio',
