@@ -11,4 +11,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        cors: {
+            origin: '*', // Permite todas las fuentes, ajusta según sea necesario
+        }
+    }
 });

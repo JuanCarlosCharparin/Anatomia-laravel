@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CrearEstudioController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,3 +32,22 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+Route::get('/estudios', [CrearEstudioController::class, 'index'])->name('estudios.index');
+
+// Ruta para mostrar el formulario de creación de estudio (create)
+Route::get('/estudios/create', [CrearEstudioController::class, 'create'])->name('estudios.create');
+
+// Ruta para guardar un nuevo estudio (store)
+Route::post('/estudios', [CrearEstudioController::class, 'store'])->name('estudios.store');
+
+
+Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])->name('estudios.searchPatient');
+
+
+
+
