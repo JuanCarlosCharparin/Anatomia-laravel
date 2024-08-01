@@ -8,6 +8,7 @@ class DetalleEstudio extends Model
 
     protected $connection = 'mysql';
     protected $table = 'detalle_estudio'; 
+    protected $primaryKey = 'id'; // Asegúrate de que este es el nombre correcto
     public $timestamps = false;
 
     protected $fillable = [

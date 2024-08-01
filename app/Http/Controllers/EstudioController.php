@@ -95,81 +95,79 @@ class EstudioController extends Controller
 
             // Validar la entrada del usuario en caso pap
             $validatedData = $request->validate([
-                'estado_especimen' => 'required|array',
+                'estado_especimen' => 'nullable|array',
                 'estado_especimen.*' => 'string|distinct|max:255',
 
-                'celulas_pavimentosas' => 'required|array',
+                'celulas_pavimentosas' => 'nullable|array',
                 'celulas_pavimentosas.*' => 'string|distinct|max:255',
 
-                'celulas_cilindricas' => 'required|array',
+                'celulas_cilindricas' => 'nullable|array',
                 'celulas_cilindricas.*' => 'string|distinct|max:255',
 
                 'valor_hormonal' => 'nullable|string|max:255',
                 'fecha_lectura' => 'nullable|date',
-                'valor_hormonal_HC' => 'required|string|max:255',
+                'valor_hormonal_HC' => 'nullable|string|max:255',
 
-                'cambios_reactivos' => 'required|array',
+                'cambios_reactivos' => 'nullable|array',
                 'cambios_reactivos.*' => 'string|distinct|max:255',
 
-                'cambios_asoc_celula_pavimentosa' => 'required|array',
+                'cambios_asoc_celula_pavimentosa' => 'nullable|array',
                 'cambios_asoc_celula_pavimentosa.*' => 'string|distinct|max:255',
 
                 'cambios_celula_glandulares' => 'nullable|string|max:255',
 
-                'celula_metaplastica' => 'required|array',
+                'celula_metaplastica' => 'nullable|array',
                 'celula_metaplastica.*' => 'string|distinct|max:255',
 
                 'otras_neo_malignas' => 'nullable|string|max:255',
 
-                'toma' => 'required|array',
+                'toma' => 'nullable|array',
                 'toma.*' => 'string|distinct|max:255',
-                'recomendaciones' => 'required|array',
+
+                'recomendaciones' => 'nullable|array',
                 'recomendaciones.*' => 'string|distinct|max:255',
-                'microorganismos' => 'required|array',
+
+                'microorganismos' => 'nullable|array',
                 'microorganismos.*' => 'string|distinct|max:255',
-                'resultado' => 'required|array',
+
+                'resultado' => 'nullable|array',
                 'resultado.*' => 'string|distinct|max:255',
             ]);
 
             // Convertir a JSON
-            $validatedData['estado_especimen'] = json_encode($validatedData['estado_especimen']);
-            $validatedData['celulas_pavimentosas'] = json_encode($validatedData['celulas_pavimentosas']);
-            $validatedData['celulas_cilindricas'] = json_encode($validatedData['celulas_cilindricas']);
-            $validatedData['cambios_reactivos'] = json_encode($validatedData['cambios_reactivos']);
-            $validatedData['cambios_asoc_celula_pavimentosa'] = json_encode($validatedData['cambios_asoc_celula_pavimentosa']);
-            $validatedData['cambios_celula_glandulares'] = $validatedData['cambios_celula_glandulares'] ?? null; // Handle null value
-            $validatedData['celula_metaplastica'] = json_encode($validatedData['celula_metaplastica']);
-            $validatedData['otras_neo_malignas'] = $validatedData['otras_neo_malignas'] ?? null; // Handle null value
-            $validatedData['toma'] = json_encode($validatedData['toma']);
-            $validatedData['recomendaciones'] = json_encode($validatedData['recomendaciones']);
-            $validatedData['microorganismos'] = json_encode($validatedData['microorganismos']);
-            $validatedData['resultado'] = json_encode($validatedData['resultado']);
+            $validatedData['estado_especimen'] = isset($validatedData['estado_especimen']) ? json_encode($validatedData['estado_especimen']) : null;
+            $validatedData['celulas_pavimentosas'] = isset($validatedData['celulas_pavimentosas']) ? json_encode($validatedData['celulas_pavimentosas']) : null;
+            $validatedData['celulas_cilindricas'] = isset($validatedData['celulas_cilindricas']) ? json_encode($validatedData['celulas_cilindricas']) : null;
+            $validatedData['valor_hormonal'] = $validatedData['valor_hormonal'] ?? null;
+            $validatedData['fecha_lectura'] = $validatedData['fecha_lectura'] ?? null;
+            $validatedData['valor_hormonal_HC'] = $validatedData['valor_hormonal_HC'] ?? null;
+            $validatedData['cambios_reactivos'] = isset($validatedData['cambios_reactivos']) ? json_encode($validatedData['cambios_reactivos']) : null;
+            $validatedData['cambios_asoc_celula_pavimentosa'] = isset($validatedData['cambios_asoc_celula_pavimentosa']) ? json_encode($validatedData['cambios_asoc_celula_pavimentosa']) : null;
+            $validatedData['cambios_celula_glandulares'] = $validatedData['cambios_celula_glandulares'] ?? null;
+            $validatedData['celula_metaplastica'] = isset($validatedData['celula_metaplastica']) ? json_encode($validatedData['celula_metaplastica']) : null;
+            $validatedData['otras_neo_malignas'] = $validatedData['otras_neo_malignas'] ?? null;
+            $validatedData['toma'] = isset($validatedData['toma']) ? json_encode($validatedData['toma']) : null;
+            $validatedData['recomendaciones'] = isset($validatedData['recomendaciones']) ? json_encode($validatedData['recomendaciones']) : null;
+            $validatedData['microorganismos'] = isset($validatedData['microorganismos']) ? json_encode($validatedData['microorganismos']) : null;
+            $validatedData['resultado'] = isset($validatedData['resultado']) ? json_encode($validatedData['resultado']) : null;
 
             // Verificar si el detalle_pap ya existe
-            $detallePap = DetallePap::where([
-                'estado_especimen' => $validatedData['estado_especimen'],
-                'celulas_pavimentosas' => $validatedData['celulas_pavimentosas'],
-                'celulas_cilindricas' => $validatedData['celulas_cilindricas'],
-                'valor_hormonal' => $validatedData['valor_hormonal'],
-                'fecha_lectura' => $validatedData['fecha_lectura'],
-                'valor_hormonal_HC' => $validatedData['valor_hormonal_HC'],
-                'cambios_reactivos' => $validatedData['cambios_reactivos'],
-                'cambios_asoc_celula_pavimentosa' => $validatedData['cambios_asoc_celula_pavimentosa'],
-                'cambios_celula_glandulares' => $validatedData['cambios_celula_glandulares'],
-                'celula_metaplastica' => $validatedData['celula_metaplastica'],
-                'otras_neo_malignas' => $validatedData['otras_neo_malignas'],
-                'toma' => $validatedData['toma'],
-                'recomendaciones' => $validatedData['recomendaciones'],
-                'microorganismos' => $validatedData['microorganismos'],
-                'resultado' => $validatedData['resultado'],
-            ])->first();
-
-            // Crear o actualizar el detalle_pap
-            if ($detallePap) {
-                $detallePap->update($validatedData);
+            $detallePapId = $estudio->detalle_pap_id;
+            if ($detallePapId) {
+                $detallePap = DetallePap::find($detallePapId);
             } else {
-                $detallePap = DetallePap::create($validatedData);
+                $detallePap = new DetallePap();
             }
+
+            // Actualizar el detalle_pap solo con los campos que tienen valores nuevos
+            $detallePap->fill(array_filter($validatedData, function($value) {
+                return !is_null($value) && $value !== '';
+            }));
+
+            // Guardar el detalle_pap
+            $detallePap->save();
+            
+            // Obtener el ID del detalle_pap
             $detallePapId = $detallePap->id;
 
             // Actualizar el registro de Estudio con el id del DetallePap
@@ -181,55 +179,46 @@ class EstudioController extends Controller
         } else {
             // Validar la entrada del usuario en caso detalle_estudio
             $validatedData = $request->validate([
-                'macro' => 'required|string|max:255',
+                'macro' => 'nullable|string|max:255',
                 'fecha_macro' => 'nullable|date',
-                'micro' => 'required|string|max:255',
-                /*'fecha_micro' => 'nullable|date',*/
-                'conclusion' => 'required|string|max:255',
-                'observacion' => 'required|string|max:255',
-                'maligno' => 'required|string|max:255',
+                'micro' => 'nullable|string|max:255',
+                'conclusion' => 'nullable|string|max:255',
+                'observacion' => 'nullable|string|max:255',
+                'maligno' => 'nullable|string|max:255',
                 'guardado' => 'nullable|string|max:255',
-                'observacion_interna' => 'required|string|max:255',
+                'observacion_interna' => 'nullable|string|max:255',
                 'recibe' => 'nullable|string|max:255',
                 'tacos' => 'nullable|string|max:255',
-                'diagnostico_presuntivo' => 'required|string|max:255',
-                'tecnicas' => 'required|string|max:255',
+                'diagnostico_presuntivo' => 'nullable|string|max:255',
+                'tecnicas' => 'nullable|string|max:255',
             ]);
-           
-
+        
             // Verificar si el detalle_estudio ya existe
-            $detalleEstudio = DetalleEstudio::where([
-                'macro' => $validatedData['macro'],
-                'fecha_macro' => $validatedData['fecha_macro'],
-                'micro' => $validatedData['micro'],
-                /*'fecha_micro' => $validatedData['fecha_micro'],*/
-                'conclusion' => $validatedData['conclusion'],
-                'observacion' => $validatedData['observacion'],
-                'maligno' => $validatedData['maligno'],
-                'guardado' => $validatedData['guardado'],
-                'observacion_interna' => $validatedData['observacion_interna'],
-                'recibe' => $validatedData['recibe'],
-                'tacos' => $validatedData['tacos'],
-                'diagnostico_presuntivo' => $validatedData['diagnostico_presuntivo'],
-                'tecnicas' => $validatedData['tecnicas'],
-            ])->first();
-
-            // Crear o actualizar el detalle_estudio
-            if ($detalleEstudio) {
-                $detalleEstudio->update($validatedData);
+            $detalleEstudioId = $estudio->detalle_estudio_id;
+            if ($detalleEstudioId) {
+                $detalleEstudio = DetalleEstudio::find($detalleEstudioId);
             } else {
-                $detalleEstudio = DetalleEstudio::create($validatedData);
+                $detalleEstudio = new DetalleEstudio();
             }
+        
+            // Actualizar el detalle_estudio solo con los campos que tienen valores nuevos
+            $detalleEstudio->fill(array_filter($validatedData, function($value) {
+                return !is_null($value) && $value !== '';
+            }));
+        
+            // Guardar el detalle_estudio
+            $detalleEstudio->save();
+            
+            // Obtener el ID del detalle_estudio
             $detalleEstudioId = $detalleEstudio->id;
-
+        
             // Actualizar el registro de Estudio con el id del DetalleEstudio
             $estudio->update([
                 'detalle_estudio_id' => $detalleEstudioId,
                 'estado_estudio' => 'informando',
             ]);
-        }
-
-        // Redirigir al índice con un mensaje de éxito
+    
+        }    
         return redirect()->route('estudios.index')->with('success', 'Estudio actualizado con éxito');
     }
 }

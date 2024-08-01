@@ -152,10 +152,11 @@
             <div class="form-group">
                 <label for="valor_hormonal">Valor Hormonal:</label>
                 <select class="form-control" name="valor_hormonal" id="valor_hormonal">
-                    <option value="Trofico" {{ $estudio->valor_hormonal === 'Trofico' ? 'selected' : '' }}>Trófico</option>
-                    <option value="Atrofico" {{ $estudio->valor_hormonal === 'Atrofico' ? 'selected' : '' }}>Atrófico</option>
-                    <option value="Hipotrofico" {{ $estudio->valor_hormonal === 'Hipotrofico' ? 'selected' : '' }}>Hipotrófico</option>
-                    <option value="Trofismo disociado" {{ $estudio->valor_hormonal === 'Trofismo disociado' ? 'selected' : '' }}>Trofismo Disociado o Irregular</option>
+                    <option value="" disabled {{ !isset($estudio->valor_hormonal) ? 'selected' : '' }}>Selecciona un valor</option>
+                    <option value="Trofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Trofico') || old('valor_hormonal') === 'Trofico' ? 'selected' : '' }}>Trófico</option>
+                    <option value="Atrofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Atrofico') || old('valor_hormonal') === 'Atrofico' ? 'selected' : '' }}>Atrófico</option>
+                    <option value="Hipotrofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Hipotrofico') || old('valor_hormonal') === 'Hipotrofico' ? 'selected' : '' }}>Hipotrófico</option>
+                    <option value="Trofismo disociado" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Trofismo disociado') || old('valor_hormonal') === 'Trofismo disociado' ? 'selected' : '' }}>Trofismo Disociado o Irregular</option>
                 </select>
                 <p></p>
             </div>
@@ -169,6 +170,7 @@
             <div class="form-group">
                 <label for="valor_hormonal_HC">Valor Hormonal HC:</label>
                 <select class="form-control" name="valor_hormonal_HC" id="valor_hormonal_HC">
+                    <option value="" disabled {{ !isset($estudio->valor_hormonal) ? 'selected' : '' }}>Selecciona un valor</option>
                     <option value="SI" {{ $estudio->valor_hormonal_HC === 'SI' ? 'selected' : '' }}>Sí</option>
                     <option value="NO" {{ $estudio->valor_hormonal_HC === 'NO' ? 'selected' : '' }}>No</option>
                 </select>
