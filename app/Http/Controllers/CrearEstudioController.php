@@ -9,6 +9,7 @@ use App\Models\Profesional;
 use App\Models\Especialidad;
 use App\Models\Servicio;
 use App\Models\CodigoNomencladorAP;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -103,7 +104,9 @@ class CrearEstudioController extends Controller
             }],
             'profesional_salutte_id' => 'required|exists:profesional,profesional_salutte_id',
             'codigos' => 'nullable|array',
-            'codigos.*' => 'nullable|string|max:255'
+            'codigos.*' => 'nullable|string|max:255',
+            'materiales' => 'nullable|array',
+            'materiales.*' => 'nullable|string|max:255'
         ]);
 
         DB::beginTransaction();
@@ -169,6 +172,8 @@ class CrearEstudioController extends Controller
                 ]);
 
             $nro_servicio = $validatedData['nro_servicio'];
+
+            //Agregamos codigos a la tabla codigo_noemclador_ap
             $codigos_nomenclador = $validatedData['codigos'] ?? [];
 
             if (!empty($codigos_nomenclador)) {
@@ -182,9 +187,29 @@ class CrearEstudioController extends Controller
                 CodigoNomencladorAP::upsert($codigosToInsert, ['nro_servicio', 'codigo']);
             }
 
+            //Agregamos materiales a la  tabla material
+
+            $materiales = $validatedData['materiales'] ?? [];
+
+            if (!empty($materiales)) {
+                $materialesToInsert = [];
+                foreach ($materiales as $material) {
+                    if (!empty($material)) {
+                        $materialesToInsert[] = ['nro_servicio' => $nro_servicio, 'material' => $material];
+                    }
+                }
+                // Inserta o actualiza los códigos en batch
+                Material::upsert($materialesToInsert, ['nro_servicio', 'material']);
+            }
+
             DB::commit();
 
-            return redirect()->route('estudios.index')->with('success', 'Estudio creado exitosamente.');
+            $perPage = 20; // Número de estudios por página
+            $page = ceil(Estudio::count() / $perPage); // Calcular la última página
+
+            // Redirigir a la página donde se ha creado el estudio
+            return redirect()->route('estudios.index', ['page' => $page])
+                            ->with('success', 'Estudio creado exitosamente.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al crear el estudio: ' . $e->getMessage());

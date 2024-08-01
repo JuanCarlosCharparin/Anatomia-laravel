@@ -57,11 +57,11 @@
                         <td>{{ $estudio->paciente }}</td>
                         <td>{{ $estudio->obra_social }}</td>
                         <td>{{ $estudio->diagnostico }}</td>
-                        <td>{{ $estudio->fecha_carga }}</td>
+                        <td>{{ \Carbon\Carbon::parse($estudio->fecha_carga)->format('d-m-Y') }}</td>
                         <td>{{ $estudio->profesional }}</td>
                         <td>
                             <!-- Botón de Editar -->
-                            <a href="#" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{{ route('estudios.edit', $estudio->nro_servicio) }}" class="btn btn-warning btn-sm">Editar</a>
         
                             <!-- Formulario de Eliminar -->
                             <form action="#" method="POST" style="display:inline;">

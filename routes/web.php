@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CrearEstudioController;
+use App\Http\Controllers\EstudioController;
 
 
 /*
@@ -47,6 +48,14 @@ Route::post('/estudios', [CrearEstudioController::class, 'store'])->name('estudi
 
 
 Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])->name('estudios.searchPatient');
+
+
+//Editar
+// Ruta para mostrar el formulario de edición
+Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->name('estudios.edit');
+
+// Ruta para actualizar el estudio
+Route::put('estudios/{nro_servicio}', [EstudioController::class, 'update'])->name('estudios.update');
 
 
 

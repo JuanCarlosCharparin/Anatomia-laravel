@@ -23,6 +23,8 @@ class Estudio extends Model
         'servicio_id',
         'personal_id',
         'profesional_id',
+        'detalle_estudio_id',
+        'detalle_pap_id',
         'created_by',
     ];
 

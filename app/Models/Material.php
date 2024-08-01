@@ -10,10 +10,13 @@ class Material extends Model
 
     protected $table = 'material';
 
+    // Si no usas timestamps en esta tabla
+    public $timestamps = false; 
+
     protected $fillable = [
         'nro_servicio',
         'material',
     ];
 
-    public $timestamps = false; 
+    
 }
