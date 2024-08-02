@@ -15,9 +15,8 @@
                 {{ session('success') }}
             </div>
         @endif
-        <form action="{{ route('estudios.update', $estudio->nro_servicio) }}" method="POST">
+        <form id="estudioForm" action="{{ route('estudios.update', $estudio->nro_servicio) }}" method="POST">
             @csrf
-            @method('PUT')
 
             <style>
                 .form-group {display: flex;justify-content: space-between;margin-bottom: 15px;}
@@ -92,9 +91,6 @@
             <p></p>
 
             <!-- Campos específicos para PAP -->
-
-            <!-- jQuery -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
             <!-- Select2 CSS -->
             <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -338,6 +334,8 @@
         
     
             <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="button" id="finalizarEstudio" class="btn btn-success">Finalizar Estudio</button>
+            <a href="{{ route('estudios.index') }}" class="btn btn-secondary">Cancelar</a>
             <p></p>
         </form>
         
@@ -346,15 +344,16 @@
     <p></p>
     
     <script>
-        $(document).ready(function() {
-            // Inicializar Select2
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar select2
             $('.select2').select2({
                 closeOnSelect: false, // Permitir múltiples selecciones sin cerrar el menú
                 dropdownParent: $('body'), // Ajustar según sea necesario
                 width: 'resolve' // Ajustar al ancho del contenedor
             });
 
-            // Actualizar la selección de Select2
+            // Mantener el menú Select2 abierto al seleccionar o deseleccionar
             $('.select2').on('select2:select select2:unselect', function (e) {
                 $(this).select2('open'); // Mantener el menú abierto
             });
@@ -370,10 +369,20 @@
                     }).join(',');
                     console.log('Selected values for ' + $(this).attr('id') + ': ' + selectedValues);
                 });
+            });
 
-                // Aquí puedes enviar los datos al controlador usando AJAX
+            // Manejar clic en el botón "Finalizar"
+            document.getElementById('finalizarEstudio').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevenir el comportamiento por defecto del botón
+
+                // Cambiar la acción del formulario a la ruta de finalización
+                document.getElementById('estudioForm').action = 'http://localhost/Anatomia-laravel/public/estudios/1/finally';
+
+                // Enviar el formulario
+                document.getElementById('estudioForm').submit();
             });
         });
+        
 
     </script>
 
