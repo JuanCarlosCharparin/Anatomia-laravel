@@ -143,6 +143,36 @@
             </div>
 
             <div class="form-group">
+                <label for="fecha_inclusion">Fecha Inclusión:</label>
+                @if(!empty($estudio->fecha_inclusion))
+                    <input type="date" id="fecha_inclusion" name="fecha_inclusion" class="form-control" value="{{ $estudio->fecha_inclusion }}">
+                @else
+                    <input type="date" id="fecha_inclusion" name="fecha_inclusion" class="form-control">
+                @endif
+                <p></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="fecha_corte">Fecha Corte:</label>
+                @if(!empty($estudio->fecha_corte))
+                    <input type="date" id="fecha_corte" name="fecha_corte" class="form-control" value="{{ $estudio->fecha_corte }}">
+                @else
+                    <input type="date" id="fecha_corte" name="fecha_corte" class="form-control">
+                @endif
+                <p></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="fecha_entrega">Fecha Entrega:</label>
+                @if(!empty($estudio->fecha_entrega))
+                    <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" value="{{ $estudio->fecha_entrega }}">
+                @else
+                    <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control">
+                @endif
+                <p></p>
+            </div>
+
+            <div class="form-group">
                 <label for="conclusion">Conclusión:</label>
                 @if(!empty($estudio->conclusion))
                     <textarea id="conclusion" name="conclusion" class="form-control">{{ $estudio->conclusion }}</textarea>
@@ -166,9 +196,9 @@
                 <label for="maligno">Maligno:</label>
                 <select id="maligno" name="maligno" class="form-control">
                     <option value="">Selecciona una opción</option>
-                    <option value="opcion1" {{ $estudio->maligno == 'opcion1' ? 'selected' : '' }}>SI</option>
-                    <option value="opcion2" {{ $estudio->maligno == 'opcion2' ? 'selected' : '' }}>NO</option>
-                    <option value="opcion3" {{ $estudio->maligno == 'opcion3' ? 'selected' : '' }}>Indeterminado</option>
+                    <option value="SI" {{ $estudio->maligno == 'opcion1' ? 'selected' : '' }}>SI</option>
+                    <option value="NO" {{ $estudio->maligno == 'opcion2' ? 'selected' : '' }}>NO</option>
+                    <option value="Indeterminado" {{ $estudio->maligno == 'opcion3' ? 'selected' : '' }}>Indeterminado</option>
                 </select>
                 <p></p>
             </div>
