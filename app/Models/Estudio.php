@@ -25,6 +25,8 @@ class Estudio extends Model
         'profesional_id',
         'detalle_estudio_id',
         'detalle_pap_id',
+        'detalle_estudio_finalizado_id',
+        'detalle_pap_finalizado_id',
         'created_by',
     ];
 

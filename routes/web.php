@@ -55,7 +55,10 @@ Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])-
 Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->name('estudios.edit');
 
 // Ruta para actualizar el estudio
-Route::put('estudios/{nro_servicio}', [EstudioController::class, 'update'])->name('estudios.update');
+Route::post('estudios/{nro_servicio}', [EstudioController::class, 'update'])->name('estudios.update');
+
+Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'finally'])->name('estudios.finally');
+
 
 
 

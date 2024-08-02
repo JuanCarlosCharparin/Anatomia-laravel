@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Estudio;
 use App\Models\DetallePap;
 use App\Models\DetalleEstudio;
+use App\Models\DetalleEstudioFinalizado;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -98,39 +99,27 @@ class EstudioController extends Controller
             $validatedData = $request->validate([
                 'estado_especimen' => 'nullable|array',
                 'estado_especimen.*' => 'string|distinct|max:255',
-
                 'celulas_pavimentosas' => 'nullable|array',
                 'celulas_pavimentosas.*' => 'string|distinct|max:255',
-
                 'celulas_cilindricas' => 'nullable|array',
                 'celulas_cilindricas.*' => 'string|distinct|max:255',
-
                 'valor_hormonal' => 'nullable|string|max:255',
                 'fecha_lectura' => 'nullable|date',
                 'valor_hormonal_HC' => 'nullable|string|max:255',
-
                 'cambios_reactivos' => 'nullable|array',
                 'cambios_reactivos.*' => 'string|distinct|max:255',
-
                 'cambios_asoc_celula_pavimentosa' => 'nullable|array',
                 'cambios_asoc_celula_pavimentosa.*' => 'string|distinct|max:255',
-
                 'cambios_celula_glandulares' => 'nullable|string|max:255',
-
                 'celula_metaplastica' => 'nullable|array',
                 'celula_metaplastica.*' => 'string|distinct|max:255',
-
                 'otras_neo_malignas' => 'nullable|string|max:255',
-
                 'toma' => 'nullable|array',
                 'toma.*' => 'string|distinct|max:255',
-
                 'recomendaciones' => 'nullable|array',
                 'recomendaciones.*' => 'string|distinct|max:255',
-
                 'microorganismos' => 'nullable|array',
                 'microorganismos.*' => 'string|distinct|max:255',
-
                 'resultado' => 'nullable|array',
                 'resultado.*' => 'string|distinct|max:255',
             ]);
@@ -188,10 +177,9 @@ class EstudioController extends Controller
                 'fecha_entrega' => 'nullable|date',
                 'observacion' => 'nullable|string|max:255',
                 'maligno' => 'nullable|string|max:255',
-                'guardado' => 'nullable|string|max:255',
                 'observacion_interna' => 'nullable|string|max:255',
-                'recibe' => 'nullable|string|max:255',
-                'tacos' => 'nullable|string|max:255',
+                /*'recibe' => 'nullable|string|max:255',
+                'tacos' => 'nullable|string|max:255',*/
                 'diagnostico_presuntivo' => 'nullable|string|max:255',
                 'tecnicas' => 'nullable|string|max:255',
             ]);
@@ -224,4 +212,55 @@ class EstudioController extends Controller
         }    
         return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])->with('success', 'Estudio actualizado con éxito');
     }
+
+    //Metodo para finalizar
+
+    public function finally(Request $request, $nro_servicio) {
+        $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
+    
+        // Validar la entrada del usuario en caso detalle_estudio_finalizado
+        $validatedData = $request->validate([
+            'macro' => 'nullable|string|max:255',
+            'fecha_macro' => 'nullable|date',
+            'micro' => 'nullable|string|max:255',
+            'fecha_inclusion' => 'nullable|date',
+            'fecha_corte' => 'nullable|date',
+            'fecha_entrega' => 'nullable|date',
+            'observacion' => 'nullable|string|max:255',
+            'maligno' => 'nullable|string|max:255',
+            'observacion_interna' => 'nullable|string|max:255',
+            // No incluir 'recibe' y 'tacos' en la validación aquí
+            'diagnostico_presuntivo' => 'nullable|string|max:255',
+            'tecnicas' => 'nullable|string|max:255',
+        ]);
+    
+        // Verificar si el detalle_estudio_finalizado ya existe
+        $detalleEstudioFinalizadoId = $estudio->detalle_estudio_finalizado_id;
+        
+        if ($detalleEstudioFinalizadoId) {
+            $detalleEstudioFinalizado = DetalleEstudioFinalizado::find($detalleEstudioFinalizadoId);
+        } else {
+            // Crear un nuevo detalle_estudio_finalizado
+            $detalleEstudioFinalizado = new DetalleEstudioFinalizado();
+        }
+    
+        // Actualizar el detalle_estudio_finalizado con los datos validados
+        $detalleEstudioFinalizado->fill($validatedData);
+        
+        // Guardar el detalle_estudio_finalizado
+        $detalleEstudioFinalizado->save();
+    
+        // Obtener el ID del detalle_estudio_finalizado
+        $detalleEstudioFinalizadoId = $detalleEstudioFinalizado->id;
+
+        // Actualizar el registro de Estudio con el id del DetalleEstudioFinalizado
+        $estudio->update([
+            'detalle_estudio_finalizado_id' => $detalleEstudioFinalizadoId,
+            'estado_estudio' => 'finalizado',
+        ]);
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('estudios.index', ['nro_servicio' => $nro_servicio])->with('success', 'Estudio finalizado con éxito');
+    }
+    
 }
