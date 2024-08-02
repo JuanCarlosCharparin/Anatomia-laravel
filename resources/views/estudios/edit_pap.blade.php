@@ -19,7 +19,11 @@
             @csrf
 
             <style>
-                .form-group {display: flex;justify-content: space-between;margin-bottom: 15px;}
+                .form-group {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15px;
+                }
                 .form-group label {
                     flex-basis: 30%; /* Ancho de las etiquetas */
                     font-weight: bold;
@@ -29,6 +33,44 @@
                 }
                 hr {
                     margin: 10px 0; /* Espaciado entre los campos */
+                }
+                .form-group ul {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+                .form-group ul li {
+                    margin-bottom: 5px;
+                }
+            </style>
+    
+            <!-- Campos comunes -->
+            <style>
+                .form-group {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15px;
+                }
+                .form-group label {
+                    flex-basis: 30%; /* Ancho de las etiquetas */
+                    font-weight: bold;
+                }
+                .form-group strong {
+                    flex-basis: 155%; /* Ancho de los valores */
+                }
+                hr {
+                    margin: 10px 0; /* Espaciado entre los campos */
+                }
+                .form-group ul {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+                .form-group ul li {
+                    margin-bottom: 5px;
+                }
+                #ampliarInforme {
+                    display: none; /* Inicialmente oculto */
                 }
             </style>
     
@@ -55,7 +97,7 @@
             </div>
             
             <div class="form-group">
-                <label for="">Profesional: </label>
+                <label for="">Informado por: </label>
                 <strong>{{ $estudio->profesional }}</strong>
             </div>
             
@@ -80,12 +122,14 @@
             </div>
 
             <div class="form-group">
-                <label for="">Materiales: </label>
-                <ul>
-                    @foreach($materiales as $material)
-                        <li>{{ $material->material }}</li>
-                    @endforeach
-                </ul>
+                <label for="">Material/es: </label>
+                <div style="flex-basis: 155%;">
+                    <ul>
+                        @foreach($materiales as $material)
+                            <li>{{ $material->material }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
             <hr>
             <p></p>
@@ -100,11 +144,16 @@
 
             <div class="form-group">
                 <label for="estado_especimen">Estado Especimen:</label>
-                <select class="select2" id="estado_especimen" name="estado_especimen[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Decodificar el JSON en un array si aún no se ha hecho en el controlador
-                        $estadoEspecimen = is_array($estudio->estado_especimen) ? $estudio->estado_especimen : explode(',', $estudio->estado_especimen);
-                    @endphp
+                @php
+                    // Decodificar el JSON en un array si aún no se ha hecho en el controlador
+                    $estadoEspecimen = is_array($estudio->estado_especimen) ? $estudio->estado_especimen : explode(',', $estudio->estado_especimen);
+            
+                    // Verificar si el campo tiene datos para habilitar o deshabilitar el campo
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized || empty($estadoEspecimen) ? 'disabled' : '';
+                @endphp
+                
+                <select class="select2" id="estado_especimen" name="estado_especimen[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Satisfactorio" {{ in_array('Satisfactorio', $estadoEspecimen) ? 'selected' : '' }}>Satisfactorio</option>
                     <option value="Menor por defecto de fijacion" {{ in_array('Menor por defecto de fijacion', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por defecto de fijación o desecación</option>
                     <option value="Menor por hemorrragia" {{ in_array('Menor por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por hemorragia</option>
@@ -123,11 +172,16 @@
 
             <div class="form-group">
                 <label for="celulas_pavimentosas">Células Pavimentosas:</label>
-                <select class="select2" id="celulas_pavimentosas" name="celulas_pavimentosas[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Decodificar el JSON en un array si aún no se ha hecho en el controlador
-                        $celulasPavimentosas = is_array($estudio->celulas_pavimentosas) ? $estudio->celulas_pavimentosas : explode(',', $estudio->celulas_pavimentosas);
-                    @endphp
+                @php
+                    // Decodificar el JSON en un array si aún no se ha hecho en el controlador
+                    $celulasPavimentosas = is_array($estudio->celulas_pavimentosas) ? $estudio->celulas_pavimentosas : explode(',', $estudio->celulas_pavimentosas);
+            
+                    // Verificar si el campo tiene datos para habilitar o deshabilitar el campo
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized || empty($celulasPavimentosas) ? 'disabled' : '';
+                @endphp
+                
+                <select class="select2" id="celulas_pavimentosas" name="celulas_pavimentosas[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Superficiales" {{ in_array('Superficiales', $celulasPavimentosas) ? 'selected' : '' }}>Superficiales</option>
                     <option value="Intermedias" {{ in_array('Intermedias', $celulasPavimentosas) ? 'selected' : '' }}>Intermedias</option>
                     <option value="Parabasales" {{ in_array('Parabasales', $celulasPavimentosas) ? 'selected' : '' }}>Parabasales</option>
@@ -137,14 +191,18 @@
 
             <div class="form-group">
                 <label for="celulas_cilindricas">Células Cilíndricas:</label>
-                <select class="select2" id="celulas_cilindricas" name="celulas_cilindricas[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Asegurarse de que $celulas_cilindricas sea siempre un array
-                        $celulas_cilindricas = is_array($estudio->celulas_cilindricas) 
-                                                ? $estudio->celulas_cilindricas 
-                                                : explode(',', $estudio->celulas_cilindricas ?? '');
-                    @endphp
+                @php
+                    // Asegurarse de que $celulas_cilindricas sea siempre un array
+                    $celulas_cilindricas = is_array($estudio->celulas_cilindricas) 
+                                            ? $estudio->celulas_cilindricas 
+                                            : explode(',', $estudio->celulas_cilindricas ?? '');
+                    
+                    // Verificar si el campo tiene datos para habilitar o deshabilitar el campo
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized || empty($celulas_cilindricas) ? 'disabled' : '';
+                @endphp
             
+                <select class="select2" id="celulas_cilindricas" name="celulas_cilindricas[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Endocervicales conservadas" {{ in_array('Endocervicales conservadas', $celulas_cilindricas) ? 'selected' : '' }}>Endocervicales conservadas</option>
                     <option value="Endocervicales reactivas" {{ in_array('Endocervicales reactivas', $celulas_cilindricas) ? 'selected' : '' }}>Endocervicales reactivas</option>
                     <option value="Endocervicales no se observan" {{ in_array('Endocervicales no se observan', $celulas_cilindricas) ? 'selected' : '' }}>Endocervicales no se observan</option>
@@ -154,97 +212,152 @@
                 </select>
                 <p></p>
             </div>
+            
 
             <div class="form-group">
                 <label for="valor_hormonal">Valor Hormonal:</label>
-                <select class="form-control" name="valor_hormonal" id="valor_hormonal">
-                    <option value="" disabled {{ !isset($estudio->valor_hormonal) ? 'selected' : '' }}>Selecciona un valor</option>
-                    <option value="Trofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Trofico') || old('valor_hormonal') === 'Trofico' ? 'selected' : '' }}>Trófico</option>
-                    <option value="Atrofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Atrofico') || old('valor_hormonal') === 'Atrofico' ? 'selected' : '' }}>Atrófico</option>
-                    <option value="Hipotrofico" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Hipotrofico') || old('valor_hormonal') === 'Hipotrofico' ? 'selected' : '' }}>Hipotrófico</option>
-                    <option value="Trofismo disociado" {{ (isset($estudio->valor_hormonal) && $estudio->valor_hormonal === 'Trofismo disociado') || old('valor_hormonal') === 'Trofismo disociado' ? 'selected' : '' }}>Trofismo Disociado o Irregular</option>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+                    
+                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
+                    $valorHormonal = old('valor_hormonal', $estudio->valor_hormonal ?? '');
+                @endphp
+            
+                <select class="form-control" name="valor_hormonal" id="valor_hormonal" {{ $disabled }}>
+                    <option value="" disabled {{ empty($valorHormonal) ? 'selected' : '' }}>Selecciona un valor</option>
+                    <option value="Trofico" {{ $valorHormonal === 'Trofico' ? 'selected' : '' }}>Trófico</option>
+                    <option value="Atrofico" {{ $valorHormonal === 'Atrofico' ? 'selected' : '' }}>Atrófico</option>
+                    <option value="Hipotrofico" {{ $valorHormonal === 'Hipotrofico' ? 'selected' : '' }}>Hipotrófico</option>
+                    <option value="Trofismo disociado" {{ $valorHormonal === 'Trofismo disociado' ? 'selected' : '' }}>Trofismo Disociado o Irregular</option>
                 </select>
                 <p></p>
             </div>
 
             <div class="form-group">
                 <label for="fecha_lectura">Fecha Lectura:</label>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
+                    $fechaLectura = old('fecha_lectura', $estudio->fecha_lectura ?? '');
+                @endphp
+            
                 <input type="date" class="form-control" id="fecha_lectura" name="fecha_lectura" 
-                       value="{{ $estudio->fecha_lectura ? \Carbon\Carbon::parse($estudio->fecha_lectura)->format('Y-m-d') : '' }}">
+                       value="{{ $fechaLectura ? \Carbon\Carbon::parse($fechaLectura)->format('Y-m-d') : '' }}" {{ $disabled }}>
+                <p></p>
             </div>
 
             <div class="form-group">
                 <label for="valor_hormonal_HC">Valor Hormonal HC:</label>
-                <select class="form-control" name="valor_hormonal_HC" id="valor_hormonal_HC">
-                    <option value="" disabled {{ !isset($estudio->valor_hormonal) ? 'selected' : '' }}>Selecciona un valor</option>
-                    <option value="SI" {{ $estudio->valor_hormonal_HC === 'SI' ? 'selected' : '' }}>Sí</option>
-                    <option value="NO" {{ $estudio->valor_hormonal_HC === 'NO' ? 'selected' : '' }}>No</option>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
+                    $valorHormonalHC = old('valor_hormonal_HC', $estudio->valor_hormonal_HC ?? '');
+                @endphp
+            
+                <select class="form-control" name="valor_hormonal_HC" id="valor_hormonal_HC" {{ $disabled }}>
+                    <option value="" disabled {{ empty($valorHormonalHC) ? 'selected' : '' }}>Selecciona un valor</option>
+                    <option value="SI" {{ $valorHormonalHC === 'SI' ? 'selected' : '' }}>Sí</option>
+                    <option value="NO" {{ $valorHormonalHC === 'NO' ? 'selected' : '' }}>No</option>
                 </select>
+                <p></p>
             </div>
 
             <div class="form-group">
                 <label for="cambios_reactivos">Cambios Reactivos:</label>
-                <select class="select2" id="cambios_reactivos" name="cambios_reactivos[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Asegúrate de que $cambios_reactivos sea un array
-                        $cambios_reactivos = is_array($estudio->cambios_reactivos) 
-                                            ? $estudio->cambios_reactivos 
-                                            : explode(',', $estudio->cambios_reactivos ?? '');
-                    @endphp
-                    
-                    <option value="Asociados inflamacion_leve" {{ in_array('Asociados inflamacion_leve', $cambios_reactivos) ? 'selected' : '' }}>Asociados a inflamación leve</option>
-                    <option value="Asociados inflamacion moderada" {{ in_array('Asociados inflamacion moderada', $cambios_reactivos) ? 'selected' : '' }}>Asociados a inflamación moderada</option>
-                    <option value="Asociados inflamacion severa" {{ in_array('Asociados inflamacion severa', $cambios_reactivos) ? 'selected' : '' }}>Asociados a inflamación severa</option>
-                    <option value="Trastornos madurativos" {{ in_array('Trastornos madurativos', $cambios_reactivos) ? 'selected' : '' }}>Trastornos madurativos</option>
-                    <option value="Efecto radioterapia" {{ in_array('Efecto radioterapia', $cambios_reactivos) ? 'selected' : '' }}>Efecto de radioterapia</option>
-                    <option value="DIU" {{ in_array('DIU', $cambios_reactivos) ? 'selected' : '' }}>DIU</option>
-                    <option value="Terapias hormonales" {{ in_array('Terapias hormonales', $cambios_reactivos) ? 'selected' : '' }}>Terapias hormonales</option>
-                    <option value="Otros" {{ in_array('Otros', $cambios_reactivos) ? 'selected' : '' }}>Otros</option>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Asegurarse de que $cambios_reactivos sea un array
+                    $cambiosReactivos = is_array($estudio->cambios_reactivos) 
+                                        ? $estudio->cambios_reactivos 
+                                        : explode(',', $estudio->cambios_reactivos ?? '');
+                @endphp
+            
+                <select class="select2" id="cambios_reactivos" name="cambios_reactivos[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
+                    <option value="Asociados inflamacion_leve" {{ in_array('Asociados inflamacion_leve', $cambiosReactivos) ? 'selected' : '' }}>Asociados a inflamación leve</option>
+                    <option value="Asociados inflamacion moderada" {{ in_array('Asociados inflamacion moderada', $cambiosReactivos) ? 'selected' : '' }}>Asociados a inflamación moderada</option>
+                    <option value="Asociados inflamacion severa" {{ in_array('Asociados inflamacion severa', $cambiosReactivos) ? 'selected' : '' }}>Asociados a inflamación severa</option>
+                    <option value="Trastornos madurativos" {{ in_array('Trastornos madurativos', $cambiosReactivos) ? 'selected' : '' }}>Trastornos madurativos</option>
+                    <option value="Efecto radioterapia" {{ in_array('Efecto radioterapia', $cambiosReactivos) ? 'selected' : '' }}>Efecto de radioterapia</option>
+                    <option value="DIU" {{ in_array('DIU', $cambiosReactivos) ? 'selected' : '' }}>DIU</option>
+                    <option value="Terapias hormonales" {{ in_array('Terapias hormonales', $cambiosReactivos) ? 'selected' : '' }}>Terapias hormonales</option>
+                    <option value="Otros" {{ in_array('Otros', $cambiosReactivos) ? 'selected' : '' }}>Otros</option>
                 </select>
+                <p></p>
             </div>
 
             <div class="form-group">
                 <label for="cambios_asoc_celula_pavimentosa">Cambios Asociados a Célula Pavimentosa:</label>
-                <select class="select2" id="cambios_asoc_celula_pavimentosa" name="cambios_asoc_celula_pavimentosa[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Asegúrate de que $cambios_asoc_celula_pavimentosa sea un array
-                        $cambios_asoc_celula_pavimentosa = is_array($estudio->cambios_asoc_celula_pavimentosa) 
-                                                         ? $estudio->cambios_asoc_celula_pavimentosa 
-                                                         : explode(',', $estudio->cambios_asoc_celula_pavimentosa ?? '');
-                    @endphp
-                    
-                    <option value="Escamas anucleadas" {{ in_array('Escamas anucleadas', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Escamas anucleadas</option>
-                    <option value="Paraqueratosis" {{ in_array('Paraqueratosis', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Paraqueratosis</option>
-                    <option value="Binucleacion" {{ in_array('Binucleacion', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Binucleacion</option>
-                    <option value="Megalocariosis" {{ in_array('Megalocariosis', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Megalocariosis</option>
-                    <option value="Hipercromasia" {{ in_array('Hipercromasia', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Hipercromasia</option>
-                    <option value="Coilocitos" {{ in_array('Coilocitos', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Coilocitos</option>
-                    <option value="Anisocariosis" {{ in_array('Anisocariosis', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Anisocariosis</option>
-                    <option value="Anfofilia" {{ in_array('Anfofilia', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Anfofilia</option>
-                    <option value="Aros perinucleares" {{ in_array('Aros perinucleares', $cambios_asoc_celula_pavimentosa) ? 'selected' : '' }}>Aros perinucleares</option>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Asegurarse de que $cambios_asoc_celula_pavimentosa sea un array
+                    $cambiosAsocCelulaPavimentosa = is_array($estudio->cambios_asoc_celula_pavimentosa) 
+                                                    ? $estudio->cambios_asoc_celula_pavimentosa 
+                                                    : explode(',', $estudio->cambios_asoc_celula_pavimentosa ?? '');
+                @endphp
+            
+                <select class="select2" id="cambios_asoc_celula_pavimentosa" name="cambios_asoc_celula_pavimentosa[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
+                    <option value="Escamas anucleadas" {{ in_array('Escamas anucleadas', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Escamas anucleadas</option>
+                    <option value="Paraqueratosis" {{ in_array('Paraqueratosis', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Paraqueratosis</option>
+                    <option value="Binucleacion" {{ in_array('Binucleacion', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Binucleacion</option>
+                    <option value="Megalocariosis" {{ in_array('Megalocariosis', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Megalocariosis</option>
+                    <option value="Hipercromasia" {{ in_array('Hipercromasia', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Hipercromasia</option>
+                    <option value="Coilocitos" {{ in_array('Coilocitos', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Coilocitos</option>
+                    <option value="Anisocariosis" {{ in_array('Anisocariosis', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Anisocariosis</option>
+                    <option value="Anfofilia" {{ in_array('Anfofilia', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Anfofilia</option>
+                    <option value="Aros perinucleares" {{ in_array('Aros perinucleares', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Aros perinucleares</option>
                 </select>
+                <p></p>
             </div>
 
             <div class="form-group">
                 <label for="cambios_celula_glandulares">Anomalías en Células Glandulares:</label>
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
+                    $cambiosCelulaGlandulares = old('cambios_celula_glandulares', $estudio->cambios_celula_glandulares ?? '');
+                @endphp
+            
                 <input 
                     type="text" 
                     class="form-control" 
                     id="cambios_celula_glandulares" 
                     name="cambios_celula_glandulares" 
-                    value="{{ old('cambios_celula_glandulares', $estudio->cambios_celula_glandulares) }}"
+                    value="{{ $cambiosCelulaGlandulares }}" 
+                    {{ $disabled }}
                 >
             </div>
 
             <div class="form-group">
                 <label for="celula_metaplastica">Célula Metaplástica:</label>
-                <select class="select2" id="celula_metaplastica" name="celula_metaplastica[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Decodificar el valor de celula_metaplastica en un array
-                        $celulaMetaplastica = is_array($estudio->celula_metaplastica) 
-                            ? $estudio->celula_metaplastica 
-                            : (empty($estudio->celula_metaplastica) ? [] : explode(',', $estudio->celula_metaplastica));
-                    @endphp
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Decodificar el valor de celula_metaplastica en un array
+                    $celulaMetaplastica = is_array($estudio->celula_metaplastica) 
+                        ? $estudio->celula_metaplastica 
+                        : (empty($estudio->celula_metaplastica) ? [] : explode(',', $estudio->celula_metaplastica));
+                @endphp
+            
+                <select class="select2" id="celula_metaplastica" name="celula_metaplastica[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Presentes" {{ in_array('Presentes', $celulaMetaplastica) ? 'selected' : '' }}>Presentes</option>
                     <option value="Semi maduras" {{ in_array('Semi maduras', $celulaMetaplastica) ? 'selected' : '' }}>Semi maduras</option>
                     <option value="Inmaduras" {{ in_array('Inmaduras', $celulaMetaplastica) ? 'selected' : '' }}>Inmaduras</option>
@@ -257,16 +370,37 @@
 
             <div class="form-group">
                 <label for="otras_neo_malignas">Otras Neoplasias Malignas:</label>
-                <input type="text" class="form-control" id="otras_neo_malignas" name="otras_neo_malignas" value="{{ old('otras_neo_malignas', $estudio->otras_neo_malignas ?? '') }}">
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
+                    $otrasNeoMalignas = old('otras_neo_malignas', $estudio->otras_neo_malignas ?? '');
+                @endphp
+            
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="otras_neo_malignas" 
+                    name="otras_neo_malignas" 
+                    value="{{ $otrasNeoMalignas }}" 
+                    {{ $disabled }}
+                >
             </div>
 
             <div class="form-group">
                 <label for="toma">Toma:</label>
-                <select class="select2" id="toma" name="toma[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Decodificar el JSON en un array si aún no se ha hecho en el controlador
-                        $toma = is_array($estudio->toma) ? $estudio->toma : explode(',', $estudio->toma);
-                    @endphp
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Decodificar el valor de toma en un array
+                    $toma = is_array($estudio->toma) ? $estudio->toma : explode(',', $estudio->toma ?? '');
+                @endphp
+            
+                <select class="select2" id="toma" name="toma[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Exo" {{ in_array('Exo', $toma) ? 'selected' : '' }}>Exo</option>
                     <option value="Endo" {{ in_array('Endo', $toma) ? 'selected' : '' }}>Endo</option>
                     <option value="Cupula" {{ in_array('Cupula', $toma) ? 'selected' : '' }}>Cúpula</option>
@@ -275,11 +409,18 @@
 
             <div class="form-group">
                 <label for="recomendaciones">Recomendaciones:</label>
-                <select class="select2" id="recomendaciones" name="recomendaciones[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Decodificar el JSON en un array si aún no se ha hecho en el controlador
-                        $recomendaciones = is_array($estudio->recomendaciones) ? $estudio->recomendaciones : explode(',', $estudio->recomendaciones);
-                    @endphp
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Decodificar el valor de recomendaciones en un array
+                    $recomendaciones = is_array($estudio->recomendaciones) 
+                        ? $estudio->recomendaciones 
+                        : explode(',', $estudio->recomendaciones ?? '');
+                @endphp
+            
+                <select class="select2" id="recomendaciones" name="recomendaciones[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Tratar repetir" {{ in_array('Tratar repetir', $recomendaciones) ? 'selected' : '' }}>Tratar y repetir</option>
                     <option value="Estudio canal" {{ in_array('Estudio canal', $recomendaciones) ? 'selected' : '' }}>Estudio del canal</option>
                     <option value="Reevaluacion_colposcopica" {{ in_array('Reevaluacion_colposcopica', $recomendaciones) ? 'selected' : '' }}>Reevaluación colposcópica</option>
@@ -292,11 +433,18 @@
 
             <div class="form-group">
                 <label for="microorganismos">Microorganismos:</label>
-                <select class="select2" id="microorganismos" name="microorganismos[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Verificar si $estudio->microorganismos ya es un array, si no, convertir la cadena en un array
-                        $microorganismos = is_array($estudio->microorganismos) ? $estudio->microorganismos : explode(',', $estudio->microorganismos);
-                    @endphp
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Decodificar el valor de microorganismos en un array
+                    $microorganismos = is_array($estudio->microorganismos) 
+                        ? $estudio->microorganismos 
+                        : explode(',', $estudio->microorganismos ?? '');
+                @endphp
+            
+                <select class="select2" id="microorganismos" name="microorganismos[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Hifas micoticas" {{ in_array('Hifas micóticas', $microorganismos) ? 'selected' : '' }}>Hifas micóticas</option>
                     <option value="Gardnerella" {{ in_array('Gardnerella', $microorganismos) ? 'selected' : '' }}>Gardnerella</option>
                     <option value="Actinomyces" {{ in_array('Actinomyces', $microorganismos) ? 'selected' : '' }}>Actinomyces</option>
@@ -315,11 +463,18 @@
 
             <div class="form-group">
                 <label for="resultado">Resultado:</label>
-                <select class="select2" id="resultado" name="resultado[]" multiple="multiple" style="width: 100%;">
-                    @php
-                        // Verificar si $estudio->resultado ya es un array, si no, convertir la cadena en un array
-                        $resultado = is_array($estudio->resultado) ? $estudio->resultado : explode(',', $estudio->resultado);
-                    @endphp
+                @php
+                    // Determinar si el campo debe estar deshabilitado
+                    $isFinalized = $estudio->estado === 'finalizado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+            
+                    // Decodificar el valor de resultado en un array si aún no se ha hecho en el controlador
+                    $resultado = is_array($estudio->resultado) 
+                        ? $estudio->resultado 
+                        : explode(',', $estudio->resultado ?? '');
+                @endphp
+            
+                <select class="select2" id="resultado" name="resultado[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Insactifactorio" {{ in_array('Insactifactorio', $resultado) ? 'selected' : '' }}>Insactifactorio</option>
                     <option value="NEGATIVO" {{ in_array('NEGATIVO', $resultado) ? 'selected' : '' }}>NEGATIVO</option>
                     <option value="Anormalidad celulas epiteliales" {{ in_array('Anormalidad celulas epiteliales', $resultado) ? 'selected' : '' }}>Anormalidad de células epiteliales</option>
@@ -333,8 +488,14 @@
             
         
     
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <button type="button" id="finalizarEstudio" class="btn btn-success">Finalizar Estudio</button>
+            @php
+                // Determinar si el estudio está finalizado
+                $isFinalized = $estudio->estado === 'finalizado';
+                $disabled = $isFinalized ? 'disabled' : '';
+            @endphp
+
+            <button type="submit" class="btn btn-primary" {{ $disabled }}>Actualizar</button>
+            <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $disabled }}>Finalizar Estudio</button>
             <a href="{{ route('estudios.index') }}" class="btn btn-secondary">Cancelar</a>
             <p></p>
         </form>
@@ -376,7 +537,7 @@
                 event.preventDefault(); // Prevenir el comportamiento por defecto del botón
 
                 // Cambiar la acción del formulario a la ruta de finalización
-                document.getElementById('estudioForm').action = 'http://localhost/Anatomia-laravel/public/estudios/1/finally';
+                document.getElementById('estudioForm').action = '{{ route('estudios.finally', $estudio->nro_servicio) }}';
 
                 // Enviar el formulario
                 document.getElementById('estudioForm').submit();

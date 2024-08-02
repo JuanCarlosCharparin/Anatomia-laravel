@@ -107,7 +107,7 @@
             <div class="form-group">
                 <label for="tecnicas">Técnicas:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
             
@@ -122,7 +122,7 @@
             <div class="form-group">
                 <label for="macro">Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->macro))
@@ -136,7 +136,7 @@
             <div class="form-group">
                 <label for="fecha_macro">Fecha Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_macro))
@@ -150,7 +150,7 @@
             <div class="form-group">
                 <label for="micro">Micro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->micro))
@@ -164,7 +164,7 @@
             <div class="form-group">
                 <label for="fecha_inclusion">Fecha Inclusión:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_inclusion))
@@ -178,7 +178,7 @@
             <div class="form-group">
                 <label for="fecha_corte">Fecha Corte:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_corte))
@@ -192,7 +192,7 @@
             <div class="form-group">
                 <label for="fecha_entrega">Fecha Entrega:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_entrega))
@@ -206,7 +206,7 @@
             <div class="form-group">
                 <label for="observacion">Notas:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->observacion))
@@ -220,7 +220,7 @@
             <div class="form-group">
                 <label for="maligno">Maligno:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 <select id="maligno" name="maligno" class="form-control" {{ $disabled }}>
@@ -235,7 +235,7 @@
             <div class="form-group">
                 <label for="observacion_interna">Observación Interna:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->observacion_interna))
@@ -249,7 +249,7 @@
             <div class="form-group">
                 <label for="diagnostico_presuntivo">Diagnóstico:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->diagnostico_presuntivo))
@@ -262,32 +262,49 @@
 
             <hr>
             <p></p>
-            <div class="form-group">
-                <label for="recibe">Recibe:</label>
-                @if(!empty($estudio->recibe))
-                    <textarea id="recibe" name="recibe" class="form-control">{{ $estudio->recibe }}</textarea>
-                @else
-                    <input type="text" class="form-control" id="recibe" name="recibe">
-                @endif
-                <p></p>
-            </div>
 
-            <div class="form-group">
-                <label for="tacos">Tacos:</label>
-                @if(!empty($estudio->tacos))
-                    <textarea id="tacos" name="tacos" class="form-control">{{ $estudio->tacos }}</textarea>
-                @else
-                <input type="text" class="form-control" id="tacos" name="tacos">
-                @endif
-                <p></p>
-            </div>
-
-    
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <button type="button" id="finalizarEstudio" class="btn btn-success">Finalizar Estudio</button>
+            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' ? 'disabled' : '' }}>
+                Actualizar
+            </button>
+            <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' ? 'disabled' : '' }} >
+                Finalizar Estudio
+            </button>
             <a href="{{ route('estudios.index') }}" class="btn btn-secondary">Cancelar</a>
 
             <p></p>
+            <hr>
+        </form>
+
+        <form action="{{ route('estudios.finalizar', $estudio->nro_servicio) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="recibe">Recibe:</label>
+                @php
+                    $isFinalized = $estudio->estado === 'finalizado y entregado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+                @endphp
+                @if(!empty($estudio->recibe))
+                    <textarea id="recibe" name="recibe" class="form-control" {{ $disabled }}>{{ $estudio->recibe }}</textarea>
+                @else
+                    <input type="text" class="form-control" id="recibe" name="recibe" {{ $disabled }}>
+                @endif
+                <p></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="tacos">Tacos:</label>
+                @php
+                    $isFinalized = $estudio->estado === 'finalizado y entregado';
+                    $disabled = $isFinalized ? 'disabled' : '';
+                @endphp
+                @if(!empty($estudio->tacos))
+                    <textarea id="tacos" name="tacos" class="form-control" {{ $disabled }}>{{ $estudio->tacos }}</textarea>
+                @else
+                    <input type="text" class="form-control" id="tacos" name="tacos" {{ $disabled }}>
+                @endif
+                <p></p>
+            </div>
+            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'finalizado y entregado' ? 'disabled' : ''  }} >Actualizar</button>
         </form>
         <p></p>
         <hr>

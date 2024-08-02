@@ -35,8 +35,8 @@ class EstudioController extends Controller
                 'de.observacion',
                 'de.maligno',
                 'de.observacion_interna',
-                'de.recibe',
-                'de.tacos',
+                'def.recibe',
+                'def.tacos',
                 'de.diagnostico_presuntivo',
                 'de.tecnicas',
                 'dp.estado_especimen',
@@ -60,6 +60,7 @@ class EstudioController extends Controller
             ->leftJoin('personal as p', 'e.personal_id', '=', 'p.id')
             ->leftJoin('profesional as prof', 'e.profesional_id', '=', 'prof.id')
             ->leftJoin('detalle_estudio as de', 'e.detalle_estudio_id', '=', 'de.id')
+            ->leftJoin('detalle_estudio_finalizado as def', 'e.detalle_estudio_finalizado_id', '=', 'def.id')
             ->leftJoin('detalle_pap as dp', 'e.detalle_pap_id', '=', 'dp.id')
             ->where('e.nro_servicio', $nro_servicio)
             ->first();
@@ -282,10 +283,12 @@ class EstudioController extends Controller
             $detallePapFinalizadoId = $detallePapFinalizado->id;
 
             // Actualizar el registro de Estudio con el id del DetalleEstudioFinalizado
-            $estudio->update([
+            $updated = $estudio->update([
                 'detalle_pap_finalizado_id' => $detallePapFinalizadoId,
                 'estado_estudio' => 'finalizado',
             ]);
+
+            
 
         } else {
             // Validar la entrada del usuario en caso detalle_estudio_finalizado
@@ -329,9 +332,57 @@ class EstudioController extends Controller
                 'estado_estudio' => 'finalizado',
             ]);
         }
-    
+
+        $perPage = 20; // Número de estudios por página
+        $totalEstudios = Estudio::count(); // Contar el total de estudios
+        $lastPage = ceil($totalEstudios / $perPage); // Calcular la última página
+
         // Redirigir con un mensaje de éxito
-        return redirect()->route('estudios.index', ['nro_servicio' => $nro_servicio])->with('success', 'Estudio finalizado con éxito');
+        return redirect()->route('estudios.index', [
+            'page' => $lastPage, // Página actual para redirigir a la última
+            'nro_servicio' => $nro_servicio // Parámetro de búsqueda
+        ])->with('success', 'Estudio finalizado con éxito');
     }
+
+    public function reFinally(Request $request, $nro_servicio)
+    {
+        $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
+        // Validar los datos entrantes
+        $validatedData = $request->validate([
+            'recibe' => 'required|string|max:255',
+            'tacos' => 'required|string|max:255',
+        ]);
+
+        // Obtener el modelo Estudio
+        $estudioModel = new Estudio();
+
+        // Obtener el ID del detalle de estudio finalizado usando el nro_servicio
+        $detalleEstudioData = $estudioModel->getDetalleFinalizadoId($nro_servicio);
+
+        if (!$detalleEstudioData) {
+            return redirect()->back()->with('error', 'No se encontró el detalle del estudio finalizado.');
+        }
+
+        // Encontrar el detalle del estudio finalizado por ID
+        $detalleEstudio = DetalleEstudioFinalizado::find($detalleEstudioData->id);
+
+        if (!$detalleEstudio) {
+            return redirect()->back()->with('error', 'Detalle de estudio finalizado no encontrado.');
+        }
+
+        // Actualizar los campos recibe y tacos
+        $detalleEstudio->recibe = $validatedData['recibe'];
+        $detalleEstudio->tacos = $validatedData['tacos'];
+        $detalleEstudio->save();
+
+        $estudio->update([
+            'estado_estudio' => 'finalizado y entregado',
+        ]);
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('estudios.index')->with('success', 'Datos actualizados con éxito.');
+    }
+
+    
     
 }

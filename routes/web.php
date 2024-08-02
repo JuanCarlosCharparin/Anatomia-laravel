@@ -56,8 +56,10 @@ Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->
 
 // Ruta para actualizar el estudio
 Route::post('estudios/{nro_servicio}', [EstudioController::class, 'update'])->name('estudios.update');
-
+//Ruta para finalizar el estudio
 Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'finally'])->name('estudios.finally');
+
+Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 'reFinally'])->name('estudios.finalizar');
 
 
 

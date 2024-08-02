@@ -21,8 +21,8 @@ class DetalleEstudioFinalizado extends Model
         'observacion',
         'maligno',
         'observacion_interna',
-        /*'recibe',
-        'tacos',*/
+        'recibe',
+        'tacos',
         'diagnostico_presuntivo',
         'tecnicas',
         'createdBy',

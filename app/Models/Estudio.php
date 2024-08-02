@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Estudio extends Model
 {
@@ -29,5 +30,14 @@ class Estudio extends Model
         'detalle_pap_finalizado_id',
         'created_by',
     ];
+
+    public function getDetalleFinalizadoId($nro_servicio)
+    {
+        return DB::table('estudio as e')
+            ->join('detalle_estudio_finalizado as def', 'e.detalle_estudio_finalizado_id', '=', 'def.id')
+            ->select('e.nro_servicio', 'def.id')
+            ->where('e.nro_servicio', $nro_servicio)
+            ->first();  // Usa `first()` si esperas solo un resultado; usa `get()` si esperas múltiples resultados
+    }
 
 }
