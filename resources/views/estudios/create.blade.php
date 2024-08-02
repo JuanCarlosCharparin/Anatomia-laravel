@@ -17,10 +17,15 @@
             <p></p>
 
             <div class="form-group">
-                <label for="fecha">Ingrese la fecha: </label>
+                <label for="fecha">Fecha Carga:</label>
                 <div id="date-container">
                     <div class="form-group input-group mb-3">
-                        <input type="date" name="fecha_carga" id="fecha_carga" class="form-control" placeholder="Ingrese la fecha">
+                        <!-- Calcula la fecha actual en formato YYYY-MM-DD -->
+                        @php
+                            $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
+                        @endphp
+                        <input type="date" name="fecha_carga" id="fecha_carga" class="form-control" 
+                               value="{{ $currentDate }}" readonly>
                     </div>
                 </div>
             </div>

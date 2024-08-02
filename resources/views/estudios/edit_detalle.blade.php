@@ -38,6 +38,9 @@
                 .form-group ul li {
                     margin-bottom: 5px;
                 }
+                #ampliarInforme {
+                    display: none; /* Inicialmente oculto */
+                }
             </style>
     
             <!-- Campos comunes -->
@@ -88,7 +91,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">Materiales: </label>
+                <label for="">Material/es: </label>
                 <div style="flex-basis: 155%;">
                     <ul>
                         @foreach($materiales as $material)
@@ -173,16 +176,6 @@
             </div>
 
             <div class="form-group">
-                <label for="conclusion">Conclusión:</label>
-                @if(!empty($estudio->conclusion))
-                    <textarea id="conclusion" name="conclusion" class="form-control">{{ $estudio->conclusion }}</textarea>
-                @else
-                    <textarea id="conclusion" name="conclusion" class="form-control"></textarea>
-                @endif
-                <p></p>
-            </div>
-
-            <div class="form-group">
                 <label for="observacion">Notas:</label>
                 @if(!empty($estudio->observacion))
                     <textarea id="observacion" name="observacion" class="form-control">{{ $estudio->observacion }}</textarea>
@@ -248,11 +241,33 @@
 
     
             <button type="submit" class="btn btn-primary">Actualizar</button>
+
+            
+        
+            
             <p></p>
         </form>
+        <p></p>
+        <hr>
+        <!--Ampliacion de informe-->
+        <button id="btnAmpliar" class="btn btn-primary">Ampliar Informe</button>
+        <div id="ampliarInforme" class="mt-3">
+            <label for="informe">Informe Adicional:</label>
+            <textarea id="informe" name="informe" class="form-control" rows="5"></textarea>
+        </div>
         
 
     </div>
     <p></p>
-
+    <script>
+        //btn ampliar informe
+        document.getElementById('btnAmpliar').addEventListener('click', function() {
+            var ampliarInforme = document.getElementById('ampliarInforme');
+            if (ampliarInforme.style.display === 'none') {
+                ampliarInforme.style.display = 'block';
+            } else {
+                ampliarInforme.style.display = 'none';
+            }
+        });
+    </script>
 </x-app-layout>

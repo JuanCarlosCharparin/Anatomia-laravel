@@ -1,6 +1,11 @@
 
 <x-app-layout>
     <x-slot name="title">Editar Pap</x-slot>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <div class="container mt-4">
         <h1>Editar Pap</h1>

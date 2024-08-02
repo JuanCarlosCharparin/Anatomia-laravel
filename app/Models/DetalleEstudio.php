@@ -18,7 +18,6 @@ class DetalleEstudio extends Model
         'fecha_inclusion',
         'fecha_corte',
         'fecha_entrega',
-        'conclusion',
         'observacion',
         'maligno',
         'observacion_interna',
