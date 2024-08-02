@@ -5,6 +5,11 @@
     <div class="container mt-4">
         <h1>Editar Estudio</h1>
         <p></p>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <form action="{{ route('estudios.update', $estudio->nro_servicio) }}" method="POST">
             @csrf
             @method('PUT')
@@ -98,6 +103,16 @@
             <!-- Campos específicos para Detalle -->
 
             <div class="form-group">
+                <label for="tecnicas">Técnicas:</label>
+                @if(!empty($estudio->tecnicas))
+                    <textarea id="tecnicas" name="tecnicas" class="form-control">{{ $estudio->tecnicas }}</textarea>
+                @else
+                    <input type="text" class="form-control" id="tecnicas" name="tecnicas">
+                @endif
+                <p></p>
+            </div>
+
+            <div class="form-group">
                 <label for="macro">Macro:</label>
                 @if(!empty($estudio->macro))
                     <textarea id="macro" name="macro" class="form-control">{{ $estudio->macro }}</textarea>
@@ -126,8 +141,6 @@
                 @endif
                 <p></p>
             </div>
-            
-            
 
             <div class="form-group">
                 <label for="conclusion">Conclusión:</label>
@@ -140,7 +153,7 @@
             </div>
 
             <div class="form-group">
-                <label for="observacion">Observación:</label>
+                <label for="observacion">Notas:</label>
                 @if(!empty($estudio->observacion))
                     <textarea id="observacion" name="observacion" class="form-control">{{ $estudio->observacion }}</textarea>
                 @else
@@ -151,21 +164,12 @@
 
             <div class="form-group">
                 <label for="maligno">Maligno:</label>
-                @if(!empty($estudio->maligno))
-                    <textarea id="maligno" name="maligno" class="form-control">{{ $estudio->maligno }}</textarea>
-                @else
-                    <textarea id="maligno" name="maligno" class="form-control"></textarea>
-                @endif
-                <p></p>
-            </div>
-
-            <div class="form-group">
-                <label for="guardado">Guardado:</label>
-                @if(!empty($estudio->guardado))
-                    <textarea id="guardado" name="guardado" class="form-control">{{ $estudio->guardado }}</textarea>
-                @else
-                    <input type="text" class="form-control" id="guardado" name="guardado">
-                @endif
+                <select id="maligno" name="maligno" class="form-control">
+                    <option value="">Selecciona una opción</option>
+                    <option value="opcion1" {{ $estudio->maligno == 'opcion1' ? 'selected' : '' }}>SI</option>
+                    <option value="opcion2" {{ $estudio->maligno == 'opcion2' ? 'selected' : '' }}>NO</option>
+                    <option value="opcion3" {{ $estudio->maligno == 'opcion3' ? 'selected' : '' }}>Indeterminado</option>
+                </select>
                 <p></p>
             </div>
 
@@ -188,17 +192,10 @@
                 @endif
                 <p></p>
             </div>
+            <p></p>
 
-            <div class="form-group">
-                <label for="tecnicas">Técnicas:</label>
-                @if(!empty($estudio->tecnicas))
-                    <textarea id="tecnicas" name="tecnicas" class="form-control">{{ $estudio->tecnicas }}</textarea>
-                @else
-                    <input type="text" class="form-control" id="tecnicas" name="tecnicas">
-                @endif
-                <p></p>
-            </div>
-
+            <hr>
+            <p></p>
             <div class="form-group">
                 <label for="recibe">Recibe:</label>
                 @if(!empty($estudio->recibe))
@@ -223,6 +220,7 @@
             <button type="submit" class="btn btn-primary">Actualizar</button>
             <p></p>
         </form>
+        
 
     </div>
     <p></p>

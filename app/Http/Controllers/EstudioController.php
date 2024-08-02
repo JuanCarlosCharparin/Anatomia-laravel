@@ -31,11 +31,11 @@ class EstudioController extends Controller
                 'de.conclusion',
                 'de.observacion',
                 'de.maligno',
-                'de.guardado',
                 'de.observacion_interna',
                 'de.recibe',
                 'de.tacos',
                 'de.diagnostico_presuntivo',
+                'de.tecnicas',
                 'dp.estado_especimen',
                 'dp.celulas_pavimentosas',
                 'dp.celulas_cilindricas',
@@ -219,6 +219,6 @@ class EstudioController extends Controller
             ]);
     
         }    
-        return redirect()->route('estudios.index')->with('success', 'Estudio actualizado con éxito');
+        return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])->with('success', 'Estudio actualizado con éxito');
     }
 }

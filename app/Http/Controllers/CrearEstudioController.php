@@ -27,6 +27,7 @@ class CrearEstudioController extends Controller
                 'tde.nombre as tipo_estudio',
                 'e.estado_estudio as estado',
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
+                'p.documento as documento', // Alias correcto
                 'p.obra_social as obra_social',
                 'de.diagnostico_presuntivo as diagnostico',
                 'e.fecha_carga as fecha_carga',
@@ -45,6 +46,7 @@ class CrearEstudioController extends Controller
                 $q->where('s.nombre_servicio', 'LIKE', "%{$searchGeneral}%")
                 ->orWhere('tde.nombre', 'LIKE', "%{$searchGeneral}%")
                 ->orWhere(DB::raw("CONCAT(p.nombres, ' ', p.apellidos)"), 'LIKE', "%{$searchGeneral}%")
+                ->orWhere('p.documento', 'LIKE', "%{$searchGeneral}%")
                 ->orWhere('p.obra_social', 'LIKE', "%{$searchGeneral}%")
                 ->orWhere('de.diagnostico_presuntivo', 'LIKE', "%{$searchGeneral}%")
                 ->orWhere('e.fecha_carga', 'LIKE', "%{$searchGeneral}%")
@@ -55,7 +57,7 @@ class CrearEstudioController extends Controller
 
         // Aplicar búsqueda por número de servicio
         if ($searchNroServicio) {
-            $query->where('e.nro_servicio', 'LIKE', "%{$searchNroServicio}%");
+            $query->where('e.nro_servicio', '=', $searchNroServicio);
         }
 
         // Ejecuta la consulta y pagina los resultados

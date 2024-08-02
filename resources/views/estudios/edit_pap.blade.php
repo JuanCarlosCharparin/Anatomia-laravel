@@ -5,6 +5,11 @@
     <div class="container mt-4">
         <h1>Editar Pap</h1>
         <p></p>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <form action="{{ route('estudios.update', $estudio->nro_servicio) }}" method="POST">
             @csrf
             @method('PUT')
@@ -330,6 +335,7 @@
             <button type="submit" class="btn btn-primary">Actualizar</button>
             <p></p>
         </form>
+        
 
     </div>
     <p></p>
