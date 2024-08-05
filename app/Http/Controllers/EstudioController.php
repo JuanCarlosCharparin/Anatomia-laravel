@@ -37,6 +37,7 @@ class EstudioController extends Controller
                 'de.observacion_interna',
                 'def.recibe',
                 'def.tacos',
+                'def.ampliar_informe',
                 'de.diagnostico_presuntivo',
                 'de.tecnicas',
                 'dp.estado_especimen',
@@ -171,19 +172,19 @@ class EstudioController extends Controller
         } else {
             // Validar la entrada del usuario en caso detalle_estudio
             $validatedData = $request->validate([
-                'macro' => 'nullable|string|max:255',
+                'macro' => 'nullable|string|max:500',
                 'fecha_macro' => 'nullable|date',
-                'micro' => 'nullable|string|max:255',
+                'micro' => 'nullable|string|max:500',
                 'fecha_inclusion' => 'nullable|date',
                 'fecha_corte' => 'nullable|date',
                 'fecha_entrega' => 'nullable|date',
-                'observacion' => 'nullable|string|max:255',
+                'observacion' => 'nullable|string|max:500',
                 'maligno' => 'nullable|string|max:255',
-                'observacion_interna' => 'nullable|string|max:255',
+                'observacion_interna' => 'nullable|string|max:500',
                 /*'recibe' => 'nullable|string|max:255',
                 'tacos' => 'nullable|string|max:255',*/
-                'diagnostico_presuntivo' => 'nullable|string|max:255',
-                'tecnicas' => 'nullable|string|max:255',
+                'diagnostico_presuntivo' => 'nullable|string|max:500',
+                'tecnicas' => 'nullable|string|max:500',
             ]);
         
             // Verificar si el detalle_estudio ya existe
@@ -293,18 +294,18 @@ class EstudioController extends Controller
         } else {
             // Validar la entrada del usuario en caso detalle_estudio_finalizado
             $validatedData = $request->validate([
-                'macro' => 'nullable|string|max:255',
+                'macro' => 'nullable|string|max:500',
                 'fecha_macro' => 'nullable|date',
-                'micro' => 'nullable|string|max:255',
+                'micro' => 'nullable|string|max:500',
                 'fecha_inclusion' => 'nullable|date',
                 'fecha_corte' => 'nullable|date',
                 'fecha_entrega' => 'nullable|date',
-                'observacion' => 'nullable|string|max:255',
-                'maligno' => 'nullable|string|max:255',
-                'observacion_interna' => 'nullable|string|max:255',
+                'observacion' => 'nullable|string|max:500',
+                'maligno' => 'nullable|string|max:500',
+                'observacion_interna' => 'nullable|string',
                 // No incluir 'recibe' y 'tacos' en la validación aquí
-                'diagnostico_presuntivo' => 'nullable|string|max:255',
-                'tecnicas' => 'nullable|string|max:255',
+                'diagnostico_presuntivo' => 'nullable|string|max:500',
+                'tecnicas' => 'nullable|string|max:500',
             ]);
         
             // Verificar si el detalle_estudio_finalizado ya existe
@@ -375,14 +376,90 @@ class EstudioController extends Controller
         $detalleEstudio->tacos = $validatedData['tacos'];
         $detalleEstudio->save();
 
+        $estadoActual = $estudio->estado_estudio;
+
+        if (strpos($estadoActual, 'ampliado') !== false) {
+            $nuevoEstado = 'finalizado, ampliado y entregado';
+        } else {
+            $nuevoEstado = 'finalizado y entregado';
+        }
+
+        // Actualizar el estado del estudio
         $estudio->update([
-            'estado_estudio' => 'finalizado y entregado',
+            'estado_estudio' => $nuevoEstado,
         ]);
 
+        // Si el estado es 'finalizado y entregado', revisa si también ha sido ampliado
+        /*if ($estudio->estado_estudio === 'finalizado y entregado' && $estudio->detalle_estudio_finalizado) {
+            $estudio->update(['estado_estudio' => 'finalizado, entregado y ampliado']);
+        }*/
+
+
         // Redirigir con un mensaje de éxito
-        return redirect()->route('estudios.index')->with('success', 'Datos actualizados con éxito.');
+        $perPage = 20; // Número de estudios por página
+        $totalEstudios = Estudio::count(); // Contar el total de estudios
+        $lastPage = ceil($totalEstudios / $perPage); // Calcular la última página
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('estudios.index', [
+            'page' => $lastPage, // Página actual para redirigir a la última
+            'nro_servicio' => $nro_servicio // Parámetro de búsqueda
+        ])->with('success', 'Estudio entregado con éxito');
     }
 
     
-    
+    public function ampliarInforme(Request $request, $nro_servicio)
+    {
+        $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
+
+        // Validar los datos entrantes
+        $validatedData = $request->validate([
+            'informe' => 'nullable|string|max:5000',
+        ]);
+
+        // Obtener el modelo Estudio
+        $estudioModel = new Estudio();
+
+        // Obtener el ID del detalle de estudio finalizado usando el nro_servicio
+        $detalleEstudioData = $estudioModel->getDetalleFinalizadoId($nro_servicio);
+
+        if (!$detalleEstudioData) {
+            return redirect()->back()->with('error', 'No se encontró el detalle del estudio finalizado.');
+        }
+
+        // Encontrar el detalle del estudio finalizado por ID
+        $detalleEstudio = DetalleEstudioFinalizado::find($detalleEstudioData->id);
+
+        if (!$detalleEstudio) {
+            return redirect()->back()->with('error', 'Detalle de estudio finalizado no encontrado.');
+        }
+
+        // Actualizar los campos ampliar_informe
+        $detalleEstudio->ampliar_informe = $validatedData['informe'];
+        $detalleEstudio->save();
+
+        // Verificar el estado actual del estudio y actualizarlo
+        $estadoActual = $estudio->estado_estudio;
+        if (strpos($estadoActual, 'entregado') !== false) {
+            $nuevoEstado = 'finalizado, entregado y ampliado';
+        } else {
+            $nuevoEstado = 'finalizado y ampliado';
+        }
+
+        // Actualizar el estudio con el informe adicional
+        $estudio->update([
+            'estado_estudio' => $nuevoEstado,
+        ]);
+
+        // Redirigir con un mensaje de éxito
+        $perPage = 20; 
+        $totalEstudios = Estudio::count(); 
+        $lastPage = ceil($totalEstudios / $perPage); 
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('estudios.index', [
+            'page' => $lastPage, // Página actual para redirigir a la última
+            'nro_servicio' => $nro_servicio // Parámetro de búsqueda
+        ])->with('success', 'Estudio ampliado con éxito');
+    }
 }

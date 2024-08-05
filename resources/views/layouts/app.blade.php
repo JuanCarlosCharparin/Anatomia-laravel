@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
         <!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' http://[::1]:5173; style-src 'self';"-->
 
 
@@ -25,19 +26,15 @@
         <!-- JS -->
         <script src="{{ asset('js/scripts.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="container-fluid">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-
-            <!-- Sidebar -->
-            <!-- Layout Sidenav and Content -->
+    
             <div id="layoutSidenav" class="d-flex">
-                <!-- Sidebar -->
                 @include('layouts.sidebar')
-
-                <!-- Main Content -->
+    
                 <div id="layoutSidenav_content" class="flex-grow-1">
-                    <main>
+                    <main class="container-fluid">
                         {{ $slot }}
                     </main>
                 </div>

@@ -23,6 +23,7 @@ class DetalleEstudioFinalizado extends Model
         'observacion_interna',
         'recibe',
         'tacos',
+        'ampliar_informe',
         'diagnostico_presuntivo',
         'tecnicas',
         'createdBy',

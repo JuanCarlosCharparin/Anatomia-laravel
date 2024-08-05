@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="title">Crear Estudio</x-slot>
-
+    @section('title', 'Anatomia-Patologica')
     <div class="container mt-4">
         <h1>Crear Estudio</h1>
         @php

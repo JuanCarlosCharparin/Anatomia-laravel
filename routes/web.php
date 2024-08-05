@@ -61,6 +61,9 @@ Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'fina
 
 Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 'reFinally'])->name('estudios.finalizar');
 
+// Ruta para ampliar el informe
+Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::class, 'ampliarInforme'])->name('estudios.ampliarInforme');
+
 
 
 

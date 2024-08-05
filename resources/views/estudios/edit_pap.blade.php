@@ -1,6 +1,7 @@
 
 <x-app-layout>
     <x-slot name="title">Editar Pap</x-slot>
+    @section('title', 'Anatomia-Patologica')
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
@@ -117,7 +118,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">Diagnostico: </label>
+                <label for="">Diagnostico Presuntivo: </label>
                 <strong>{{ $estudio->diagnostico }}</strong>
             </div>
 

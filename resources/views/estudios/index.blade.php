@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="title">Estudios</x-slot>
-
+    @section('title', 'Anatomia-Patologica')
     <div class="container mt-4">
         <h1>Estudios</h1>
         
@@ -30,7 +30,7 @@
 
         <p>Total de registros: {{ $estudios->total() }}</p>
 
-        <table class="table">
+        <table class="table table-responsive" style="width: 100%;">
             <thead>
                 <tr>
                     <th>N° Servicio</th>

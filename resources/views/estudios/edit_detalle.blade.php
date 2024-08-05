@@ -1,6 +1,7 @@
 
 <x-app-layout>
     <x-slot name="title">Editar Estudio</x-slot>
+    @section('title', 'Anatomia-Patologica')
 
     <div class="container mt-4">
         <h1>Editar Estudio</h1>
@@ -107,7 +108,7 @@
             <div class="form-group">
                 <label for="tecnicas">Técnicas:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
             
@@ -122,7 +123,7 @@
             <div class="form-group">
                 <label for="macro">Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->macro))
@@ -136,7 +137,7 @@
             <div class="form-group">
                 <label for="fecha_macro">Fecha Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_macro))
@@ -150,7 +151,7 @@
             <div class="form-group">
                 <label for="micro">Micro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->micro))
@@ -164,7 +165,7 @@
             <div class="form-group">
                 <label for="fecha_inclusion">Fecha Inclusión:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_inclusion))
@@ -178,7 +179,7 @@
             <div class="form-group">
                 <label for="fecha_corte">Fecha Corte:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_corte))
@@ -192,7 +193,7 @@
             <div class="form-group">
                 <label for="fecha_entrega">Fecha Entrega:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->fecha_entrega))
@@ -206,7 +207,7 @@
             <div class="form-group">
                 <label for="observacion">Notas:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->observacion))
@@ -220,7 +221,7 @@
             <div class="form-group">
                 <label for="maligno">Maligno:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 <select id="maligno" name="maligno" class="form-control" {{ $disabled }}>
@@ -235,7 +236,7 @@
             <div class="form-group">
                 <label for="observacion_interna">Observación Interna:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->observacion_interna))
@@ -249,7 +250,7 @@
             <div class="form-group">
                 <label for="diagnostico_presuntivo">Diagnóstico:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->diagnostico_presuntivo))
@@ -263,13 +264,13 @@
             <hr>
             <p></p>
 
-            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' ? 'disabled' : '' }}>
+            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' ? 'disabled' : '' }}>
                 Actualizar
             </button>
-            <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' ? 'disabled' : '' }} >
+            <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' ? 'disabled' : '' }} >
                 Finalizar Estudio
             </button>
-            <a href="{{ route('estudios.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('estudios.index', ['page' => request('page')]) }}" class="btn btn-secondary">Cancelar</a>
 
             <p></p>
             <hr>
@@ -280,7 +281,7 @@
             <div class="form-group">
                 <label for="recibe">Recibe:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'creado' || $estudio->estado === 'informando' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->recibe))
@@ -294,7 +295,7 @@
             <div class="form-group">
                 <label for="tacos">Tacos:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado y entregado';
+                    $isFinalized = $estudio->estado === 'creado' || $estudio->estado === 'informando' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado';
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
                 @if(!empty($estudio->tacos))
@@ -304,29 +305,47 @@
                 @endif
                 <p></p>
             </div>
-            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'finalizado y entregado' ? 'disabled' : ''  }} >Actualizar</button>
+            <button type="submit" class="btn btn-primary" {{ $estudio->estado === 'creado' || $estudio->estado === 'informando' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' ? 'disabled' : ''  }} >Actualizar</button>
+
+            <p></p>
+            <hr>
         </form>
+
+        <!-- Botón para ampliar informe -->
         <p></p>
-        <hr>
-        <!--Ampliacion de informe-->
         <button id="btnAmpliar" class="btn btn-primary">Ampliar Informe</button>
-        <div id="ampliarInforme" class="mt-3">
+        <p></p>
+        <!-- Formulario para ampliar informe -->
+        <form id="ampliarInformeForm" method="POST" action="{{ route('estudios.ampliarInforme', $estudio->nro_servicio) }}" style="display: none;">
+            @csrf
+            @php
+                $isFinalized = $estudio->estado === 'creado' || $estudio->estado === 'informando' || $estudio->estado === 'finalizado y ampliado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado';
+                $disabled = $isFinalized ? 'disabled' : '';
+            @endphp
             <label for="informe">Informe Adicional:</label>
-            <textarea id="informe" name="informe" class="form-control" rows="5"></textarea>
-        </div>
-        
+            @if(!empty($estudio->ampliar_informe))
+                <textarea id="informe" name="informe" class="form-control" rows="5" {{ $disabled }}>{{ $estudio->ampliar_informe }}></textarea>
+            @else
+                <textarea id="informe" name="informe" class="form-control" rows="5" {{ $disabled }}></textarea>
+            @endif
+            <p></p>
+            <button type="submit" class="btn btn-primary mt-2" {{ $estudio->estado === 'creado' || $estudio->estado === 'informando' || $estudio->estado === 'finalizado y ampliado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado'  ? 'disabled' : '' }}>Enviar Ampliación</button>
+        </form>
 
     </div>
     <p></p>
     <script>
+        
         //btn ampliar informe
-        document.getElementById('btnAmpliar').addEventListener('click', function() {
-            var ampliarInforme = document.getElementById('ampliarInforme');
-            if (ampliarInforme.style.display === 'none') {
-                ampliarInforme.style.display = 'block';
-            } else {
-                ampliarInforme.style.display = 'none';
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnAmpliar').addEventListener('click', function() {
+                var ampliarInforme = document.getElementById('ampliarInformeForm');
+                if (ampliarInforme.style.display === 'none' || ampliarInforme.style.display === '') {
+                    ampliarInforme.style.display = 'block';
+                } else {
+                    ampliarInforme.style.display = 'none';
+                }
+            });
         });
 
         document.getElementById('finalizarEstudio').addEventListener('click', function(event) {
