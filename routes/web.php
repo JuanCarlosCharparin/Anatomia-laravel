@@ -61,7 +61,7 @@ Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'fina
 
 Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 'reFinally'])->name('estudios.finalizar');
 
-
+Route::get('estudios/exportar-datos/{nro_servicio}', [App\Http\Controllers\ExportarController::class, 'exportarDatos'])->name('exportar.datos');
 
 
 

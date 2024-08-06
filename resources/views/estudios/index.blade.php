@@ -62,6 +62,7 @@
                         <td>
                             <!-- Botón de Editar -->
                             <a href="{{ route('estudios.edit', $estudio->nro_servicio) }}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}" class="btn btn-primary btn-sm">Exportar</a>
 
                         </td>
                     </tr>
