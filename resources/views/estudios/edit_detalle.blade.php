@@ -5,6 +5,11 @@
 
     <div class="container mt-4">
         <h1>Editar Estudio</h1>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <p></p>
         @if (session('success'))
             <div class="alert alert-success">
@@ -123,9 +128,21 @@
             <div class="form-group">
                 <label for="macro">Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de técnico o administrador
+                    $isTecnico = $roles->contains('tecnico');
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado solo si está finalizado
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
+                
                 @if(!empty($estudio->macro))
                     <textarea id="macro" name="macro" class="form-control" {{ $disabled }}>{{ $estudio->macro }}</textarea>
                 @else
@@ -137,9 +154,17 @@
             <div class="form-group">
                 <label for="fecha_macro">Fecha Macro:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // El campo será deshabilitado solo si está finalizado
                     $disabled = $isFinalized ? 'disabled' : '';
                 @endphp
+                
                 @if(!empty($estudio->fecha_macro))
                     <input type="date" id="fecha_macro" name="fecha_macro" class="form-control" value="{{ $estudio->fecha_macro }}" {{ $disabled }}>
                 @else
@@ -207,13 +232,28 @@
             <div class="form-group">
                 <label for="observacion">Notas:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
-                    $disabled = $isFinalized ? 'disabled' : '';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de técnico o administrador
+                    $isTecnico = $roles->contains('tecnico');
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado si está finalizado o el usuario es técnico
+                    $disabled = $isFinalized || $isTecnico ? 'disabled' : '';
+                    
+                    // La clase `readonly` se añade si el usuario es técnico y el campo no está finalizado
+                    $readonly = $isTecnico && !$isFinalized ? 'readonly' : '';
                 @endphp
+                
                 @if(!empty($estudio->observacion))
-                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }}>{{ $estudio->observacion }}</textarea>
+                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}>{{ $estudio->observacion }}</textarea>
                 @else
-                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }}></textarea>
+                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}></textarea>
                 @endif
                 <p></p>
             </div>
@@ -221,9 +261,20 @@
             <div class="form-group">
                 <label for="maligno">Maligno:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
-                    $disabled = $isFinalized ? 'disabled' : '';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de administrador
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado si está finalizado o el usuario no es admin
+                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
                 @endphp
+                
                 <select id="maligno" name="maligno" class="form-control" {{ $disabled }}>
                     <option value="">Selecciona una opción</option>
                     <option value="SI" {{ $estudio->maligno == 'SI' ? 'selected' : '' }}>SI</option>
@@ -236,13 +287,24 @@
             <div class="form-group">
                 <label for="observacion_interna">Observación Interna:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
-                    $disabled = $isFinalized ? 'disabled' : '';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de administrador
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado si está finalizado o el usuario no es admin
+                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
                 @endphp
+                
                 @if(!empty($estudio->observacion_interna))
                     <textarea id="observacion_interna" name="observacion_interna" class="form-control" {{ $disabled }}>{{ $estudio->observacion_interna }}</textarea>
                 @else
-                    <input type="text" class="form-control" id="observacion_interna" name="observacion_interna" {{ $disabled }}>
+                    <textarea id="observacion_interna" name="observacion_interna" class="form-control" {{ $disabled }}></textarea>
                 @endif
                 <p></p>
             </div>
@@ -250,13 +312,24 @@
             <div class="form-group">
                 <label for="diagnostico_presuntivo">Diagnóstico:</label>
                 @php
-                    $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
-                    $disabled = $isFinalized ? 'disabled' : '';
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de administrador
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado si está finalizado o el usuario no es admin
+                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
                 @endphp
+                
                 @if(!empty($estudio->diagnostico_presuntivo))
                     <textarea id="diagnostico_presuntivo" name="diagnostico_presuntivo" class="form-control" {{ $disabled }}>{{ $estudio->diagnostico_presuntivo }}</textarea>
                 @else
-                    <input type="text" class="form-control" id="diagnostico_presuntivo" name="diagnostico_presuntivo" {{ $disabled }}>
+                    <textarea id="diagnostico_presuntivo" name="diagnostico_presuntivo" class="form-control" {{ $disabled }}></textarea>
                 @endif
                 <p></p>
             </div>
@@ -313,7 +386,14 @@
 
         <!-- Botón para ampliar informe -->
         <p></p>
-        <button id="btnAmpliar" class="btn btn-primary">Ampliar Informe</button>
+        @php
+            // Determina si el usuario tiene el rol de administrador
+            $isAdmin = $roles->contains('admin');
+        @endphp
+
+        @if($isAdmin)
+            <button id="btnAmpliar" class="btn btn-primary">Ampliar Informe</button>
+        @endif
         <p></p>
         <!-- Formulario para ampliar informe -->
         <form id="ampliarInformeForm" method="POST" action="{{ route('estudios.ampliarInforme', $estudio->nro_servicio) }}" style="display: none;">

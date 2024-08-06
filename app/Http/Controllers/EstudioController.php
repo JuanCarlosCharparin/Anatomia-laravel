@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth; 
 use App\Models\Estudio;
 use App\Models\DetallePap;
 use App\Models\DetalleEstudio;
@@ -12,6 +13,12 @@ use Illuminate\Http\Request;
 
 class EstudioController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function edit($nro_servicio)
     {
         // Ejecutar la consulta
@@ -66,7 +73,12 @@ class EstudioController extends Controller
             ->where('e.nro_servicio', $nro_servicio)
             ->first();
 
-        // Decodificar el JSON de estado_especimen
+        // Verifica si el estudio fue encontrado
+        if (!$estudio) {
+            return redirect()->route('error.notfound'); // O una ruta de error adecuada
+        }
+
+        // Decodificar el JSON de estado_especimen y otros campos
         $estudio->estado_especimen = json_decode($estudio->estado_especimen, true);
         $estudio->celulas_pavimentosas = json_decode($estudio->celulas_pavimentosas, true);
         $estudio->celulas_cilindricas = json_decode($estudio->celulas_cilindricas, true);
@@ -78,22 +90,32 @@ class EstudioController extends Controller
         $estudio->microorganismos = json_decode($estudio->microorganismos, true);
         $estudio->resultado = json_decode($estudio->resultado, true);
 
-
         // Obtener los materiales asociados al nro_servicio
         $materiales = DB::connection('mysql')->table('material')
-        ->select('material')
-        ->where('nro_servicio', $nro_servicio)
-        ->get();
+            ->select('material')
+            ->where('nro_servicio', $nro_servicio)
+            ->get();
 
         // Determinar la vista del formulario según el tipo de estudio
         $view = $estudio->tipo_estudio === 'Pap' ? 'estudios.edit_pap' : 'estudios.edit_detalle';
 
-        // Pasar el estudio a la vista de edición
-        return view($view, compact('estudio', 'materiales'));
+        // Obtén el usuario autenticado
+        $user = Auth::user();
+        $roles = $user->getRoleNames(); // Obtiene todos los roles del usuario
+
+        // Pasar el estudio y roles a la vista de edición
+        return view($view, compact('estudio', 'materiales', 'roles'));
     }
 
     public function update(Request $request, $nro_servicio)
     {
+
+        // Verifica si el usuario tiene permiso para actualizar estudios
+        if (!auth()->user()->can('estudios.update')) {
+            return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
+                            ->with('error', 'No tienes permiso para editar estudios.');
+        }
+
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
 
         if ($estudio->tipo_estudio_id === 3) {
@@ -219,6 +241,14 @@ class EstudioController extends Controller
     //Metodo para finalizar
 
     public function finally(Request $request, $nro_servicio) {
+
+
+        // Verifica si el usuario tiene permiso para finalizar estudios
+        if (!auth()->user()->can('estudios.finally')) {
+            return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
+                            ->with('error', 'No tienes permiso para finalizar estudios.');
+        }
+
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
 
         if ($estudio->tipo_estudio_id === 3) {
@@ -347,6 +377,12 @@ class EstudioController extends Controller
 
     public function reFinally(Request $request, $nro_servicio)
     {
+        // Verifica si el usuario tiene permiso para agregar recibe y tacos al estudio
+        if (!auth()->user()->can('estudios.finalizar')) {
+            return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
+                            ->with('error', 'No tienes permiso para agregar recibe y tacos al estudio.');
+        }
+
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
         // Validar los datos entrantes
         $validatedData = $request->validate([
@@ -410,6 +446,13 @@ class EstudioController extends Controller
     
     public function ampliarInforme(Request $request, $nro_servicio)
     {
+
+        // Verifica si el usuario tiene permiso para agregar ampliar informe al estudio
+        if (!auth()->user()->can('estudios.ampliarInforme')) {
+            return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
+                            ->with('error', 'No tienes permiso para ampliar informe del estudio.');
+        }
+
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
 
         // Validar los datos entrantes

@@ -68,6 +68,12 @@ class CrearEstudioController extends Controller
 
     public function create()
     {
+
+        // Verifica si el usuario tiene permiso para crear estudios
+        if (!auth()->user()->can('estudios.create')) {
+            return redirect()->route('dashboard')->with('error', 'No tienes permiso para crear estudios.');
+        }
+
         // Obtener solo el valor del campo nro_servicio más alto
         $lastEstudio = Estudio::latest('nro_servicio')->first();
 

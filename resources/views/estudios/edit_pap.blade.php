@@ -10,6 +10,11 @@
 
     <div class="container mt-4">
         <h1>Editar Pap</h1>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <p></p>
         @if (session('success'))
             <div class="alert alert-success">
