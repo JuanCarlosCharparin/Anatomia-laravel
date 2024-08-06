@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CrearEstudioController;
 use App\Http\Controllers\EstudioController;
+use App\Http\Controllers\ExportarController;
 
 
 /*
@@ -65,6 +66,7 @@ Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 're
 Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::class, 'ampliarInforme'])->name('estudios.ampliarInforme');
 
 
+Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
 
 
 
