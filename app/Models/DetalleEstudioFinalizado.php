@@ -28,6 +28,14 @@ class DetalleEstudioFinalizado extends Model
         'tecnicas',
         'createdBy',
         'createdAt',
+        'updatedBy',
+        'updatedAt',
+    ];
+
+    // Define los campos de fecha para la conversión de fechas
+    protected $dates = [
+        'createdAt',
+        'updatedAt',
     ];
 
 }

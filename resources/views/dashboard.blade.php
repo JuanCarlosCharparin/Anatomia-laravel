@@ -6,7 +6,8 @@
         </div>
     @endif
     <div class="container mt-4">
-        <h1>Dashboard</h1>
-        <p>Welcome to the dashboard!</p>
+        <h1>Sistema de Anatomia Patológica</h1>
+        <p>Hola {{ auth()->user()->name }}!</p>
+        
     </div>
 </x-app-layout>

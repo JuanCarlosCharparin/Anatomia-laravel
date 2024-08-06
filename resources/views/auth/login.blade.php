@@ -10,7 +10,7 @@
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="login-form card p-4 shadow-sm" style="max-width: 400px;">
-            <h2 class="card-title mb-4 text-center">Login</h2>
+            <h2 class="card-title mb-4 text-center">Login Anatomía</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
@@ -25,7 +25,7 @@
 
                 <!-- Password -->
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Contraseña</label>
                     <input id="password" type="password" name="password" class="form-control" required>
                     @error('password')
                         <div class="text-danger">{{ $message }}</div>
@@ -34,15 +34,15 @@
 
                 <!-- Remember Me -->
                 <div class="mb-3 form-check">
-                    <input id="remember_me" type="checkbox" name="remember" class="form-check-input">
-                    <label for="remember_me" class="form-check-label">Remember me</label>
+                    <!--input id="remember_me" type="checkbox" name="remember" class="form-check-input"-->
+                    <!--label for="remember_me" class="form-check-label">Remember me</label-->
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="btn btn-link">Forgot your password?</a>
+                        <!--a href=" /*route('password.request') */" class="btn btn-link">Forgot your password?</a-->
                     @endif
-                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
                 </div>
             </form>
         </div>

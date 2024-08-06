@@ -9,7 +9,10 @@ class DetallePap extends Model
     protected $connection = 'mysql';
     protected $table = 'detalle_pap'; // Nombre de la tabla en la base de datos
     protected $primaryKey = 'id'; // Asegúrate de que este es el nombre correcto
-    public $timestamps = false;
+    public $timestamps = true; // Habilitar timestamps
+
+    const UPDATED_AT = 'updatedAt';
+    const CREATED_AT = null;
 
     protected $fillable = [
         'estado_especimen',
@@ -27,8 +30,6 @@ class DetallePap extends Model
         'recomendaciones',
         'microorganismos',
         'resultado',
-        'createdBy',
-        'createdAt',
         'updatedBy',
         'updatedAt',
     ];

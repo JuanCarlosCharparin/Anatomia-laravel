@@ -31,4 +31,9 @@ class DetallePapFinalizado extends Model
         'createdAt',
     ];
 
+    // Define los campos de fecha para la conversión de fechas
+    protected $dates = [
+        'createdAt',
+    ];
+
 }

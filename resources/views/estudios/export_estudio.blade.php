@@ -19,7 +19,7 @@
 
         h1.title {
             text-align: center;
-            font-size: 18px;
+            font-size: 18px; /* Tamaño de fuente para h1 */
             margin: 20px 0;
             color: white;
             background-color: #800000;
@@ -31,7 +31,7 @@
 
         h2.title {
             text-align: center;
-            font-size: 12px;
+            font-size: 18px; /* Igualar tamaño de fuente con h1 */
             margin: 20px 0;
             color: white;
             background-color: #800000;
@@ -59,7 +59,7 @@
 
         .section h2 {
             text-align: left;
-            font-size: 14px;
+            font-size: 18px; /* Igualar tamaño de fuente con h1 */
             margin-bottom: 10px;
         }
 
@@ -111,45 +111,142 @@
 </head>
 
 <body>
-    <section>
-        <h1 class="title">LABORATORIO DE ANATOMÍA PATOLÓGICA</h1>
-    </section>
-    <div class="content">
-        
-        <div class="section">
-            <table class="inline-table">
-                <tr>
-                    <td class="field"><span class="bold-heading">PACIENTE:</span> {{ $nombre }}</td>
-                    <td class="field"><span class="bold-heading">DNI:</span> {{ $dni }}</td>
-                </tr>
-            </table>
-        </div>
+        @if($tipo_estudio === 3)
 
-        <div class="section">
-            <p><span class="bold-heading">MEDICO SOLICITANTE:</span> {{ $medico }}</p>
-        </div>
+            <img src="{{ asset('img/Logo.jpeg') }}" alt="Logo">
+            <section>
+                <h1 class="title">CITOLOGIA EXFOLIATIVA ONCOLOGICA (PAP) - CALSIFICACION BETHESDA</h1>
+            </section>
+            <div class="content">
+            
+            <div class="section">
+                <table class="inline-table">
+                    <tr>
+                        <td class="field"><span class="bold-heading">PACIENTE:</span> {{ $nombre }}</td>
+                        <td class="field"><span class="bold-heading">DNI:</span> {{ $dni }}</td>
+                    </tr>
+                </table>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">MEDICO SOLICITANTE:</span> {{ $medico }}</p>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">NUMERO DE INFORME:</span> {{ $informe_numero }}</p>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</p>
+            </div>
+            <!-- Contenido específico para tipo de estudio 3 -->
+            <div class="section">
+                <p><span class="bold-heading">FECHA DE SALIDA:</span> {{ $fecha_pap_finalizado }}</p>
+            </div>
 
-        <div class="section">
-            <p><span class="bold-heading">NUMERO DE INFORME:</span> {{ $informe_numero }}</p>
-        </div>
+            <div class="section">
+                <h1 class="title" style="text-align: center;">INFORME DE PAP</h1>
+                <p><span class="field">MATERIAL REMITIDO:</span> {{ $material_remitido }}</p>
+                <p><span class="field">ESTADO ESPÉCIMEN:</span>
+                    @if(is_array($estado_especimen))
+                        <ul>
+                            @foreach($estado_especimen as $estadoe)
+                                <li>{{ htmlspecialchars($estadoe) }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        {{ htmlspecialchars($estado_especimen) }}
+                    @endif
+                </p>
+                <p><span class="field">CÉLULAS PAVIMENTOSAS:</span>
+                    @if(is_array($celulas_pavimentosas))
+                        <ul>
+                            @foreach($celulas_pavimentosas as $celula)
+                                <li>{{ htmlspecialchars($celula) }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        {{ htmlspecialchars($celulas_pavimentosas) }}
+                    @endif
+                </p>
+                <p><span class="field">CÉLULAS CILÍNDRICAS:</span>
+                    @if(is_array($celulas_cilindricas))
+                        <ul>
+                            @foreach($celulas_cilindricas as $celula)
+                                <li>{{ htmlspecialchars($celula) }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        {{ htmlspecialchars($celulas_cilindricas) }}
+                    @endif
+                </p>
+                <p><span class="field">VALOR HORMONAL:</span> {{ $valor_hormonal }}</p>
+                
+                <p><span class="field">MICROORGANISMOS:</span>
+                    @if(is_array($microorganismos))
+                        <ul>
+                            @foreach($microorganismos as $microorganismo)
+                                <li>{{ htmlspecialchars($microorganismo) }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        {{ htmlspecialchars($microorganismos) }}
+                    @endif
+                </p>
+                <p><span class="field">RESULTADO:</span>
+                    @if(is_array($resultado))
+                        <ul>
+                            @foreach($resultado as $item)
+                                <li>{{ htmlspecialchars($item) }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        {{ htmlspecialchars($resultado) }}
+                    @endif
+                </p>
+            </div>
+        @else
+            <img src="{{ asset('img/Logo.jpeg') }}" alt="Logo">
+            <section>
+                <h1 class="title">LABORATORIO DE ANATOMÍA PATOLÓGICA</h1>
+            </section>
+            <div class="content">
+            
+            <div class="section">
+                <table class="inline-table">
+                    <tr>
+                        <td class="field"><span class="bold-heading">PACIENTE:</span> {{ $nombre }}</td>
+                        <td class="field"><span class="bold-heading">DNI:</span> {{ $dni }}</td>
+                    </tr>
+                </table>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">MEDICO SOLICITANTE:</span> {{ $medico }}</p>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">NUMERO DE INFORME:</span> {{ $informe_numero }}</p>
+            </div>
+    
+            <div class="section">
+                <p><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</p>
+            </div>
+            <!-- Contenido para otros tipos de estudio -->
+            <div class="section">
+                <p><span class="bold-heading">FECHA DE SALIDA:</span> {{ $fecha_estudio_finalizado }}</p>
+            </div>
 
-        <div class="section">
-            <p><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</p>
-        </div>
-        <div class="section">
-            <p><span class="bold-heading">FECHA SALIDA:</span> {{ $fecha_salida }}</p>
-        </div>
+            <div class="section">
+                <h1 class="title" style="text-align: center;">INFORME DE ANATOMÍA PATOLÓGICA</h1>
+                <p style="margin-bottom: 20px;"><span class="field">MATERIAL REMITIDO:</span> {{ $material_remitido }}</p>
+                <p style="margin-bottom: 20px;"><span class="field">TÉCNICA:</span> {{ $tecnica }}</p>
+                <p style="margin-bottom: 20px;"><span class="field">MACROSCOPIA:</span> {{ $macroscopia }}</p>
+                <p style="margin-bottom: 20px;"><span class="field">MICROSCOPIA:</span> {{ $microscopia }}</p>
+                <p style="margin-bottom: 20px;"><span class="field">DIAGNÓSTICO:</span> {{ $diagnostico }}</p>
+            </div>
+        @endif
 
-        <div class="section">
-            <h2 class="title" style="text-align: center;">INFORME DE ANATOMÍA PATOLÓGICA</h2>
-            <p><span class="field">MATERIAL REMITIDO:</span> {{ $material_remitido }}</p>
-            <p><span class="field">TÉCNICA:</span> {{ $tecnica }}</p>
-            <p><span class="field">MACROSCOPIA:</span> {{ $macroscopia }}</p>
-            <p><span class="field">MICROSCOPIA:</span> {{ $microscopia }}</p>
-            <p><span class="field">CÓDIGO:</span> {{ $codigo }}</p>
-            <p><span class="field">DIAGNÓSTICO:</span> {{ $diagnostico }}</p>
-            <p><span class="field">NOTA:</span> {{ $nota }}</p>
-        </div>
     </div>
     <div class="footer">
         <p>Información confidencial - secreto médico - alcances del art. 156 del Código Penal</p>

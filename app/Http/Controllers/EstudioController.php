@@ -179,6 +179,8 @@ class EstudioController extends Controller
                 return !is_null($value) && $value !== '';
             }));
 
+            $detallePap->updatedBy = Auth::id(); // Asegúrate de que el usuario esté autenticado
+
             // Guardar el detalle_pap
             $detallePap->save();
             
@@ -221,6 +223,9 @@ class EstudioController extends Controller
             $detalleEstudio->fill(array_filter($validatedData, function($value) {
                 return !is_null($value) && $value !== '';
             }));
+
+            // Establecer el ID del usuario que está haciendo la actualización
+            $detalleEstudio->updatedBy = Auth::id(); // Asegúrate de que el usuario esté autenticado
         
             // Guardar el detalle_estudio
             $detalleEstudio->save();
@@ -306,6 +311,9 @@ class EstudioController extends Controller
             }
 
             $detallePapFinalizado->fill($validatedData);
+
+            $detallePapFinalizado->createdBy = Auth::id();
+            $detallePapFinalizado->createdAt = now();
         
             // Guardar el detalle_estudio_finalizado
             $detallePapFinalizado->save();
@@ -350,6 +358,12 @@ class EstudioController extends Controller
         
             // Actualizar el detalle_estudio_finalizado con los datos validados
             $detalleEstudioFinalizado->fill($validatedData);
+
+            // Establecer los campos de usuario y fecha
+            $detalleEstudioFinalizado->updatedBy = Auth::id();
+            $detalleEstudioFinalizado->createdBy = Auth::id();
+            $detalleEstudioFinalizado->createdAt = now();
+            $detalleEstudioFinalizado->updatedAt = now();// Asegúrate de que el usuario esté autenticado
             
             // Guardar el detalle_estudio_finalizado
             $detalleEstudioFinalizado->save();
@@ -380,7 +394,7 @@ class EstudioController extends Controller
         // Verifica si el usuario tiene permiso para agregar recibe y tacos al estudio
         if (!auth()->user()->can('estudios.finalizar')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
-                            ->with('error', 'No tienes permiso para agregar recibe y tacos al estudio.');
+                            ->with('error', 'No tienes permiso para modificar los campos recibe y tacos del estudio.');
         }
 
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
@@ -410,6 +424,8 @@ class EstudioController extends Controller
         // Actualizar los campos recibe y tacos
         $detalleEstudio->recibe = $validatedData['recibe'];
         $detalleEstudio->tacos = $validatedData['tacos'];
+        $detalleEstudio->updatedBy = Auth::id();
+        $detalleEstudio->updatedAt = now();
         $detalleEstudio->save();
 
         $estadoActual = $estudio->estado_estudio;
@@ -479,6 +495,8 @@ class EstudioController extends Controller
 
         // Actualizar los campos ampliar_informe
         $detalleEstudio->ampliar_informe = $validatedData['informe'];
+        $detalleEstudio->updatedBy = Auth::id();
+        $detalleEstudio->updatedAt = now();
         $detalleEstudio->save();
 
         // Verificar el estado actual del estudio y actualizarlo

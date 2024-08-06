@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 use App\Http\Controllers\CrearEstudioController;
 use App\Http\Controllers\EstudioController;
@@ -20,8 +21,12 @@ use App\Http\Controllers\ExportarController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

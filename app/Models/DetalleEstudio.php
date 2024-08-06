@@ -9,7 +9,10 @@ class DetalleEstudio extends Model
     protected $connection = 'mysql';
     protected $table = 'detalle_estudio'; 
     protected $primaryKey = 'id'; // Asegúrate de que este es el nombre correcto
-    public $timestamps = false;
+    public $timestamps = true; // Habilitar timestamps
+
+    const UPDATED_AT = 'updatedAt';
+    const CREATED_AT = null;
 
     protected $fillable = [
         'macro',
@@ -25,8 +28,6 @@ class DetalleEstudio extends Model
         'tacos',
         'diagnostico_presuntivo',
         'tecnicas',
-        'createdBy',
-        'createdAt',
         'updatedBy',
         'updatedAt',
     ];
