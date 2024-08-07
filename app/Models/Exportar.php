@@ -16,7 +16,7 @@ class Exportar extends Model
             'e.tipo_estudio_id',
             DB::raw("CONCAT(p.nombres, ' ', p.apellidos) AS paciente"),
             'e.medico_solicitante AS medico_solicitante',
-            DB::raw("GROUP_CONCAT(m.material SEPARATOR ', ') AS materiales"), // Combina múltiples materiales en una sola columna
+            DB::raw("GROUP_CONCAT(m.material SEPARATOR ', ') AS materiales"), 
             'p.documento AS documento_paciente',
             'e.fecha_carga AS fecha_carga',
             'def.macro',

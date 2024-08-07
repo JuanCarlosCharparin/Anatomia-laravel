@@ -170,7 +170,7 @@
                     <option value="Insactifactorio por inflamacion" {{ in_array('Insactifactorio por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por inflamación</option>
                     <option value="Insactifactorio por hemorrragia" {{ in_array('Insactifactorio por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por hemorragia</option>
                     <option value="Insactifactorio por citolisis" {{ in_array('Insactifactorio por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por citólisis</option>
-                    <option value="Insactifactorio por componente_endocervical" {{ in_array('Insactifactorio por componente_endocervical', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por sin componente endocervical</option>
+                    <option value="Insactifactorio por componente endocervical" {{ in_array('Insactifactorio por componente endocervical', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por sin componente endocervical</option>
                     <option value="Insactifactorio por otros" {{ in_array('Insactifactorio por otros', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por otros</option>
                     <option value="Sin componente endocervical" {{ in_array('Sin componente endocervical', $estadoEspecimen) ? 'selected' : '' }}>Sin componente endocervical</option>
                 </select>
