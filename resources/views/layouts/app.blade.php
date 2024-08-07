@@ -7,16 +7,15 @@
 
         <title>@yield('title', config('app.name', 'Anatomia-Patologica'))</title>
 
+        
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-        <!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' http://[::1]:5173; style-src 'self';"-->
-
-
+        
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -32,9 +31,10 @@
     
             <div id="layoutSidenav" class="d-flex">
                 @include('layouts.sidebar')
-    
-                <div id="layoutSidenav_content" class="flex-grow-1">
-                    <main class="container-fluid">
+
+                <!-- Main Content -->
+                <div id="layoutSidenav_content" class="flex-grow-1 p-4">
+                    <main>
                         {{ $slot }}
                     </main>
                 </div>
