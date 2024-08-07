@@ -24,7 +24,9 @@ class ExportarController extends Controller
             'medico' => $estudio->medico_solicitante, // Médico solicitante
             'informe_numero' => 'sdfgsdfg', // Puedes modificar este campo según corresponda
             'fecha_entrada' => $estudio->fecha_carga, // Fecha y hora de la carga
-            'fecha_salida' => $estudio->fecha_estudio_finalizado, // Fecha y hora de la carga
+            'fecha_salida' => $estudio->fecha_estudio_finalizado,
+            'fecha_salida' => $estudio->fecha_estudio_finalizado,
+            'fecha_salida' => $estudio->fecha_estudio_finalizado,
             'material_remitido' => 'sdfgsdfgsd', // Puedes modificar este campo según corresponda
             'tecnica' => 'Inclusion en bloque de parafina-histoplast, Tincion con hematoxilina-eosina, Tincion 15 (BIOPUR), Tincion papanicolaou, GIEMSA, Acido peryodico de Schiff (PAS), Otros',
             'macroscopia' => $estudio->macro, // Macroscopia
