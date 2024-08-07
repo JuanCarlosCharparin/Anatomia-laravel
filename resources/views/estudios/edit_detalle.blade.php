@@ -1,9 +1,12 @@
-
+<head>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
 <x-app-layout>
     <x-slot name="title">Editar Estudio</x-slot>
-    @section('title', 'Anatomia-Patologica')
+    @section('title', 'Anatomía-Patológica')
 
-    <div class="container mt-4">
+    <div class="mt-4">
         <h1>Editar Estudio</h1>
         @if (session('error'))
             <div class="alert alert-danger">

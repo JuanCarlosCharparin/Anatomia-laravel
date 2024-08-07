@@ -1,14 +1,17 @@
-
+<head>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
 <x-app-layout>
     <x-slot name="title">Editar Pap</x-slot>
-    @section('title', 'Anatomia-Patologica')
+    @section('title', 'Anatomía-Patológica')
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <div class="container mt-4">
+    <div class="mt-4">
         <h1>Editar Pap</h1>
         @if (session('error'))
             <div class="alert alert-danger">
@@ -489,6 +492,7 @@
                     <option value="ASC-H" {{ in_array('ASC-H', $resultado) ? 'selected' : '' }}>ASC-H</option>
                     <option value="L-SIL" {{ in_array('L-SIL', $resultado) ? 'selected' : '' }}>LSIL</option>
                     <option value="HSIL" {{ in_array('HSIL', $resultado) ? 'selected' : '' }}>HSIL</option>
+                    <option value="Celulas glandulares atípicas" {{ in_array('Celulas glandulares atípicas', $resultado) ? 'selected' : '' }}>Celulas glandulares atípicas</option>
                 </select>
             </div>
             

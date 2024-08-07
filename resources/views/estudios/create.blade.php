@@ -1,10 +1,15 @@
+<head>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
 <x-app-layout>
     <x-slot name="title">Crear Estudio</x-slot>
-    @section('title', 'Anatomia-Patologica')
-    <div class="container mt-4">
+    @section('title', 'Anatomía-Patológica')
+    <div class="mt-4">
         <h1>Crear Estudio</h1>
         @php
-            /*$professionals = App\Models\Paciente::getProfessionals();*/
+            $professionals = App\Models\Paciente::getProfessionals();
         @endphp
         <form method="POST" action="{{ route('estudios.store') }}">
             @csrf
@@ -49,7 +54,6 @@
             <input type="text" id="selected-person" name="paciente" class="form-control" placeholder="Nombre del paciente seleccionado">
             <p></p>
             
-
             <!-- Otros campos del formulario -->
             <div class="form-group">
                 <label for="professional-select">Seleccionar Profesional: </label>
@@ -88,7 +92,6 @@
                 </select>
             </div>
             <p></p>
-
 
             <div class="form-group">
                 <label for="material">Material remitido:</label>

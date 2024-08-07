@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', config('app.name', 'Anatomia-Patologica'))</title>
+        <title>@yield('title', config('app.name', 'Anatomia-Patológica'))</title>
 
         
 
@@ -25,11 +25,14 @@
         <!-- JS -->
         <script src="{{ asset('js/scripts.js') }}" defer></script>
     </head>
-    <body class="container-fluid">
+    <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-    
+
+            <!-- Sidebar -->
+            <!-- Layout Sidenav and Content -->
             <div id="layoutSidenav" class="d-flex">
+                <!-- Sidebar -->
                 @include('layouts.sidebar')
 
                 <!-- Main Content -->
