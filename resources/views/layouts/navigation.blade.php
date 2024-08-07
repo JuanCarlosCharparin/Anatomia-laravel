@@ -29,9 +29,8 @@
                 <i class="fas fa-user fa-fw"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
-                <li><a class="dropdown-item" href="#!">Settings</a></li>
-                <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
+                
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 </div>
@@ -39,7 +38,7 @@
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <a class="dropdown-item" href="#!" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                        <a class="dropdown-item" href="#!" onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
                     </form>
                 </li>
             </ul>
