@@ -37,9 +37,9 @@
             <p></p>
             
             <div class="form-group">
-                <label for="search-input">DNI o Nombre: </label>
+                <label for="search-input">DNI: </label>
                 <div class="input-group">
-                    <input type="text" id="search-input" name="documento" class="form-control" placeholder="Ingrese DNI o nombre">
+                    <input type="text" id="search-input" name="documento" class="form-control" placeholder="Ingrese DNI del paciente">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" id="search-button">
                             Buscar

@@ -55,8 +55,8 @@ class ExportarController extends Controller
                 'fecha_entrada' => $estudio->fecha_carga,
                 'fecha_estudio_finalizado' => $estudio->fecha_estudio_finalizado,
                 'material_remitido' => $estudio->materiales,
-                'tecnica' => $estudio->tecnicas,
-                'macroscopia' => $estudio->macro,
+                'tecnica' => json_decode($estudio->tecnicas, true),
+                'macroscopia' => $estudio->macro, 
                 'microscopia' => $estudio->micro,
                 'diagnostico' => $estudio->diagnostico,
             ];

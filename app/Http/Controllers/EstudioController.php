@@ -90,6 +90,8 @@ class EstudioController extends Controller
         $estudio->microorganismos = json_decode($estudio->microorganismos, true);
         $estudio->resultado = json_decode($estudio->resultado, true);
 
+        $estudio->tecnicas = json_decode($estudio->tecnicas, true);
+
         // Obtener los materiales asociados al nro_servicio
         $materiales = DB::connection('mysql')->table('material')
             ->select('material')
@@ -208,8 +210,11 @@ class EstudioController extends Controller
                 /*'recibe' => 'nullable|string|max:255',
                 'tacos' => 'nullable|string|max:255',*/
                 'diagnostico_presuntivo' => 'nullable|string|max:500',
-                'tecnicas' => 'nullable|string|max:500',
+                'tecnicas' => 'nullable|array',
+                'tecnicas.*' => 'string|distinct|max:500',
             ]);
+
+            $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;
         
             // Verificar si el detalle_estudio ya existe
             $detalleEstudioId = $estudio->detalle_estudio_id;
@@ -343,8 +348,11 @@ class EstudioController extends Controller
                 'observacion_interna' => 'nullable|string',
                 // No incluir 'recibe' y 'tacos' en la validación aquí
                 'diagnostico_presuntivo' => 'nullable|string|max:500',
-                'tecnicas' => 'nullable|string|max:500',
+                'tecnicas' => 'nullable|array',
+                'tecnicas.*' => 'string|distinct|max:500',
             ]);
+
+            $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;
         
             // Verificar si el detalle_estudio_finalizado ya existe
             $detalleEstudioFinalizadoId = $estudio->detalle_estudio_finalizado_id;

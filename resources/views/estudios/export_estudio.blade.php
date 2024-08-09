@@ -231,7 +231,14 @@
                 <h1 class="title">INFORME DE ANATOMÍA PATOLÓGICA</h1>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">MATERIAL REMITIDO:</span>
                     {{ $material_remitido }}</p>
-                <p style="margin-bottom: 20px;"><span class="bold-heading">TÉCNICA:</span> {{ $tecnica }}</p>
+                <p><span class="bold-heading">TÉCNICA:</span>
+                    @if (is_array($tecnica))
+                        {{ implode(', ', array_map('htmlspecialchars', $tecnica)) }}
+                    @else
+                        {{ htmlspecialchars($tecnica) }}
+                    @endif
+                </p>
+                <p></p>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">MACROSCOPIA:</span> {{ $macroscopia }}</p>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">MICROSCOPIA:</span> {{ $microscopia }}</p>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">DIAGNÓSTICO:</span> {{ $diagnostico }}</p>

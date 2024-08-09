@@ -70,10 +70,16 @@
                                 <td>{{ \Carbon\Carbon::parse($estudio->fecha_carga)->format('d-m-Y') }}</td>
                                 <td>{{ $estudio->profesional }}</td>
                                 <td>
-                                    <a href="{{ route('estudios.edit', $estudio->nro_servicio) }}"
-                                        class="btn btn-warning btn-sm">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                    @php
+                                        $user = Auth::user();
+                                        $roles = $user->getRoleNames()->toArray();
+                                    @endphp
+
+                                    @if (!in_array('visualizacion', $roles))
+                                        <a href="{{ route('estudios.edit', $estudio->nro_servicio) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    @endif
                                     <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}"
                                         class="btn btn-primary btn-sm">
                                         <i class="fas fa-download"></i>

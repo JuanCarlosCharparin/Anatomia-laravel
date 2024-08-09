@@ -5,6 +5,17 @@
 <x-app-layout>
     <x-slot name="title">Editar Estudio</x-slot>
     @section('title', 'Anatomía-Patológica')
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <div class="mt-4">
         <h1>Editar Estudio</h1>
@@ -94,7 +105,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">Diagnostico: </label>
+                <label for="">Diagnostico Presuntivo: </label>
                 <strong>{{ $estudio->diagnostico }}</strong>
             </div>
 
@@ -118,13 +129,21 @@
                 @php
                     $isFinalized = $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' || $estudio->estado === 'finalizado y ampliado';
                     $disabled = $isFinalized ? 'disabled' : '';
+                    
+                    // Decodificar el JSON en un array si aún no se ha hecho en el controlador
+                    $tecnicasSeleccionadas = is_array($estudio->tecnicas) ? $estudio->tecnicas : explode(',', $estudio->tecnicas);
                 @endphp
-            
-                @if(!empty($estudio->tecnicas))
-                    <textarea id="tecnicas" name="tecnicas" class="form-control" {{ $disabled }}>{{ $estudio->tecnicas }}</textarea>
-                @else
-                    <input type="text" class="form-control" id="tecnicas" name="tecnicas" {{ $disabled }}>
-                @endif
+
+                <select class="select2" id="tecnicas" name="tecnicas[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
+                    <option value="Inclusion en bloque de parafina-histoplast" {{ in_array('Inclusion en bloque de parafina-histoplast', $tecnicasSeleccionadas) ? 'selected' : '' }}>Inclusion en bloque de parafina-histoplast</option>
+                    <option value="Tincion con hematoxilina-eosina" {{ in_array('Tincion con hematoxilina-eosina', $tecnicasSeleccionadas) ? 'selected' : '' }}>Tincion con hematoxilina-eosina</option>
+                    <option value="Tincion 15 (BIOPUR)" {{ in_array('Tincion 15 (BIOPUR)', $tecnicasSeleccionadas) ? 'selected' : '' }}>Tincion 15 (BIOPUR)</option>
+                    <option value="Tincion papanicolaou" {{ in_array('Tincion papanicolaou', $tecnicasSeleccionadas) ? 'selected' : '' }}>Tincion papanicolaou</option>
+                    <option value="GIEMSA" {{ in_array('GIEMSA', $tecnicasSeleccionadas) ? 'selected' : '' }}>GIEMSA</option>
+                    <option value="Acido peryodico de Schiff (PAS)" {{ in_array('Acido peryodico de Schiff (PAS)', $tecnicasSeleccionadas) ? 'selected' : '' }}>Acido peryodico de Schiff (PAS)</option>
+                    <option value="Microcirugia de Mohs" {{ in_array('Microcirugia de Mohs', $tecnicasSeleccionadas) ? 'selected' : '' }}>Microcirugía de Mohs</option>
+                    <option value="Otros" {{ in_array('Otros', $tecnicasSeleccionadas) ? 'selected' : '' }}>Otros</option>
+                </select>
                 <p></p>
             </div>
 
@@ -233,35 +252,6 @@
             </div>
             
             <div class="form-group">
-                <label for="observacion">Notas:</label>
-                @php
-                    // Determina si el estado está finalizado o en un estado posterior
-                    $isFinalized = $estudio->estado === 'finalizado' || 
-                                   $estudio->estado === 'finalizado y entregado' || 
-                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
-                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
-                                   $estudio->estado === 'finalizado y ampliado';
-                    
-                    // Determina si el usuario tiene el rol de técnico o administrador
-                    $isTecnico = $roles->contains('tecnico');
-                    $isAdmin = $roles->contains('admin');
-                    
-                    // El campo será deshabilitado si está finalizado o el usuario es técnico
-                    $disabled = $isFinalized || $isTecnico ? 'disabled' : '';
-                    
-                    // La clase `readonly` se añade si el usuario es técnico y el campo no está finalizado
-                    $readonly = $isTecnico && !$isFinalized ? 'readonly' : '';
-                @endphp
-                
-                @if(!empty($estudio->observacion))
-                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}>{{ $estudio->observacion }}</textarea>
-                @else
-                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}></textarea>
-                @endif
-                <p></p>
-            </div>
-            
-            <div class="form-group">
                 <label for="maligno">Maligno:</label>
                 @php
                     // Determina si el estado está finalizado o en un estado posterior
@@ -333,6 +323,35 @@
                     <textarea id="diagnostico_presuntivo" name="diagnostico_presuntivo" class="form-control" {{ $disabled }}>{{ $estudio->diagnostico_presuntivo }}</textarea>
                 @else
                     <textarea id="diagnostico_presuntivo" name="diagnostico_presuntivo" class="form-control" {{ $disabled }}></textarea>
+                @endif
+                <p></p>
+            </div>
+
+            <div class="form-group">
+                <label for="observacion">Notas:</label>
+                @php
+                    // Determina si el estado está finalizado o en un estado posterior
+                    $isFinalized = $estudio->estado === 'finalizado' || 
+                                   $estudio->estado === 'finalizado y entregado' || 
+                                   $estudio->estado === 'finalizado, entregado y ampliado' || 
+                                   $estudio->estado === 'finalizado, ampliado y entregado' || 
+                                   $estudio->estado === 'finalizado y ampliado';
+                    
+                    // Determina si el usuario tiene el rol de técnico o administrador
+                    $isTecnico = $roles->contains('tecnico');
+                    $isAdmin = $roles->contains('admin');
+                    
+                    // El campo será deshabilitado si está finalizado o el usuario es técnico
+                    $disabled = $isFinalized || $isTecnico ? 'disabled' : '';
+                    
+                    // La clase `readonly` se añade si el usuario es técnico y el campo no está finalizado
+                    $readonly = $isTecnico && !$isFinalized ? 'readonly' : '';
+                @endphp
+                
+                @if(!empty($estudio->observacion))
+                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}>{{ $estudio->observacion }}</textarea>
+                @else
+                    <textarea id="observacion" name="observacion" class="form-control" {{ $disabled }} {{ $readonly }}></textarea>
                 @endif
                 <p></p>
             </div>
@@ -418,6 +437,18 @@
     </div>
     <p></p>
     <script>
+
+        // Inicializar select2
+        $('.select2').select2({
+                closeOnSelect: false, // Permitir múltiples selecciones sin cerrar el menú
+                dropdownParent: $('body'), // Ajustar según sea necesario
+                width: 'resolve' // Ajustar al ancho del contenedor
+            });
+
+            // Mantener el menú Select2 abierto al seleccionar o deseleccionar
+            $('.select2').on('select2:select select2:unselect', function (e) {
+                $(this).select2('open'); // Mantener el menú abierto
+            });
         
         //btn ampliar informe
         document.addEventListener('DOMContentLoaded', function() {
