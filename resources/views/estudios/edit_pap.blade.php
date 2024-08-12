@@ -132,6 +132,11 @@
             </div>
 
             <div class="form-group">
+                <label for="">Medico solicitante: </label>
+                <strong>{{ $estudio->medico }}</strong>
+            </div>
+
+            <div class="form-group">
                 <label for="">Diagnostico Presuntivo: </label>
                 <strong>{{ $estudio->diagnostico }}</strong>
             </div>
@@ -142,6 +147,17 @@
                     <ul>
                         @foreach($materiales as $material)
                             <li>{{ $material->material }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="">Codigo/s Nomenclador AP: </label>
+                <div style="flex-basis: 155%;">
+                    <ul>
+                        @foreach($codigos as $codigo)
+                            <li>{{ $codigo->codigo }}</li>
                         @endforeach
                     </ul>
                 </div>

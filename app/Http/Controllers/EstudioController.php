@@ -31,6 +31,7 @@ class EstudioController extends Controller
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
                 'p.obra_social as obra_social',
                 'e.diagnostico_presuntivo as diagnostico',
+                'e.medico_solicitante as medico',
                 'e.fecha_carga as fecha_carga',
                 DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos) as profesional"),
                 'de.macro',
@@ -98,6 +99,13 @@ class EstudioController extends Controller
             ->where('nro_servicio', $nro_servicio)
             ->get();
 
+        // Obtener los materiales asociados al nro_servicio
+        $codigos = DB::connection('mysql')->table('codigo_nomenclador_ap')
+            ->select('codigo')
+            ->where('nro_servicio', $nro_servicio)
+            ->get();
+
+
         // Determinar la vista del formulario según el tipo de estudio
         $view = $estudio->tipo_estudio === 'Pap' ? 'estudios.edit_pap' : 'estudios.edit_detalle';
 
@@ -106,7 +114,7 @@ class EstudioController extends Controller
         $roles = $user->getRoleNames(); // Obtiene todos los roles del usuario
 
         // Pasar el estudio y roles a la vista de edición
-        return view($view, compact('estudio', 'materiales', 'roles'));
+        return view($view, compact('estudio', 'materiales', 'roles', 'codigos'));
     }
 
     public function update(Request $request, $nro_servicio)

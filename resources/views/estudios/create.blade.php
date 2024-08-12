@@ -162,7 +162,7 @@
                         if (data.length > 0) {
                             data.forEach(function(patient) {
                                 resultHtml += '<div>';
-                                resultHtml += '<p><strong>ID:</strong> ' + patient.id + '</p>';
+                                resultHtml += '<p><strong>HC Electrónica:</strong> ' + patient.id + '</p>';
                                 resultHtml += '<p><strong>Nombre:</strong> ' + patient.nombres + ' ' + patient.apellidos + '</p>';
                                 resultHtml += '<p><strong>DNI:</strong> ' + patient.documento + '</p>';
                                 resultHtml += '<p><strong>Fecha de Nacimiento:</strong> ' + patient.fecha_nacimiento + '</p>';
