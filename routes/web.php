@@ -73,5 +73,10 @@ Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::clas
 
 Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
 
+Route::get('/exportar/estudios', [EstudioController::class, 'exportarExcel'])->name('exportar.estudios');
+
+
+
+
 
 

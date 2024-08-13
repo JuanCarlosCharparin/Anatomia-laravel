@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth; 
+
+use Illuminate\Support\Facades\Auth;
 use App\Models\Estudio;
 use App\Models\DetallePap;
 use App\Models\DetalleEstudio;
 use App\Models\DetalleEstudioFinalizado;
 use App\Models\DetallePapFinalizado;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 use Illuminate\Http\Request;
 
@@ -123,7 +127,7 @@ class EstudioController extends Controller
         // Verifica si el usuario tiene permiso para actualizar estudios
         if (!auth()->user()->can('estudios.update')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
-                            ->with('error', 'No tienes permiso para editar estudios.');
+                ->with('error', 'No tienes permiso para editar estudios.');
         }
 
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
@@ -185,7 +189,7 @@ class EstudioController extends Controller
             }
 
             // Actualizar el detalle_pap solo con los campos que tienen valores nuevos
-            $detallePap->fill(array_filter($validatedData, function($value) {
+            $detallePap->fill(array_filter($validatedData, function ($value) {
                 return !is_null($value) && $value !== '';
             }));
 
@@ -193,7 +197,7 @@ class EstudioController extends Controller
 
             // Guardar el detalle_pap
             $detallePap->save();
-            
+
             // Obtener el ID del detalle_pap
             $detallePapId = $detallePap->id;
 
@@ -223,7 +227,7 @@ class EstudioController extends Controller
             ]);
 
             $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;
-        
+
             // Verificar si el detalle_estudio ya existe
             $detalleEstudioId = $estudio->detalle_estudio_id;
             if ($detalleEstudioId) {
@@ -231,40 +235,41 @@ class EstudioController extends Controller
             } else {
                 $detalleEstudio = new DetalleEstudio();
             }
-        
+
             // Actualizar el detalle_estudio solo con los campos que tienen valores nuevos
-            $detalleEstudio->fill(array_filter($validatedData, function($value) {
+            $detalleEstudio->fill(array_filter($validatedData, function ($value) {
                 return !is_null($value) && $value !== '';
             }));
 
             // Establecer el ID del usuario que está haciendo la actualización
             $detalleEstudio->updatedBy = Auth::id(); // Asegúrate de que el usuario esté autenticado
-        
+
             // Guardar el detalle_estudio
             $detalleEstudio->save();
-            
+
             // Obtener el ID del detalle_estudio
             $detalleEstudioId = $detalleEstudio->id;
-        
+
             // Actualizar el registro de Estudio con el id del DetalleEstudio
             $estudio->update([
                 'detalle_estudio_id' => $detalleEstudioId,
                 'estado_estudio' => 'informando',
             ]);
-    
-        }    
+
+        }
         return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])->with('success', 'Estudio actualizado con éxito');
     }
 
     //Metodo para finalizar
 
-    public function finally(Request $request, $nro_servicio) {
+    public function finally(Request $request, $nro_servicio)
+    {
 
 
         // Verifica si el usuario tiene permiso para finalizar estudios
         if (!auth()->user()->can('estudios.finally')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
-                            ->with('error', 'No tienes permiso para finalizar estudios.');
+                ->with('error', 'No tienes permiso para finalizar estudios.');
         }
 
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
@@ -327,10 +332,10 @@ class EstudioController extends Controller
 
             $detallePapFinalizado->createdBy = Auth::id();
             $detallePapFinalizado->createdAt = now();
-        
+
             // Guardar el detalle_estudio_finalizado
             $detallePapFinalizado->save();
-        
+
             // Obtener el ID del detalle_estudio_finalizado
             $detallePapFinalizadoId = $detallePapFinalizado->id;
 
@@ -340,7 +345,7 @@ class EstudioController extends Controller
                 'estado_estudio' => 'finalizado',
             ]);
 
-            
+
 
         } else {
             // Validar la entrada del usuario en caso detalle_estudio_finalizado
@@ -361,17 +366,17 @@ class EstudioController extends Controller
             ]);
 
             $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;
-        
+
             // Verificar si el detalle_estudio_finalizado ya existe
             $detalleEstudioFinalizadoId = $estudio->detalle_estudio_finalizado_id;
-            
+
             if ($detalleEstudioFinalizadoId) {
                 $detalleEstudioFinalizado = DetalleEstudioFinalizado::find($detalleEstudioFinalizadoId);
             } else {
                 // Crear un nuevo detalle_estudio_finalizado
                 $detalleEstudioFinalizado = new DetalleEstudioFinalizado();
             }
-        
+
             // Actualizar el detalle_estudio_finalizado con los datos validados
             $detalleEstudioFinalizado->fill($validatedData);
 
@@ -380,10 +385,10 @@ class EstudioController extends Controller
             $detalleEstudioFinalizado->createdBy = Auth::id();
             $detalleEstudioFinalizado->createdAt = now();
             $detalleEstudioFinalizado->updatedAt = now();// Asegúrate de que el usuario esté autenticado
-            
+
             // Guardar el detalle_estudio_finalizado
             $detalleEstudioFinalizado->save();
-        
+
             // Obtener el ID del detalle_estudio_finalizado
             $detalleEstudioFinalizadoId = $detalleEstudioFinalizado->id;
 
@@ -410,7 +415,7 @@ class EstudioController extends Controller
         // Verifica si el usuario tiene permiso para agregar recibe y tacos al estudio
         if (!auth()->user()->can('estudios.finalizar')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
-                            ->with('error', 'No tienes permiso para modificar los campos recibe y tacos del estudio.');
+                ->with('error', 'No tienes permiso para modificar los campos recibe y tacos del estudio.');
         }
 
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
@@ -475,14 +480,14 @@ class EstudioController extends Controller
         ])->with('success', 'Estudio entregado con éxito');
     }
 
-    
+
     public function ampliarInforme(Request $request, $nro_servicio)
     {
 
         // Verifica si el usuario tiene permiso para agregar ampliar informe al estudio
         if (!auth()->user()->can('estudios.ampliarInforme')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
-                            ->with('error', 'No tienes permiso para ampliar informe del estudio.');
+                ->with('error', 'No tienes permiso para ampliar informe del estudio.');
         }
 
         $estudio = Estudio::where('nro_servicio', $nro_servicio)->firstOrFail();
@@ -529,9 +534,9 @@ class EstudioController extends Controller
         ]);
 
         // Redirigir con un mensaje de éxito
-        $perPage = 20; 
-        $totalEstudios = Estudio::count(); 
-        $lastPage = ceil($totalEstudios / $perPage); 
+        $perPage = 20;
+        $totalEstudios = Estudio::count();
+        $lastPage = ceil($totalEstudios / $perPage);
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('estudios.index', [
@@ -539,4 +544,149 @@ class EstudioController extends Controller
             'nro_servicio' => $nro_servicio // Parámetro de búsqueda
         ])->with('success', 'Estudio ampliado con éxito');
     }
+
+    public function exportarExcel(Request $request)
+    {
+        $user = Auth::user();
+        $roles = $user->getRoleNames()->toArray();
+
+        $searchNroServicio = $request->input('search_nro_servicio');
+        $searchServicio = $request->input('search_servicio');
+        $searchTipoEstudio = $request->input('search_tipo_estudio');
+        $searchEstado = $request->input('search_estado');
+        $searchPaciente = $request->input('search_paciente');
+        $searchObraSocial = $request->input('search_obra_social');
+        $searchDesde = $request->input('search_desde');
+        $searchHasta = $request->input('search_hasta');
+        $searchProfesional = $request->input('search_profesional');
+
+        $query = DB::connection('mysql')->table('estudio as e')
+            ->select(
+                'e.nro_servicio as nro_servicio',
+                's.nombre_servicio as servicio',
+                'tde.nombre as tipo_estudio',
+                'e.estado_estudio as estado',
+                DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
+                'p.documento as documento',
+                'p.obra_social as obra_social',
+                'de.diagnostico_presuntivo as diagnostico',
+                'e.fecha_carga as fecha_carga',
+                DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos) as profesional")
+            )
+            ->leftJoin('tipo_de_estudio as tde', 'e.tipo_estudio_id', '=', 'tde.id')
+            ->leftJoin('servicio as s', 'e.servicio_id', '=', 's.id')
+            ->leftJoin('personal as p', 'e.personal_id', '=', 'p.id')
+            ->leftJoin('detalle_estudio as de', 'e.detalle_estudio_id', '=', 'de.id')
+            ->leftJoin('profesional as prof', 'e.profesional_id', '=', 'prof.id');
+
+        if (in_array('visualizacion', $roles)) {
+            $query->where('e.estado_estudio', 'LIKE', '%finalizado%');
+        }
+
+        if ($searchNroServicio) {
+            $query->where('e.nro_servicio', '=', $searchNroServicio);
+        }
+
+        if ($searchServicio) {
+            $query->where('s.nombre_servicio', 'LIKE', "%{$searchServicio}%");
+        }
+
+        if ($searchObraSocial) {
+            $query->where('p.obra_social', 'LIKE', "%{$searchObraSocial}%");
+        }
+
+        if ($searchTipoEstudio) {
+            $query->where('tde.nombre', 'LIKE', "%{$searchTipoEstudio}%");
+        }
+
+        if ($searchEstado) {
+            $query->where('e.estado_estudio', 'LIKE', "%{$searchEstado}%");
+        }
+
+        if ($searchProfesional) {
+            $query->where(function ($q) use ($searchProfesional) {
+                $q->whereRaw("CONCAT(prof.nombres, ' ', prof.apellidos) LIKE ?", ["%{$searchProfesional}%"]);
+            });
+        }
+
+        if ($searchPaciente) {
+            $query->where(function ($q) use ($searchPaciente) {
+                $q->where(DB::raw("CONCAT(p.nombres, ' ', p.apellidos)"), 'LIKE', "%{$searchPaciente}%")
+                    ->orWhere('p.documento', 'LIKE', "%{$searchPaciente}%");
+            });
+        }
+
+        if ($searchDesde != '' && $searchHasta != '') {
+            $query->whereBetween('e.fecha_carga', [$searchDesde, $searchHasta]);
+        }
+
+        $query->orderBy('e.nro_servicio', 'desc');
+
+        $estudios = $query->get();
+
+        // Crear un nuevo Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Definir los encabezados de la tabla en negrita
+        $sheet->setCellValue('A1', 'N° Serv.')
+            ->setCellValue('B1', 'Servicio')
+            ->setCellValue('C1', 'Tipo Estudio')
+            ->setCellValue('D1', 'Estado')
+            ->setCellValue('E1', 'Paciente')
+            ->setCellValue('F1', 'DNI')
+            ->setCellValue('G1', 'Obra Social')
+            ->setCellValue('H1', 'Diagnóstico')
+            ->setCellValue('I1', 'Fecha Carga')
+            ->setCellValue('J1', 'Profesional');
+
+        // Aplicar estilo en negrita a los encabezados
+        $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+
+        // Agregar los datos a la tabla
+        $row = 2;
+        foreach ($estudios as $estudio) {
+            $sheet->setCellValueExplicit('A' . $row, $estudio->nro_servicio, DataType::TYPE_STRING)
+            ->setCellValue('B' . $row, $estudio->servicio)
+            ->setCellValue('C' . $row, $estudio->tipo_estudio)
+            ->setCellValue('D' . $row, $estudio->estado)
+            ->setCellValue('E' . $row, $estudio->paciente)
+            ->setCellValueExplicit('F' . $row, $estudio->documento, DataType::TYPE_STRING)
+            ->setCellValue('G' . $row, $estudio->obra_social)
+            ->setCellValue('H' . $row, $estudio->diagnostico)
+            ->setCellValue('I' . $row, \Carbon\Carbon::parse($estudio->fecha_carga)->format('d-m-Y'))
+            ->setCellValue('J' . $row, $estudio->profesional);
+            // Establecer ajuste de texto en la columna "Diagnóstico"
+            $sheet->getStyle('H' . $row)->getAlignment()->setWrapText(true);
+
+            $row++;
+        }
+
+        // Autoajustar el ancho de las columnas al contenido excepto "Diagnóstico"
+        foreach (range('A', 'J') as $columnID) {
+            if ($columnID !== 'H') {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+        }
+
+        // Establecer un ancho fijo para la columna "Diagnóstico" (100 caracteres aproximadamente)
+        $sheet->getColumnDimension('H')->setWidth(40); // Ajusta este valor según lo necesites
+
+        // Aplicar bordes a todas las celdas con datos
+        $sheet->getStyle('A1:J' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        // Crear el archivo Excel y descargarlo
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'estudios_' . date('Ymd_His') . '.xlsx';
+
+        // Configurar las cabeceras para la descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+
 }
