@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CrearEstudioController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\ExportarController;
+use App\Http\Controllers\ModificarEstudioController;
 
 
 /*
@@ -61,7 +62,7 @@ Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])-
 Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->name('estudios.edit');
 
 // Ruta para actualizar el estudio
-Route::post('estudios/{nro_servicio}', [EstudioController::class, 'update'])->name('estudios.update');
+Route::post('estudios/{nro_servicio}/update', [EstudioController::class, 'update'])->name('estudios.update');
 //Ruta para finalizar el estudio
 Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'finally'])->name('estudios.finally');
 
@@ -70,8 +71,13 @@ Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 're
 // Ruta para ampliar el informe
 Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::class, 'ampliarInforme'])->name('estudios.ampliarInforme');
 
-
+//Ruta para exportar el informe
 Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
+
+// Ruta para modificar el estudio
+
+Route::get('/estudios/{nro_servicio}/modify', [ModificarEstudioController::class, 'modify'])->name('estudios.modify');
+Route::post('/estudios/{nro_servicio}/updateEstudio', [ModificarEstudioController::class, 'updateEstudio'])->name('estudios.updateEstudio');
 
 
 

@@ -80,10 +80,21 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                     @endif
+
                                     <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}"
                                         class="btn btn-primary btn-sm">
                                         <i class="fas fa-download"></i>
                                     </a>
+
+                                    @if ($estudio->estado == 'creado')
+                                        @if (in_array('admin', $roles))
+                                            <a href="{{ route('estudios.modify', $estudio->nro_servicio) }}" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endif
+                                    @endif
+
+                                 
                                 </td>
                             </tr>
                         @endforeach
