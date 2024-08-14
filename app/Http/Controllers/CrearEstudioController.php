@@ -190,6 +190,7 @@ class CrearEstudioController extends Controller
                 'servicio_id' => $servicioId,
                 'personal_id' => $pacienteId,
                 'profesional_id' => $profesionalId,
+                'createdBy' => Auth::id(),
             ]);
 
             // Agregar códigos a la tabla codigo_nomenclador_ap
@@ -223,9 +224,12 @@ class CrearEstudioController extends Controller
             // Redirigir a la página donde se ha creado el estudio
             $perPage = 20; // Número de estudios por página
             $page = ceil(Estudio::count() / $perPage); // Calcular la última página
+            
+
+            $userName = Auth::user()->name;
 
             return redirect()->route('estudios.index', ['page' => $page])
-                            ->with('success', 'Estudio creado exitosamente.');
+                ->with('success', 'Estudio creado exitosamente por ' . $userName . '.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al crear el estudio: ' . $e->getMessage());

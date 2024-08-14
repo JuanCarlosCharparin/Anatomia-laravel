@@ -59,6 +59,17 @@
                 <p></p>
 
                 <div class="form-group">
+                    <label for="tipo_estudio">Modificar tipo de estudio:</label>
+                    <select id="tipo_estudio" name="tipo_estudio" class="form-control" value="{{$estudio->tipo_estudio}}">
+                        <option value="1" {{ old('tipo_estudio', $estudio->tipo_estudio_id) == 1 ? 'selected' : '' }}>Biopsia</option>
+                        <option value="2" {{ old('tipo_estudio', $estudio->tipo_estudio_id) == 2 ? 'selected' : '' }}>Citología</option>
+                        <option value="3" {{ old('tipo_estudio', $estudio->tipo_estudio_id) == 3 ? 'selected' : '' }}>Pap</option>
+                        <option value="4" {{ old('tipo_estudio', $estudio->tipo_estudio_id) == 4 ? 'selected' : '' }}>Intraoperatorio</option>
+                    </select>
+                </div>
+                <p></p>
+
+                <div class="form-group">
                     <label for="professional-select">Modificar Profesional:</label>
                     <select id="professional-select" name="profesional_salutte_id" class="form-control">
                         <!-- La opción vacía es para cuando no se selecciona nada -->

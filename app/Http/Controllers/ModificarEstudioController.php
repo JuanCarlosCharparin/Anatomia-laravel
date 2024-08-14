@@ -12,6 +12,7 @@ use App\Models\Especialidad;
 use App\Models\Servicio;
 use App\Models\CodigoNomencladorAP;
 use App\Models\Material;
+use Illuminate\Support\Facades\Auth;
 
 class ModificarEstudioController extends Controller
 {
@@ -24,6 +25,7 @@ class ModificarEstudioController extends Controller
                 's.nombre_servicio as servicio',
                 's.servicio_salutte_id as servicio_salutte_id',
                 'tde.nombre as tipo_estudio',
+                'tde.id as tipo_estudio_id',
                 'e.estado_estudio as estado',
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
                 'p.obra_social as obra_social',
@@ -69,6 +71,7 @@ class ModificarEstudioController extends Controller
                     $fail('El paciente no existe en la base de datos.');
                 }
             }],
+            'tipo_estudio' => 'nullable|integer|exists:tipo_de_estudio,id',
             'profesional_salutte_id' => 'nullable|exists:profesional,profesional_salutte_id', // Cambiado a nullable
             'servicio_salutte_id' => ['nullable', function ($attribute, $value, $fail) {
                 // Verificar existencia en db2
@@ -136,10 +139,12 @@ class ModificarEstudioController extends Controller
 
             $estudio->update([
                 'personal_id' => $pacienteDb->id,
+                'tipo_estudio_id' => $validatedData['tipo_estudio'],
                 'profesional_id' => $profesional ? $profesional->id : $estudio->profesional_id, // Usar el ID del profesional si existe
                 'servicio_id' => $servicioId,
                 'diagnostico_presuntivo' => $validatedData['diagnostico'],
                 'medico_solicitante' => $validatedData['medico_solicitante'],
+                'updatedBy' => Auth::id(),
             ]);
 
 
@@ -211,7 +216,14 @@ class ModificarEstudioController extends Controller
 
             DB::commit();
 
-            return redirect()->route('estudios.index')->with('success', 'Estudio modificado exitosamente.');
+            // Redirigir a la página donde se ha creado el estudio
+            $perPage = 20; // Número de estudios por página
+            $page = ceil(Estudio::count() / $perPage); // Calcular la última página
+
+            $userName = Auth::user()->name;
+
+            return redirect()->route('estudios.index', ['page' => $page])
+                ->with('success', 'Estudio modificado exitosamente por ' . $userName . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al actualizar el estudio: ' . $e->getMessage());
