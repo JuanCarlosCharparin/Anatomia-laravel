@@ -32,6 +32,7 @@ class Exportar extends Model
             'def.tacos',
             'def.diagnostico_presuntivo AS diagnostico',
             'def.tecnicas',
+            'def.ampliar_informe',
             DB::raw("DATE(def.createdAt) AS fecha_estudio_finalizado"),
             'dpf.estado_especimen',
             'dpf.celulas_pavimentosas',

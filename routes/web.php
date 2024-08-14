@@ -81,3 +81,7 @@ Route::post('/estudios/{nro_servicio}/updateEstudio', [ModificarEstudioControlle
 
 
 
+Route::get('/exportar/estudios', [EstudioController::class, 'exportarExcel'])->name('exportar.estudios');
+
+
+

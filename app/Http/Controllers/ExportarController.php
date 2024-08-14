@@ -59,6 +59,7 @@ class ExportarController extends Controller
                 'macroscopia' => $estudio->macro, 
                 'microscopia' => $estudio->micro,
                 'diagnostico' => $estudio->diagnostico,
+                'ampliar_informe' => $estudio->ampliar_informe,
             ];
         }
 

@@ -242,6 +242,10 @@
                 <p style="margin-bottom: 20px;"><span class="bold-heading">MACROSCOPIA:</span> {{ $macroscopia }}</p>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">MICROSCOPIA:</span> {{ $microscopia }}</p>
                 <p style="margin-bottom: 20px;"><span class="bold-heading">DIAGNÓSTICO:</span> {{ $diagnostico }}</p>
+
+                @if ($ampliar_informe != '')
+                    <p style="margin-bottom: 20px;"><span class="bold-heading">AMPLIACIÓN:</span> {{ $ampliar_informe }}</p>
+                @endif
             </div>
         @endif
 

@@ -109,7 +109,7 @@
 
             <div class="form-group">
                 <label for="diagnostico">Diagnostico presuntivo:</label>
-                <input type="text" id="diagnostico" name="diagnostico" class="form-control">
+                <textarea type="text" id="diagnostico" name="diagnostico" class="form-control"></textarea>
             </div>
             <p></p>
 
@@ -168,6 +168,7 @@
                                 resultHtml += '<p><strong>DNI:</strong> ' + patient.documento + '</p>';
                                 resultHtml += '<p><strong>Fecha de Nacimiento:</strong> ' + patient.fecha_nacimiento + '</p>';
                                 resultHtml += '<p><strong>Obra Social:</strong> ' + patient.obra_social + '</p>';
+                                resultHtml += '<p><strong>Correo:</strong> ' + patient.email + '</p>';
                                 resultHtml += '<button type="button" class="btn btn-primary select-button" data-name="' + patient.nombres + ' ' + patient.apellidos + '">Seleccionar</button>';
                                 resultHtml += '</div><hr>';
                             });

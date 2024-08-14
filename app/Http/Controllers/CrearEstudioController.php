@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudio;
 use App\Models\Paciente;
-use App\Models\Personal; 
+use App\Models\Personal;
 use App\Models\Profesional;
 use App\Models\Especialidad;
 use App\Models\Servicio;
@@ -12,7 +12,7 @@ use App\Models\CodigoNomencladorAP;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Exception; // Asegúrate de importar Exception
 
 class CrearEstudioController extends Controller
@@ -22,8 +22,15 @@ class CrearEstudioController extends Controller
         $user = Auth::user();
         $roles = $user->getRoleNames()->toArray();
 
-        $searchGeneral = $request->input('search_general');
         $searchNroServicio = $request->input('search_nro_servicio');
+        $searchServicio = $request->input('search_servicio');
+        $searchTipoEstudio = $request->input('search_tipo_estudio');
+        $searchEstado = $request->input('search_estado');
+        $searchPaciente = $request->input('search_paciente');
+        $searchObraSocial = $request->input('search_obra_social');
+        $searchDesde = $request->input('search_desde');
+        $searchHasta = $request->input('search_hasta');
+        $searchProfesional = $request->input('search_profesional');
 
         $query = DB::connection('mysql')->table('estudio as e')
             ->select(
@@ -50,32 +57,69 @@ class CrearEstudioController extends Controller
         }
 
         // Aplicar filtro de búsqueda general
-        if ($searchGeneral) {
-            $query->where(function ($q) use ($searchGeneral) {
-                $q->where('s.nombre_servicio', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('tde.nombre', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere(DB::raw("CONCAT(p.nombres, ' ', p.apellidos)"), 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('p.documento', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('p.obra_social', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('de.diagnostico_presuntivo', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('e.fecha_carga', 'LIKE', "%{$searchGeneral}%")
-                ->orWhere(DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos)"), 'LIKE', "%{$searchGeneral}%")
-                ->orWhere('e.estado_estudio', 'LIKE', "%{$searchGeneral}%");
-            });
-        }
 
         // Aplicar búsqueda por número de servicio
         if ($searchNroServicio) {
             $query->where('e.nro_servicio', '=', $searchNroServicio);
         }
 
+        if ($searchServicio) {
+            $query->where('s.nombre_servicio', 'LIKE', "%{$searchServicio}%");
+        }
+
+        if ($searchTipoEstudio) {
+            $query->where('tde.nombre', 'LIKE', "%{$searchTipoEstudio}%");
+        }
+
+        if ($searchEstado) {
+            $query->where('e.estado_estudio', 'LIKE', "%{$searchEstado}%");
+        }
+
+        if ($searchObraSocial) {
+            $query->where('p.obra_social', 'LIKE', "%{$searchObraSocial}%");
+        }
+
+        if ($searchProfesional) {
+            $query->where(function ($q) use ($searchProfesional) {
+                $q->whereRaw("CONCAT(prof.nombres, ' ', prof.apellidos) LIKE ?", ["%{$searchProfesional}%"]);
+            });
+        }
+
+        if ($searchPaciente) {
+            $query->where(function ($q) use ($searchPaciente) {
+                $q->where(DB::raw("CONCAT(p.nombres, ' ', p.apellidos)"), 'LIKE', "%{$searchPaciente}%")
+                    ->orWhere('p.documento', 'LIKE', "%{$searchPaciente}%");
+            });
+        }
+
+        if ($searchDesde != '' && $searchHasta != '') {
+            $query->whereBetween('e.fecha_carga', [$searchDesde, $searchHasta]);
+        }
+
+
+
+
+
+
         // Ordenar los resultados por nro_servicio
-        $query->orderBy('e.nro_servicio', 'asc');
+        $query->orderBy('e.nro_servicio', 'desc');
 
         // Ejecuta la consulta y pagina los resultados
         $estudios = $query->paginate(20);
 
-        return view('estudios.index', compact('estudios', 'searchGeneral', 'searchNroServicio'));
+        return view('estudios.index', compact(
+            'estudios',
+            'searchServicio',
+            'searchNroServicio',
+            'searchTipoEstudio',
+            'searchEstado',
+            'searchPaciente',
+            'searchObraSocial',
+            'searchDesde',
+            'searchHasta',
+            'searchProfesional'
+        )
+        );
     }
 
     public function create()
@@ -108,20 +152,26 @@ class CrearEstudioController extends Controller
             'diagnostico' => 'nullable|string|max:500',
             'fecha_carga' => 'required|date',
             'medico_solicitante' => 'nullable|string|max:255',
-            'servicio_salutte_id' => ['required', function ($attribute, $value, $fail) {
-                // Verificar existencia en db2
-                $servicio = Especialidad::where('id', $value)->first();
-                if (!$servicio) {
-                    $fail('El servicio no existe en la base de datos.');
+            'servicio_salutte_id' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // Verificar existencia en db2
+                    $servicio = Especialidad::where('id', $value)->first();
+                    if (!$servicio) {
+                        $fail('El servicio no existe en la base de datos.');
+                    }
                 }
-            }],
-            'documento' => ['required', function ($attribute, $value, $fail) {
-                // Verificar existencia en db2
-                $paciente = Paciente::findByDni($value);
-                if (!$paciente) {
-                    $fail('El paciente no existe en la base de datos.');
+            ],
+            'documento' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // Verificar existencia en db2
+                    $paciente = Paciente::findByDni($value);
+                    if (!$paciente) {
+                        $fail('El paciente no existe en la base de datos.');
+                    }
                 }
-            }],
+            ],
             'profesional_salutte_id' => 'required|exists:profesional,profesional_salutte_id',
             'codigos' => 'nullable|array',
             'codigos.*' => 'nullable|string|max:255',
@@ -190,14 +240,13 @@ class CrearEstudioController extends Controller
                 'servicio_id' => $servicioId,
                 'personal_id' => $pacienteId,
                 'profesional_id' => $profesionalId,
-                'createdBy' => Auth::id(),
             ]);
 
             // Agregar códigos a la tabla codigo_nomenclador_ap
             $codigosNomenclador = $validatedData['codigos'] ?? [];
 
             if (!empty($codigosNomenclador)) {
-                $codigosToInsert = array_filter($codigosNomenclador, fn($codigo) => !empty($codigo));
+                $codigosToInsert = array_filter($codigosNomenclador, fn($codigo) => !empty ($codigo));
                 if (!empty($codigosToInsert)) {
                     CodigoNomencladorAP::upsert(
                         array_map(fn($codigo) => ['nro_servicio' => $validatedData['nro_servicio'], 'codigo' => $codigo], $codigosToInsert),
@@ -210,7 +259,7 @@ class CrearEstudioController extends Controller
             $materiales = $validatedData['materiales'] ?? [];
 
             if (!empty($materiales)) {
-                $materialesToInsert = array_filter($materiales, fn($material) => !empty($material));
+                $materialesToInsert = array_filter($materiales, fn($material) => !empty ($material));
                 if (!empty($materialesToInsert)) {
                     Material::upsert(
                         array_map(fn($material) => ['nro_servicio' => $validatedData['nro_servicio'], 'material' => $material], $materialesToInsert),
@@ -221,14 +270,9 @@ class CrearEstudioController extends Controller
 
             DB::commit();
 
-            // Redirigir a la página donde se ha creado el estudio
-            $perPage = 20; // Número de estudios por página
-            $page = ceil(Estudio::count() / $perPage); // Calcular la última página
-            
-
             $userName = Auth::user()->name;
 
-            return redirect()->route('estudios.index', ['page' => $page])
+            return redirect()->route('estudios.index')
                 ->with('success', 'Estudio creado exitosamente por ' . $userName . '.');
         } catch (Exception $e) {
             DB::rollBack();

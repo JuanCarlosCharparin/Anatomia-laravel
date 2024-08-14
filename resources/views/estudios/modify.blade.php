@@ -100,7 +100,7 @@
 
                 <div class="form-group">
                     <label for="diagnostico">Modificar Diagnostico presuntivo:</label>
-                    <input type="text" id="diagnostico" value="{{$estudio->diagnostico}}" name="diagnostico" class="form-control">
+                    <textarea type="text" id="diagnostico" value="{{$estudio->diagnostico}}" name="diagnostico" class="form-control"></textarea>
                 </div>
                 <p></p>
     
