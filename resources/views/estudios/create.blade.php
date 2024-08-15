@@ -167,8 +167,11 @@
                                 resultHtml += '<p><strong>Nombre:</strong> ' + patient.nombres + ' ' + patient.apellidos + '</p>';
                                 resultHtml += '<p><strong>DNI:</strong> ' + patient.documento + '</p>';
                                 resultHtml += '<p><strong>Fecha de Nacimiento:</strong> ' + patient.fecha_nacimiento + '</p>';
+                                resultHtml += '<p><strong>Edad:</strong> ' + patient.edad + '</p>';
+                                resultHtml += '<p><strong>Genero:</strong> ' + patient.genero + '</p>';
                                 resultHtml += '<p><strong>Obra Social:</strong> ' + patient.obra_social + '</p>';
                                 resultHtml += '<p><strong>Correo:</strong> ' + patient.email + '</p>';
+                                resultHtml += '<p><strong>Teléfono:</strong> ' + patient.contacto_telefono + '</p>';
                                 resultHtml += '<button type="button" class="btn btn-primary select-button" data-name="' + patient.nombres + ' ' + patient.apellidos + '">Seleccionar</button>';
                                 resultHtml += '</div><hr>';
                             });

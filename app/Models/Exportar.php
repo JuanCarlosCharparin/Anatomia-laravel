@@ -34,6 +34,7 @@ class Exportar extends Model
             'def.tecnicas',
             'def.ampliar_informe',
             DB::raw("DATE(def.createdAt) AS fecha_estudio_finalizado"),
+            'def.createdBy AS createdDetalle',
             'dpf.estado_especimen',
             'dpf.celulas_pavimentosas',
             'dpf.celulas_cilindricas',
@@ -49,7 +50,8 @@ class Exportar extends Model
             'dpf.recomendaciones',
             'dpf.microorganismos',
             'dpf.resultado',
-            DB::raw("DATE(dpf.createdAt) AS fecha_pap_finalizado")
+            DB::raw("DATE(dpf.createdAt) AS fecha_pap_finalizado"),
+            'dpf.createdBy AS createdPap'
         )
         ->leftJoin('personal AS p', 'e.personal_id', '=', 'p.id')
         ->leftJoin('profesional AS prof', 'e.profesional_id', '=', 'prof.id')
@@ -98,5 +100,10 @@ class Exportar extends Model
         ->first();
 
         return $estudio;
+    }
+
+    public function getUserNameById($id)
+    {
+        return User::find($id)->name ?? 'Desconocido'; // Retorna 'Desconocido' si no se encuentra el usuario
     }
 }

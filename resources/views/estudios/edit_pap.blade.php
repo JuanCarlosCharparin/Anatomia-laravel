@@ -125,6 +125,21 @@
                 <label for="">Obra Social: </label>
                 <strong>{{ $estudio->obra_social }}</strong>
             </div>
+
+            <div class="form-group">
+                <label for="">Fecha Nacimiento: </label>
+                <strong>{{ $estudio->fecha_nacimiento }}</strong>
+            </div>
+
+            <div class="form-group">
+                <label for="">Edad: </label>
+                <strong>{{ $estudio->edad }}</strong>
+            </div>
+
+            <div class="form-group">
+                <label for="">Genero: </label>
+                <strong>{{ $estudio->genero }}</strong>
+            </div>
             
             <div class="form-group">
                 <label for="">Estado: </label>

@@ -33,6 +33,15 @@ class EstudioController extends Controller
                 'tde.nombre as tipo_estudio',
                 'e.estado_estudio as estado',
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
+                DB::raw("
+                    CASE 
+                        WHEN p.genero = 'm' THEN 'Masculino'
+                        WHEN p.genero = 'f' THEN 'Femenino'
+                        ELSE 'Desconocido'
+                    END AS genero
+                "),
+                'p.fecha_nacimiento as fecha_nacimiento',
+                DB::raw('TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad'),
                 'p.obra_social as obra_social',
                 'e.diagnostico_presuntivo as diagnostico',
                 'e.medico_solicitante as medico',

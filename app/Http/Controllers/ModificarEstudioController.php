@@ -42,6 +42,7 @@ class ModificarEstudioController extends Controller
             ->leftJoin('profesional as prof', 'e.profesional_id', '=', 'prof.id')
             ->where('e.nro_servicio', $nro_servicio)
             ->first();
+        
 
         // Obtener la lista de materiales asociados con el nro_servicio
         $materiales = DB::table('material')
@@ -216,14 +217,13 @@ class ModificarEstudioController extends Controller
 
             DB::commit();
 
-            // Redirigir a la página donde se ha creado el estudio
-            $perPage = 20; // Número de estudios por página
-            $page = ceil(Estudio::count() / $perPage); // Calcular la última página
 
             $userName = Auth::user()->name;
 
+            $page = $request->input('page');
+
             return redirect()->route('estudios.index', ['page' => $page])
-                ->with('success', 'Estudio modificado exitosamente por ' . $userName . '.');
+                ->with('success', 'Estudio modificado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al actualizar el estudio: ' . $e->getMessage());

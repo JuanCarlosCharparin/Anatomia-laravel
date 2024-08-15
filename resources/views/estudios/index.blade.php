@@ -12,54 +12,56 @@
             <h1>Estudios</h1>
 
             <form method="GET" action="{{ route('estudios.index') }}" class="mb-4">
+                <input type="hidden" name="page" value="{{ request()->input('page') }}">
+                <!-- Primera fila de filtros -->
                 <!-- Primera fila de filtros -->
                 <div class="input-group mb-3">
-                    <input type="number" name="search_nro_servicio" value="{{ $searchNroServicio }}"
+                    <input type="number" name="search_nro_servicio" value="{{ request()->input('search_nro_servicio') }}"
                         class="form-control" placeholder="Buscar N° Servicio">
 
-                    @if ($searchNroServicio)
+                    @if (request()->input('search_nro_servicio'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_servicio" value="{{ $searchServicio }}" class="form-control"
+                    <input type="text" name="search_servicio" value="{{ request()->input('search_servicio') }}" class="form-control"
                         placeholder="Buscar Servicio">
 
-                    @if ($searchServicio)
+                    @if (request()->input('search_servicio'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_tipo_estudio" value="{{ $searchTipoEstudio }}"
+                    <input type="text" name="search_tipo_estudio" value="{{ request()->input('search_tipo_estudio') }}"
                         class="form-control" placeholder="Buscar Tipo Estudio">
 
-                    @if ($searchTipoEstudio)
+                    @if (request()->input('search_tipo_estudio'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_estado" value="{{ $searchEstado }}" class="form-control"
+                    <input type="text" name="search_estado" value="{{ request()->input('search_estado') }}" class="form-control"
                         placeholder="Buscar Estado">
 
-                    @if ($searchEstado)
+                    @if (request()->input('search_estado'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_paciente" value="{{ $searchPaciente }}" class="form-control"
+                    <input type="text" name="search_paciente" value="{{ request()->input('search_paciente') }}" class="form-control"
                         placeholder="Buscar Paciente o DNI">
 
-                    @if ($searchPaciente)
+                    @if (request()->input('search_paciente'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_profesional" value="{{ $searchProfesional }}"
+                    <input type="text" name="search_profesional" value="{{ request()->input('search_profesional') }}"
                         class="form-control" placeholder="Buscar Profesional">
 
-                    @if ($searchProfesional)
+                    @if (request()->input('search_profesional'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
-                    <input type="text" name="search_obra_social" value="{{ $searchObraSocial }}"
+                    <input type="text" name="search_obra_social" value="{{ request()->input('search_obra_social') }}"
                         class="form-control" placeholder="Buscar Obra Social">
 
-                    @if ($searchProfesional)
+                    @if (request()->input('search_obra_social'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
                 </div>
@@ -70,10 +72,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Desde</span>
                     </div>
-                    <input type="date" name="search_desde" value="{{ $searchDesde }}" class="form-control col-3"
+                    <input type="date" name="search_desde" value="{{ request()->input('search_desde') }}" class="form-control col-3"
                         placeholder="Buscar por fecha de inicio">
 
-                    @if ($searchDesde)
+                    @if (request()->input('search_desde'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
@@ -81,10 +83,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Hasta</span>
                     </div>
-                    <input type="date" name="search_hasta" value="{{ $searchHasta }}" class="form-control col-3"
+                    <input type="date" name="search_hasta" value="{{ request()->input('search_hasta') }}" class="form-control col-3"
                         placeholder="Buscar por fecha de fin">
 
-                    @if ($searchHasta)
+                    @if (request()->input('search_hasta'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
@@ -93,7 +95,6 @@
                     <button type="button" class="btn btn-success ml-auto rounded" onclick="exportarExcel()">
                         <i class="fas fa-file-excel"></i> Exportar
                     </button>
-
                 </div>
 
 
@@ -159,17 +160,17 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                     @endif
-                                    <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}"
-                                        class="btn btn-primary btn-sm">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    @if($estudio->estado !== 'creado' && $estudio->estado !== 'informando')
+                                        <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    @endif
 
                                     @if ($estudio->estado == 'creado')
                                         @if (in_array('admin', $roles))
-                                            <a href="{{ route('estudios.modify', $estudio->nro_servicio) }}"
-                                                class="btn btn-success btn-sm">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                        <a href="{{ route('estudios.modify', ['nro_servicio' => $estudio->nro_servicio, 'page' => request('page')]) }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                         </a>
                                         @endif
                                     @endif
                                 </td>
@@ -178,18 +179,20 @@
                     </tbody>
                 </table>
             </div>
+            
 
             {{ $estudios->appends([
-                    'search_nro_servicio' => $searchNroServicio,
-                    'search_servicio' => $searchServicio,
-                    'search_tipo_estudio' => $searchTipoEstudio,
-                    'search_estado' => $searchEstado,
-                    'search_paciente' => $searchPaciente,
-                    'search_profesional' => $searchProfesional,
-                    'search_desde' => $searchDesde,
-                    'search_hasta' => $searchHasta,
-                    'search_obra_social' => $searchObraSocial,
-                ])->links() }}
+                'search_nro_servicio' => request()->input('search_nro_servicio'),
+                'search_servicio' => request()->input('search_servicio'),
+                'search_tipo_estudio' => request()->input('search_tipo_estudio'),
+                'search_estado' => request()->input('search_estado'),
+                'search_paciente' => request()->input('search_paciente'),
+                'search_profesional' => request()->input('search_profesional'),
+                'search_desde' => request()->input('search_desde'),
+                'search_hasta' => request()->input('search_hasta'),
+                'search_obra_social' => request()->input('search_obra_social'),
+                'page' => request()->input('page')
+            ])->links() }}
 
         </div>
 </x-app-layout>

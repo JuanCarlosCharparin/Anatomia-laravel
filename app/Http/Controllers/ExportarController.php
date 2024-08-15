@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
-use App\Models\Exportar; // Importar el modelo Exportar
+use App\Models\Exportar;
+use App\Models\User; // Importar el modelo Exportar
+use Illuminate\Support\Facades\Auth;
 
 class ExportarController extends Controller
 {
@@ -15,6 +17,13 @@ class ExportarController extends Controller
         
         // Obtener los datos del estudio utilizando el método de la instancia
         $estudio = $exportar->getEstudio($nro_servicio);
+
+        // Obtener los nombres de los usuarios creador del estudio
+        $createdPapName = User::find($estudio->createdPap)->name ?? 'Desconocido';
+        $createdDetalleName = User::find($estudio->createdDetalle)->name ?? 'Desconocido';
+
+        $matriculaPap = User::find($estudio->createdPap)->matricula ?? 'Desconocido';;
+        $matriculaDetalle = User::find($estudio->createdDetalle)->matricula ?? 'Desconocido';
 
         // Dividir segun el tipo de estudio
         if ($estudio->tipo_estudio_id === 3) {
@@ -43,6 +52,8 @@ class ExportarController extends Controller
                 'microorganismos' => json_decode($estudio->microorganismos, true),
                 'resultado' => json_decode($estudio->resultado, true),
                 'fecha_pap_finalizado' => $estudio->fecha_pap_finalizado,
+                'createdPap' => $createdPapName,
+                'matriculaPap' => $matriculaPap,
             ];
         } else {
             $data = [
@@ -60,6 +71,8 @@ class ExportarController extends Controller
                 'microscopia' => $estudio->micro,
                 'diagnostico' => $estudio->diagnostico,
                 'ampliar_informe' => $estudio->ampliar_informe,
+                'createdDetalle' => $createdDetalleName,
+                'matriculaDetalle' => $matriculaDetalle,
             ];
         }
 

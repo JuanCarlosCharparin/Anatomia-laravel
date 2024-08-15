@@ -21,8 +21,10 @@
                 $professionals = App\Models\Paciente::getProfessionals();
                 $servicios = App\Models\Especialidad::getServicio();
             @endphp
-            <form method="POST" action="{{ route('estudios.updateEstudio', $estudio->nro_servicio) }}">
+            <form method="POST" action="{{ route('estudios.updateEstudio', ['nro_servicio' => $estudio->nro_servicio]) }}">
                 @csrf
+                
+                <input type="hidden" name="page" value="{{ request('page') }}">
 
                 <div class="form-group">
                     <label for="">N° Servicio: </label>
@@ -100,7 +102,7 @@
 
                 <div class="form-group">
                     <label for="diagnostico">Modificar Diagnostico presuntivo:</label>
-                    <textarea type="text" id="diagnostico" value="{{$estudio->diagnostico}}" name="diagnostico" class="form-control"></textarea>
+                    <textarea id="diagnostico" name="diagnostico" class="form-control">{{ $estudio->diagnostico }}</textarea>
                 </div>
                 <p></p>
     

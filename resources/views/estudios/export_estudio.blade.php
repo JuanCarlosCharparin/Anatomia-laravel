@@ -244,19 +244,20 @@
                 <p style="margin-bottom: 20px;"><span class="bold-heading">DIAGNÓSTICO:</span> {{ $diagnostico }}</p>
 
                 @if ($ampliar_informe != '')
-                    <p style="margin-bottom: 20px;"><span class="bold-heading">AMPLIACIÓN:</span> {{ $ampliar_informe }}</p>
+                    <p style="margin-bottom: 20px; font-size: 12px;">
+                        <span class="bold-heading">AMPLIACIÓN:</span> <small>{{ $ampliar_informe }}</small>
+                    </p>
                 @endif
+
             </div>
         @endif
 
     </div>
-
-
+    
     <div class="footer">
-        <p>Información confidencial - secreto médico - alcances del art. 156 del Código Penal. Paso de los Andes 3051 -
-            Ciudad de Mendoza.</p>
-        <p>Teléfonos (0261)4135011/(0261)4135021 - info@hospital.uncu.edu.ar/www.hospital.uncu.edu.ar / Powered by TCPDF
-            (www.tcpdf.org)</p>
+        <p>Firmado electrónicamente por el Dr. {{ $createdPap ?? '' }} {{ $createdDetalle ?? '' }} -  Matrícula: {{ $matriculaPap ?? '' }} {{ $matriculaDetalle ?? '' }} - Información confidencial - secreto médico - alcances del art. 156 del Código Penal  
+            y validado en sistema HIS-Alephoo según art. 5 de la Ley 25.506 "Firma Digital" - Paso de los Andes 3051 - Ciudad de Mendoza.</p>
+        <p>Teléfonos (0261)4135011/(0261)4135021 - info@hospital.uncu.edu.ar/www.hospital.uncu.edu.ar </p>
     </div>
 </body>
 
