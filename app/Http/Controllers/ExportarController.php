@@ -22,7 +22,7 @@ class ExportarController extends Controller
         $createdPapName = User::find($estudio->createdPap)->name ?? 'Desconocido';
         $createdDetalleName = User::find($estudio->createdDetalle)->name ?? 'Desconocido';
 
-        $matriculaPap = User::find($estudio->createdPap)->matricula ?? 'Desconocido';;
+        $matriculaPap = User::find($estudio->createdPap)->matricula ?? 'Desconocido';
         $matriculaDetalle = User::find($estudio->createdDetalle)->matricula ?? 'Desconocido';
 
         // Dividir segun el tipo de estudio
