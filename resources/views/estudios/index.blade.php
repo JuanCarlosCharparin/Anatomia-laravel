@@ -114,6 +114,13 @@
                 </div>
             @endif
 
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <p>Total de registros: {{ $estudios->total() }}</p>
 
 

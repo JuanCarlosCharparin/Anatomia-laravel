@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use PDF;
 use App\Models\Exportar;
 use App\Models\Estudio;
+use App\Models\Personal;
+use App\Models\Paciente;
 use App\Models\User; // Importar el modelo Exportar
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail; // Añadir esta línea
@@ -92,7 +94,6 @@ class ExportarController extends Controller
     {
         $exportar = new Exportar();
         $estudio = $exportar->getEstudio($nro_servicio);
-        Estudio::where('nro_servicio', $nro_servicio)->update(['enviado' => 1]);
 
         $createdPapName = User::find($estudio->createdPap)->name ?? 'Desconocido';
         $createdDetalleName = User::find($estudio->createdDetalle)->name ?? 'Desconocido';
@@ -148,23 +149,44 @@ class ExportarController extends Controller
             ];
         }
 
-        // Generar el PDF
-        $pdf = PDF::loadView('estudios.export_estudio', $data);
-
-        // Definir el nombre del archivo
-        $pdfFilename = 'informe_estudio_' . $nro_servicio . '.pdf';
-        $pdfPath = storage_path('app/public/' . $pdfFilename);
-        $pdf->save($pdfPath);
-
-        // Enviar el PDF por correo
-        Mail::to('locojuanki@hotmail.com')->send(new EstudioMail($data, $pdfPath));
-
-        // Eliminar el archivo temporal después de enviar
-        unlink($pdfPath);
-
-        $page = $request->input('page');
+        $datos = Personal::getEstudioPaciente($nro_servicio);
         
 
-        return redirect()->route('estudios.index' , ['page' => $page])->with('success', 'Estudio enviado por correo con éxito');
+        // Extraer el persona_salutte_id
+        $persona_id = $datos->persona_salutte_id;
+
+        $contacto = Paciente::findEmail($persona_id);
+
+        // Verificar si el contacto es nulo o si el email es nulo
+        if ($contacto && $contacto->email) {
+            // Generar el PDF
+            $pdf = Pdf::loadView('estudios.export_estudio', $data);
+
+            // Definir el nombre del archivo
+            $pdfFilename = 'Informe Anatomía Patológica HU.' . $nro_servicio . '.pdf';
+            $pdfPath = storage_path('app/public/' . $pdfFilename);
+            $pdf->save($pdfPath);
+
+            // Enviar el PDF por correo
+            Mail::to($contacto->email)->send(new EstudioMail($data, $pdfPath));
+
+            // Actualizar el estado del estudio solo si el email es válido y el envío fue exitoso
+            Estudio::where('nro_servicio', $nro_servicio)->update(['enviado' => 1]);
+
+            // Eliminar el archivo temporal después de enviar
+            unlink($pdfPath);
+
+            $page = $request->input('page');
+
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('estudios.index', ['page' => $page])
+                ->with('success', 'Estudio enviado por correo con éxito');
+        } else {
+            // Redirigir con un mensaje de error si no hay email
+            $page = $request->input('page');
+
+            return redirect()->route('estudios.index', ['page' => $page])
+                ->with('error', 'El paciente no cuenta con un email cargado');
+        }
     }
 }

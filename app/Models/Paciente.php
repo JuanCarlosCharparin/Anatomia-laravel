@@ -98,24 +98,18 @@ class Paciente extends Model
             ->get();
     }
 
-
-
-    public static function findById($id)
+    public static function findEmail($persona_id)
     {
-        return self::select(
+        return DB::connection('db2')
+            ->table('persona')
+            ->select(
                 'persona.id as id',
+                'persona.contacto_email_direccion as email',
                 'persona.documento as documento',
-                'persona.nombres as nombres',
-                'persona.apellidos as apellidos',
-                'persona.fecha_nacimiento as fecha_nacimiento',
-                'persona.genero as genero',
-                'obra_social.nombre as obra_social')
-            ->join('persona_plan as pp', 'persona.id', '=', 'pp.persona_id')
-            ->join('plan as pl', 'pp.plan_id', '=', 'pl.id')
-            ->join('obra_social as obra_social', 'pl.obra_social_id', '=', 'obra_social.id')
-            ->join('persona_plan_por_defecto as pppd', 'pp.id', '=', 'pppd.persona_plan_id')
-            ->where('persona.id', $id) // Ajustado para buscar por DNI exacto
-            ->first(); // Retorna un solo resultado
+                DB::raw("CONCAT(persona.contacto_telefono_codigo, ' ', persona.contacto_telefono_numero) AS contacto_telefono")
+            )
+            ->where('persona.id', $persona_id)
+            ->first(); // Retorna un solo resultado como un objeto estándar
     }
 
 
