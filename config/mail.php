@@ -108,7 +108,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'jccharparin@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Sistema de Anatomía'),
+        'name' => env('MAIL_FROM_NAME', 'Anatomía Patológica - Hospital Universitario'),
     ],
 
     /*

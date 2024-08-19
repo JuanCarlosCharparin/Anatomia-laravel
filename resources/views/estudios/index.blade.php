@@ -13,7 +13,7 @@
 
             <form method="GET" action="{{ route('estudios.index') }}" class="mb-4">
                 <input type="hidden" name="page" value="{{ request()->input('page') }}">
-                <!-- Primera fila de filtros -->
+            
                 <!-- Primera fila de filtros -->
                 <div class="input-group mb-3">
                     <input type="number" name="search_nro_servicio" value="{{ request()->input('search_nro_servicio') }}"
@@ -160,12 +160,22 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                     @endif
+
                                     @if($estudio->estado !== 'creado' && $estudio->estado !== 'informando')
                                         <a href="{{ route('exportar.datos', $estudio->nro_servicio) }}" class="btn btn-primary btn-sm">
                                             <i class="fas fa-download"></i>
                                         </a>
                                     @endif
 
+                                    @if (($estudio->estado !== 'creado' && $estudio->estado !== 'informando') &&
+                                        (in_array('admin', $roles) || in_array('administrativo', $roles)))
+                                        <a href="{{ route('enviar.datos', ['nro_servicio' => $estudio->nro_servicio, 'page' => request('page')]) }}" 
+                                            class="btn btn-secondary btn-sm {{ $estudio->enviado == 1 ? 'disabled' : '' }}" 
+                                            {{ $estudio->enviado == 1 ? 'aria-disabled=true' : '' }}>
+                                            <i class="fas fa-envelope"></i>
+                                        </a>
+                                    @endif
+                                    
                                     @if ($estudio->estado == 'creado')
                                         @if (in_array('admin', $roles))
                                         <a href="{{ route('estudios.modify', ['nro_servicio' => $estudio->nro_servicio, 'page' => request('page')]) }}" class="btn btn-success btn-sm">

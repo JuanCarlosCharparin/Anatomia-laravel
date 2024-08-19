@@ -255,7 +255,7 @@
     </div>
     
     <div class="footer">
-        <p>Firmado electrónicamente por el Dr. {{ $createdPap ?? '' }} {{ $createdDetalle ?? '' }} -  Matrícula: {{ $matriculaPap ?? '' }} {{ $matriculaDetalle ?? '' }} - Información confidencial - secreto médico - alcances del art. 156 del Código Penal  
+        <p>Firmado electrónicamente por la Dra. {{ $createdPap ?? '' }} {{ $createdDetalle ?? '' }} -  Matrícula: {{ $matriculaPap ?? '' }} {{ $matriculaDetalle ?? '' }} - Información confidencial - secreto médico - alcances del art. 156 del Código Penal  
             y validado en sistema HIS-Alephoo según art. 5 de la Ley 25.506 "Firma Digital" - Paso de los Andes 3051 - Ciudad de Mendoza.</p>
         <p>Teléfonos (0261)4135011/(0261)4135021 - info@hospital.uncu.edu.ar/www.hospital.uncu.edu.ar </p>
     </div>

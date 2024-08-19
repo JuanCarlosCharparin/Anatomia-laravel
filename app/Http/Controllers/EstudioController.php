@@ -32,6 +32,7 @@ class EstudioController extends Controller
                 's.nombre_servicio as servicio',
                 'tde.nombre as tipo_estudio',
                 'e.estado_estudio as estado',
+                'e.enviado as enviado',
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
                 DB::raw("
                     CASE 

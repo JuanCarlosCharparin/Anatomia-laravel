@@ -74,6 +74,9 @@ Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::clas
 //Ruta para exportar el informe
 Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
 
+// Ruta para enviar el PDF por correo
+Route::get('estudios/enviar-datos/{nro_servicio}', [ExportarController::class, 'enviarDatosPorCorreo'])->name('enviar.datos');
+
 // Ruta para modificar el estudio
 
 Route::get('/estudios/{nro_servicio}/modify', [ModificarEstudioController::class, 'modify'])->name('estudios.modify');

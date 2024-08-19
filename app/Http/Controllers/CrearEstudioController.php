@@ -43,6 +43,7 @@ class CrearEstudioController extends Controller
                 'p.obra_social as obra_social',
                 'de.diagnostico_presuntivo as diagnostico',
                 'e.fecha_carga as fecha_carga',
+                'e.enviado as enviado',
                 DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos) as profesional")
             )
             ->leftJoin('tipo_de_estudio as tde', 'e.tipo_estudio_id', '=', 'tde.id')
@@ -240,6 +241,7 @@ class CrearEstudioController extends Controller
                 'servicio_id' => $servicioId,
                 'personal_id' => $pacienteId,
                 'profesional_id' => $profesionalId,
+                'createdBy' => Auth::id(),
             ]);
 
             // Agregar códigos a la tabla codigo_nomenclador_ap

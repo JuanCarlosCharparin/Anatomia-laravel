@@ -19,6 +19,7 @@ class Exportar extends Model
             DB::raw("GROUP_CONCAT(m.material SEPARATOR ', ') AS materiales"), 
             'p.documento AS documento_paciente',
             'e.fecha_carga AS fecha_carga',
+            'e.enviado as enviado',
             'def.macro',
             'def.fecha_macro',
             'def.micro',
