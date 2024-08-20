@@ -397,7 +397,7 @@
             <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $estudio->estado === 'finalizado' || $estudio->estado === 'finalizado y entregado' || $estudio->estado === 'finalizado, entregado y ampliado' || $estudio->estado === 'finalizado, ampliado y entregado' ? 'disabled' : '' }} >
                 Finalizar Estudio
             </button>
-            <a href="{{ route('estudios.index', ['page' => request('page')]) }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('estudios.index', ['page' => $page]) }}" class="btn btn-secondary">Cancelar</a>
 
             <p></p>
             <hr>

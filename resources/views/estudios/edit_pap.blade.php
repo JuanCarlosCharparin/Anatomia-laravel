@@ -537,7 +537,7 @@
 
             <button type="submit" class="btn btn-primary" {{ $disabled }}>Actualizar</button>
             <button type="button" id="finalizarEstudio" class="btn btn-success" {{ $disabled }}>Finalizar Estudio</button>
-            <a href="{{ route('estudios.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('estudios.index', ['page' => $page]) }}" class="btn btn-secondary">Cancelar</a>
             <p></p>
         </form>
         

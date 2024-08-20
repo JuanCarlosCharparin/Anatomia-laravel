@@ -25,6 +25,7 @@ class EstudioController extends Controller
 
     public function edit($nro_servicio)
     {
+        $page = request('page');
         // Ejecutar la consulta
         $estudio = DB::connection('mysql')->table('estudio as e')
             ->select(
@@ -128,7 +129,7 @@ class EstudioController extends Controller
         $roles = $user->getRoleNames(); // Obtiene todos los roles del usuario
 
         // Pasar el estudio y roles a la vista de edición
-        return view($view, compact('estudio', 'materiales', 'roles', 'codigos'));
+        return view($view, compact('estudio', 'materiales', 'roles', 'codigos', 'page'));
     }
 
     public function update(Request $request, $nro_servicio)

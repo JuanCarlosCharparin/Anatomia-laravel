@@ -162,8 +162,7 @@
                                     @endphp
 
                                     @if (!in_array('visualizacion', $roles))
-                                        <a href="{{ route('estudios.edit', $estudio->nro_servicio) }}"
-                                            class="btn btn-warning btn-sm">
+                                    <a href="{{ route('estudios.edit', ['nro_servicio' => $estudio->nro_servicio, 'page' => request('page')]) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                     @endif
