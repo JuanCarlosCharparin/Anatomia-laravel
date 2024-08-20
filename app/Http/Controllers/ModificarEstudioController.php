@@ -218,12 +218,16 @@ class ModificarEstudioController extends Controller
             DB::commit();
 
 
-            $userName = Auth::user()->name;
+            //Obtener la posicion mediante una consulta para redireccionar
+            $posicion = Estudio::getPosition($nro_servicio);
+            $estudios_por_pagina = 20;
+            $pagina = ceil($posicion / $estudios_por_pagina);
 
-            $page = $request->input('page');
-
-            return redirect()->route('estudios.index', ['page' => $page])
-                ->with('success', 'Estudio modificado correctamente.');
+            
+            return redirect()->route('estudios.index', [
+                'page' => $pagina,
+                'finalizado' => $nro_servicio
+            ])->with('success', 'Estudio modificado con éxito');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al actualizar el estudio: ' . $e->getMessage());

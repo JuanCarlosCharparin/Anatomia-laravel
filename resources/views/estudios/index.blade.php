@@ -144,7 +144,7 @@
                     </thead>
                     <tbody>
                         @foreach ($estudios as $estudio)
-                            <tr>
+                            <tr id="estudio_{{ $estudio->nro_servicio }}" data-nro_servicio="{{ $estudio->nro_servicio }}">
                                 <td>{{ $estudio->nro_servicio }}</td>
                                 <td class="servicio">{{ $estudio->servicio }}</td>
                                 <td>{{ $estudio->tipo_estudio }}</td>
@@ -298,4 +298,22 @@
 
         window.location.href = url;
     }
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const finalizado = @json(request('finalizado'));
+        if(finalizado) {
+            const row = document.querySelector(`#estudio_${finalizado}`);
+            if (row) {
+                // Aplicar un estilo temporal
+                row.style.backgroundColor = '#ffeb3b'; // Cambia a un color de fondo destacado
+
+                // Después de 5 segundos, volver al estilo normal
+                setTimeout(() => {
+                    row.style.backgroundColor = '';
+                }, 20000);
+            }
+        }
+    });
 </script>

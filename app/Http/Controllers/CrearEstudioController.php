@@ -273,9 +273,17 @@ class CrearEstudioController extends Controller
             DB::commit();
 
             $userName = Auth::user()->name;
+            $nro_servicio = $validatedData['nro_servicio'];
+            //Obtener la posicion mediante una consulta para redireccionar
+            $posicion = Estudio::getPosition($nro_servicio);
+            $estudios_por_pagina = 20;
+            $pagina = ceil($posicion / $estudios_por_pagina);
 
-            return redirect()->route('estudios.index')
-                ->with('success', 'Estudio creado exitosamente por ' . $userName . '.');
+            
+            return redirect()->route('estudios.index', [
+                'page' => $pagina,
+                'finalizado' => $nro_servicio
+            ])->with('success', 'Estudio creado exitosamente por ' . $userName . '.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('estudios.index')->with('error', 'Ocurrió un error al crear el estudio: ' . $e->getMessage());

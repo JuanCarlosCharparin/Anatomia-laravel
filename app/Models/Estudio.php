@@ -42,4 +42,13 @@ class Estudio extends Model
             ->first();  // Usa `first()` si esperas solo un resultado; usa `get()` si esperas múltiples resultados
     }
 
+
+    public static function getPosition($nro_servicio)
+    {
+        return DB::table('estudio')
+            ->selectRaw('COUNT(*) + 1 AS posicion')
+            ->where('nro_servicio', '>', $nro_servicio)
+            ->value('posicion');
+    }
+
 }

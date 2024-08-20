@@ -176,17 +176,28 @@ class ExportarController extends Controller
             // Eliminar el archivo temporal después de enviar
             unlink($pdfPath);
 
-            $page = $request->input('page');
+            //Obtener la posicion mediante una consulta para redireccionar
+            $posicion = Estudio::getPosition($nro_servicio);
+            $estudios_por_pagina = 20;
+            $pagina = ceil($posicion / $estudios_por_pagina);
 
-            // Redirigir con un mensaje de éxito
-            return redirect()->route('estudios.index', ['page' => $page])
-                ->with('success', 'Estudio enviado por correo con éxito');
+            
+            return redirect()->route('estudios.index', [
+                'page' => $pagina,
+                'finalizado' => $nro_servicio
+            ])->with('success', 'Estudio enviado por correo con éxito');
         } else {
             // Redirigir con un mensaje de error si no hay email
-            $page = $request->input('page');
+        
+            $posicion = Estudio::getPosition($nro_servicio);
+            $estudios_por_pagina = 20;
+            $pagina = ceil($posicion / $estudios_por_pagina);
 
-            return redirect()->route('estudios.index', ['page' => $page])
-                ->with('error', 'El paciente no cuenta con un email cargado');
+            
+            return redirect()->route('estudios.index', [
+                'page' => $pagina,
+                'finalizado' => $nro_servicio
+            ])->with('error', 'El paciente no cuenta con un email registrado');
         }
     }
 }

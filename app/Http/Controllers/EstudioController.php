@@ -409,10 +409,15 @@ class EstudioController extends Controller
             ]);
         }
 
+        //Obtener la posicion mediante una consulta para redireccionar
+        $posicion = Estudio::getPosition($nro_servicio);
+        $estudios_por_pagina = 20;
+        $pagina = ceil($posicion / $estudios_por_pagina);
 
-        // Redirigir a la misma página con un mensaje de éxito
+        
         return redirect()->route('estudios.index', [
-            
+            'page' => $pagina,
+            'finalizado' => $nro_servicio
         ])->with('success', 'Estudio finalizado con éxito');
     }
 
@@ -474,15 +479,15 @@ class EstudioController extends Controller
         }*/
 
 
-        // Redirigir con un mensaje de éxito
-        $perPage = 20; // Número de estudios por página
-        $totalEstudios = Estudio::count(); // Contar el total de estudios
-        $lastPage = ceil($totalEstudios / $perPage); // Calcular la última página
+        //Obtener la posicion mediante una consulta para redireccionar
+        $posicion = Estudio::getPosition($nro_servicio);
+        $estudios_por_pagina = 20;
+        $pagina = ceil($posicion / $estudios_por_pagina);
 
-        // Redirigir con un mensaje de éxito
+        
         return redirect()->route('estudios.index', [
-            'page' => $lastPage, // Página actual para redirigir a la última
-            'nro_servicio' => $nro_servicio // Parámetro de búsqueda
+            'page' => $pagina,
+            'finalizado' => $nro_servicio
         ])->with('success', 'Estudio entregado con éxito');
     }
 
@@ -537,17 +542,18 @@ class EstudioController extends Controller
         // Actualizar el estudio con el informe adicional
         $estudio->update([
             'estado_estudio' => $nuevoEstado,
+            'enviado' => 0,
         ]);
 
-        // Redirigir con un mensaje de éxito
-        $perPage = 20;
-        $totalEstudios = Estudio::count();
-        $lastPage = ceil($totalEstudios / $perPage);
+        //Obtener la posicion mediante una consulta para redireccionar
+        $posicion = Estudio::getPosition($nro_servicio);
+        $estudios_por_pagina = 20;
+        $pagina = ceil($posicion / $estudios_por_pagina);
 
-        // Redirigir con un mensaje de éxito
+        
         return redirect()->route('estudios.index', [
-            'page' => $lastPage, // Página actual para redirigir a la última
-            'nro_servicio' => $nro_servicio // Parámetro de búsqueda
+            'page' => $pagina,
+            'finalizado' => $nro_servicio
         ])->with('success', 'Estudio ampliado con éxito');
     }
 
