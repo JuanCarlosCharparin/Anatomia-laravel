@@ -23,16 +23,15 @@ class ExportarController extends Controller
         // Obtener los datos del estudio utilizando el método de la instancia
         $estudio = $exportar->getEstudio($nro_servicio);
 
-        // Obtener los nombres de los usuarios creador del estudio
+        // Obtener los nombres y matrículas de los usuarios creador del estudio
         $createdPapName = User::find($estudio->createdPap)->name ?? 'Desconocido';
         $createdDetalleName = User::find($estudio->createdDetalle)->name ?? 'Desconocido';
 
         $matriculaPap = User::find($estudio->createdPap)->matricula ?? 'Desconocido';
         $matriculaDetalle = User::find($estudio->createdDetalle)->matricula ?? 'Desconocido';
 
-        // Dividir segun el tipo de estudio
+        // Dividir según el tipo de estudio
         if ($estudio->tipo_estudio_id === 3) {
-            
             $data = [
                 'tipo_estudio' => $estudio->tipo_estudio_id,
                 'nombre' => $estudio->paciente,
@@ -75,17 +74,19 @@ class ExportarController extends Controller
                 'macroscopia' => $estudio->macro, 
                 'microscopia' => $estudio->micro,
                 'diagnostico' => $estudio->diagnostico,
+                'observacion' => $estudio->observacion,
                 'ampliar_informe' => $estudio->ampliar_informe,
                 'createdDetalle' => $createdDetalleName,
                 'matriculaDetalle' => $matriculaDetalle,
             ];
+            
         }
 
         // Generar el PDF utilizando la vista y los datos
         $pdf = PDF::loadView('estudios.export_estudio', $data);
 
-        // Descargar el PDF
-        return $pdf->download('datos.pdf');
+        // Descargar el PDF directamente sin almacenarlo en el servidor
+        return $pdf->download('informe.pdf');
     }
 
 
@@ -143,6 +144,7 @@ class ExportarController extends Controller
                 'macroscopia' => $estudio->macro, 
                 'microscopia' => $estudio->micro,
                 'diagnostico' => $estudio->diagnostico,
+                'observacion' => $estudio->observacion,
                 'ampliar_informe' => $estudio->ampliar_informe,
                 'createdDetalle' => $createdDetalleName,
                 'matriculaDetalle' => $matriculaDetalle,

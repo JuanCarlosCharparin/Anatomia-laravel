@@ -20,7 +20,13 @@ class CrearEstudioController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $roles = $user->getRoleNames()->toArray();
+
+        if (auth()->check()) {
+            $roles = $user->getRoleNames()->toArray();
+            // Continúa con la lógica adicional
+        } else {
+            return redirect()->route('login');
+        }
 
         $searchNroServicio = $request->input('search_nro_servicio');
         $searchServicio = $request->input('search_servicio');

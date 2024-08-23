@@ -25,6 +25,16 @@ class EstudioController extends Controller
 
     public function edit($nro_servicio)
     {
+
+        $user = Auth::user();
+
+        if (auth()->check()) {
+            $roles = $user->getRoleNames()->toArray();
+            // Continúa con la lógica adicional
+        } else {
+            return redirect()->route('login');
+        }
+
         $page = request('page');
         // Ejecutar la consulta
         $estudio = DB::connection('mysql')->table('estudio as e')

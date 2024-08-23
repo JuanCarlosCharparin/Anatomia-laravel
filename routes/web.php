@@ -37,54 +37,53 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    
+
+    Route::get('/estudios', [CrearEstudioController::class, 'index'])->name('estudios.index');
+
+    // Ruta para mostrar el formulario de creación de estudio (create)
+    Route::get('/estudios/create', [CrearEstudioController::class, 'create'])->name('estudios.create');
+
+    // Ruta para guardar un nuevo estudio (store)
+    Route::post('/estudios', [CrearEstudioController::class, 'store'])->name('estudios.store');
+
+
+    Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])->name('estudios.searchPatient');
+
+
+    //Editar
+    // Ruta para mostrar el formulario de edición
+    Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->name('estudios.edit');
+
+    // Ruta para actualizar el estudio
+    Route::post('estudios/{nro_servicio}/update', [EstudioController::class, 'update'])->name('estudios.update');
+    //Ruta para finalizar el estudio
+    Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'finally'])->name('estudios.finally');
+
+    Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 'reFinally'])->name('estudios.finalizar');
+
+    // Ruta para ampliar el informe
+    Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::class, 'ampliarInforme'])->name('estudios.ampliarInforme');
+
+    //Ruta para exportar el informe
+    Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
+
+    // Ruta para enviar el PDF por correo
+    Route::get('estudios/enviar-datos/{nro_servicio}', [ExportarController::class, 'enviarDatosPorCorreo'])->name('enviar.datos');
+
+    // Ruta para modificar el estudio
+
+    Route::get('/estudios/{nro_servicio}/modify', [ModificarEstudioController::class, 'modify'])->name('estudios.modify');
+    Route::post('/estudios/{nro_servicio}/updateEstudio', [ModificarEstudioController::class, 'updateEstudio'])->name('estudios.updateEstudio');
+
+
+
+    Route::get('/exportar/estudios', [EstudioController::class, 'exportarExcel'])->name('exportar.estudios');
 });
 
 require __DIR__.'/auth.php';
-
-
-
-
-
-Route::get('/estudios', [CrearEstudioController::class, 'index'])->name('estudios.index');
-
-// Ruta para mostrar el formulario de creación de estudio (create)
-Route::get('/estudios/create', [CrearEstudioController::class, 'create'])->name('estudios.create');
-
-// Ruta para guardar un nuevo estudio (store)
-Route::post('/estudios', [CrearEstudioController::class, 'store'])->name('estudios.store');
-
-
-Route::get('/search-patient', [CrearEstudioController::class, 'searchPatient'])->name('estudios.searchPatient');
-
-
-//Editar
-// Ruta para mostrar el formulario de edición
-Route::get('estudios/{nro_servicio}/edit', [EstudioController::class, 'edit'])->name('estudios.edit');
-
-// Ruta para actualizar el estudio
-Route::post('estudios/{nro_servicio}/update', [EstudioController::class, 'update'])->name('estudios.update');
-//Ruta para finalizar el estudio
-Route::post('/estudios/{nro_servicio}/finally', [EstudioController::class, 'finally'])->name('estudios.finally');
-
-Route::post('/estudios/{nro_servicio}/finalizar', [EstudioController::class, 'reFinally'])->name('estudios.finalizar');
-
-// Ruta para ampliar el informe
-Route::post('/estudios/ampliar-informe/{nro_servicio}', [EstudioController::class, 'ampliarInforme'])->name('estudios.ampliarInforme');
-
-//Ruta para exportar el informe
-Route::get('estudios/exportar-datos/{nro_servicio}', [ExportarController::class, 'exportarDatos'])->name('exportar.datos');
-
-// Ruta para enviar el PDF por correo
-Route::get('estudios/enviar-datos/{nro_servicio}', [ExportarController::class, 'enviarDatosPorCorreo'])->name('enviar.datos');
-
-// Ruta para modificar el estudio
-
-Route::get('/estudios/{nro_servicio}/modify', [ModificarEstudioController::class, 'modify'])->name('estudios.modify');
-Route::post('/estudios/{nro_servicio}/updateEstudio', [ModificarEstudioController::class, 'updateEstudio'])->name('estudios.updateEstudio');
-
-
-
-Route::get('/exportar/estudios', [EstudioController::class, 'exportarExcel'])->name('exportar.estudios');
 
 
 

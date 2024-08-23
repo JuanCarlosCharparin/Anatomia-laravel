@@ -17,8 +17,8 @@
         <ul>
             <li>> Estudios</li>
         </ul>
-        <p>Si tienes los datos del paciente (DNI, nombres o apellidos), ingrésalos en el buscador de la izquierda (Buscar general). Puedes introducir el DNI del paciente o el nombre completo (incluyendo el segundo nombre, si lo tiene).</p>
-        <p>Si cuentas con el número de servicio del estudio, ingrésalo únicamente en el buscador de la derecha (Buscar por N° Servicio), dejando el buscador de la izquierda en blanco.</p>
-        
+        <p>Si cuentas con el número de servicio del estudio, ingrésalo únicamente en el primer buscador (Buscar por N° Servicio).</p>
+        <p>Si tienes los datos del paciente (DNI, nombres o apellidos), ingrésalos en el buscador "Buscar Paciente o DNI". Puedes introducir el DNI del paciente o el nombre completo (incluyendo el segundo nombre, si lo tiene).</p>
+        <p>Si deseas filtrar todos los estudios de un mismo tipo de estudio puedes realizar la busqueda en "Buscar Tipo Estudio", por ejemplo: "Biopsia", "Pap", "Citologia" o "Intraoperatorio"</p>
     </div>
 </x-app-layout>

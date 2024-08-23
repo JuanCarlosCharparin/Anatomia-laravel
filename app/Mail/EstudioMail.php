@@ -23,7 +23,7 @@ class EstudioMail extends Mailable
     {
         return $this->view('estudios.email_estudio') // Vista del correo
                     ->attach($this->pdfPath, [
-                        'as' => 'datos.pdf',
+                        'as' => 'informe.pdf',
                         'mime' => 'application/pdf',
                     ])
                     ->subject('Informe de Anatomía Patológica HU.');
