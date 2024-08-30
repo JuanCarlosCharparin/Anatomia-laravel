@@ -21,7 +21,7 @@ class EstudioMail extends Mailable
 
     public function build()
     {
-        return $this->view('estudios.email_estudio') // Vista del correo
+        return $this->view('estudios.email_estudio') 
                     ->attach($this->pdfPath, [
                         'as' => 'informe.pdf',
                         'mime' => 'application/pdf',

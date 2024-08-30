@@ -169,8 +169,10 @@ class ExportarController extends Controller
             $pdfPath = storage_path('app/public/' . $pdfFilename);
             $pdf->save($pdfPath);
 
-            // Enviar el PDF por correo
-            Mail::to($contacto->email)->send(new EstudioMail($data, $pdfPath));
+            $autoEmail = 'anatomiapatologica@hospital.uncu.edu.ar';
+
+            // Enviar el PDF por correo al paciente y asi mismo
+            Mail::to([$contacto->email, $autoEmail])->send(new EstudioMail($data, $pdfPath));
 
             // Actualizar el estado del estudio solo si el email es válido y el envío fue exitoso
             Estudio::where('nro_servicio', $nro_servicio)->update(['enviado' => 1]);

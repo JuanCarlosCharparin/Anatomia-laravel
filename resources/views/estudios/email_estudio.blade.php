@@ -11,7 +11,7 @@
     <p>Hospital Universitario</p>
     <p>Universidad Nacional de Cuyo</p>
     <p>int. 1630</p>
-    <p>Adjunto encontrará el informe del estudio anatopatólogico solicitado.</p>
+    <p>Adjunto encontrará el informe del estudio anatomopatólogico solicitado.</p>
 
 
 </body>
