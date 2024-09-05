@@ -132,7 +132,7 @@
             </div>
             <hr>
 
-            <button type="submit" class="btn btn-primary">Crear Estudio</button>
+            <button type="submit" id="createEstudy" class="btn btn-primary">Crear Estudio</button>
             <p></p>
         </form>
     </div>
@@ -140,9 +140,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-       $(document).ready(function() {
+        $(document).ready(function() {
+            // Manejar el evento de presionar Enter en el campo de búsqueda
+            $('#search-input').keypress(function(e) {
+                if (e.which === 13) { // 13 es el código de la tecla Enter
+                    e.preventDefault(); // Evitar el comportamiento predeterminado de la tecla Enter
+                    $('#search-button').click(); // Llamar a la función de búsqueda
+                }
+            });
+
+            // Manejar el clic en el botón de búsqueda
             $('#search-button').click(function(e) {
-                e.preventDefault(); // Prevenir el comportamiento predeterminado del botón
+                // e.preventDefault(); // No es necesario aquí, ya que solo se activa por el click en el botón
 
                 var searchTerm = $('#search-input').val().trim(); // Obtener y recortar espacios en blanco del término de búsqueda
                 if (!searchTerm) {
@@ -172,6 +181,7 @@
                                 resultHtml += '<p><strong>Obra Social:</strong> ' + patient.obra_social + '</p>';
                                 resultHtml += '<p><strong>Correo:</strong> ' + patient.email + '</p>';
                                 resultHtml += '<p><strong>Teléfono:</strong> ' + patient.contacto_telefono + '</p>';
+                                resultHtml += '<p><strong>Segundo teléfono:</strong> ' + patient.contacto_telefono_2 + '</p>';
                                 resultHtml += '<button type="button" class="btn btn-primary select-button" data-name="' + patient.nombres + ' ' + patient.apellidos + '">Seleccionar</button>';
                                 resultHtml += '</div><hr>';
                             });
@@ -198,6 +208,13 @@
                         $('#results').html('<p>' + errorMessage + '</p>');
                     }
                 });
+            });
+
+            // Evitar el envío del formulario al presionar Enter dentro de él
+            $('#createEstudy').on('keypress', function(e) {
+                if (e.which === 13) { // 13 es el código de la tecla Enter
+                    e.preventDefault(); // Evitar el comportamiento predeterminado de la tecla Enter
+                }
             });
 
             // Manejar el clic en el botón "Seleccionar"

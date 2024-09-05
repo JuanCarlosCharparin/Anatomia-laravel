@@ -47,11 +47,18 @@ class Paciente extends Model
                                     THEN 'No proporcionado'
                                     ELSE CONCAT(COALESCE(persona.contacto_telefono_codigo, ''), ' ', COALESCE(persona.contacto_telefono_numero, ''))
                                 END AS contacto_telefono
+                            "),
+                            DB::raw("
+                                CASE 
+                                    WHEN COALESCE(persona.contacto_celular_prefijo, '') = '' AND COALESCE(persona.contacto_celular_numero, '') = '' 
+                                    THEN 'No proporcionado'
+                                    ELSE CONCAT(COALESCE(persona.contacto_celular_prefijo, ''), ' ', COALESCE(persona.contacto_celular_codigo, ''), ' ', COALESCE(persona.contacto_celular_numero, ''))
+                                END AS contacto_telefono_2
                             ")
         )
         ->join('persona_plan as pp', 'persona.id', '=', 'pp.persona_id')
         ->join('plan as pl', 'pp.plan_id', '=', 'pl.id')
-        ->join('obra_social as obra_social', 'pl.obra_social_id', '=', 'obra_social.id')
+        ->join('obra_social', 'pl.obra_social_id', '=', 'obra_social.id')
         ->join('persona_plan_por_defecto as pppd', 'pp.id', '=', 'pppd.persona_plan_id')
         ->where('persona.documento', 'LIKE', "%{$searchTerm}%")
         ->orWhere(DB::raw('CONCAT(persona.nombres, " ", persona.apellidos)'), 'LIKE', "%{$searchTerm}%")
