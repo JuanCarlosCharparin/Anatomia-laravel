@@ -26,6 +26,6 @@ class EstudioMail extends Mailable
                         'as' => 'informe.pdf',
                         'mime' => 'application/pdf',
                     ])
-                    ->subject('Informe de Anatomía Patológica HU.');
+                    ->subject('INFORME ANATOMIA PATOLOGICA HOSPITAL UNIVERSITARIO');
     }
 }
