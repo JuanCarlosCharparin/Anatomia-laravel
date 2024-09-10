@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <x-app-layout>
-    <x-slot name="title">Editar Estudio</x-slot>
+    <x-slot name="title">Informar Estudio</x-slot>
     @section('title', 'Anatomía-Patológica')
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <div class="mt-4">
-        <h1>Editar Estudio</h1>
+        <h1>Informar Estudio</h1>
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}

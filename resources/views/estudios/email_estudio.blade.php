@@ -8,25 +8,26 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-weight: bold; /* Todo el texto en negrita */
-            line-height: 1.1; /* Espacio reducido entre líneas */
+            font-weight: bold; 
+            line-height: 1.1; 
         }
 
-        p {
-            margin: 0; /* Sin márgenes entre párrafos */
+        .parrafo {
+            margin: 0; 
+            font-style: italic;
         }
 
         .blue-text {
-            color: blue; /* Solo el número 1630 en azul */
+            color: blue; 
         }
     </style>
 </head>
 <body>
-<p>Beatriz ORTIZ</p>
-<p>Secretaría Anatomía Patológica</p>
-<p>Hospital Universitario</p>
-<p>Universidad Nacional de Cuyo</p>
-<p>int. <span class="blue-text">1630</span></p>
 <p>Adjunto encontrará el informe del estudio anatomopatológico solicitado.</p>
+<p class="parrafo">Beatriz ORTIZ</p>
+<p class="parrafo">Secretaría Anatomía Patológica</p>
+<p class="parrafo">Hospital Universitario</p>
+<p class="parrafo">Universidad Nacional de Cuyo</p>
+<p class="parrafo">int. <span class="blue-text">1630</span></p>
 </body>
 </html>

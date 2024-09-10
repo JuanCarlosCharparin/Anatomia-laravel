@@ -96,7 +96,6 @@
         }
 
         .highlighted-number {
-            text-decoration: underline;
             color: #000000;
             padding: 2px 4px;
             font-weight: bold;
@@ -145,7 +144,7 @@
                             <td class="field"><span class="bold-heading">MED. SOLICITANTE:</span> {{ $medico }}</td>
                             <td class="field field-right">
                                 <span class="bold-heading">N° INFORME:</span>
-                                <span class="highlighted-number">{{ $informe_numero }}</span>
+                                <span class="highlighted-number">HU {{ $informe_numero }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -215,7 +214,7 @@
                             <td class="field"><span class="bold-heading">MED. SOLICITANTE:</span> {{ $medico }}</td>
                             <td class="field field-right">
                                 <span class="bold-heading">N° INFORME:</span>
-                                <span class="highlighted-number">{{ $informe_numero }}</span>
+                                <span class="highlighted-number">HU {{ $informe_numero }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -259,7 +258,7 @@
                 </p>
                 <p style="margin-bottom: 20px;">
                     <span class="bold-heading">DIAGNÓSTICO:</span> 
-                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($diagnostico)) !!}</span>
+                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
                 </p>
                 <p style="margin-bottom: 20px;">
                     <span class="bold-heading">NOTAS:</span> 
