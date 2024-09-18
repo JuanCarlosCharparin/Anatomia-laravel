@@ -180,10 +180,6 @@ class ModificarEstudioController extends Controller
                 );
             }
 
-
-
-
-
             // Obtener todos los códigos actuales para el estudio
             $existingCodigos = DB::table('codigo_nomenclador_ap')
             ->where('nro_servicio', $nro_servicio)
@@ -216,8 +212,7 @@ class ModificarEstudioController extends Controller
             }
 
             DB::commit();
-
-
+            
             //Obtener la posicion mediante una consulta para redireccionar
             $posicion = Estudio::getPosition($nro_servicio);
             $estudios_por_pagina = 20;

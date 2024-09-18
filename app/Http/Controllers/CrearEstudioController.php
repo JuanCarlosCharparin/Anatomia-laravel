@@ -63,8 +63,6 @@ class CrearEstudioController extends Controller
             $query->where('e.estado_estudio', 'LIKE', '%finalizado%');
         }
 
-        // Aplicar filtro de búsqueda general
-
         // Aplicar búsqueda por número de servicio
         if ($searchNroServicio) {
             $query->where('e.nro_servicio', '=', $searchNroServicio);
@@ -103,11 +101,6 @@ class CrearEstudioController extends Controller
             $query->whereBetween('e.fecha_carga', [$searchDesde, $searchHasta]);
         }
 
-
-
-
-
-
         // Ordenar los resultados por nro_servicio
         $query->orderBy('e.nro_servicio', 'desc');
 
@@ -143,7 +136,7 @@ class CrearEstudioController extends Controller
         // Generar el nuevo número de servicio
         $newServicioNumber = $lastEstudio ? $lastEstudio->nro_servicio + 1 : 1;
 
-        $professionals = Paciente::getProfessionals(); // Asumí que obtienes todos los profesionales aquí
+        $professionals = Paciente::getProfessionals(); 
         $servicios = Especialidad::getServicio();
 
         // Pasar los datos a la vista

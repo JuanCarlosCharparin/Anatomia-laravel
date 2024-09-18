@@ -285,8 +285,6 @@ class EstudioController extends Controller
 
     public function finally(Request $request, $nro_servicio)
     {
-
-
         // Verifica si el usuario tiene permiso para finalizar estudios
         if (!auth()->user()->can('estudios.finally')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
@@ -432,6 +430,8 @@ class EstudioController extends Controller
         ])->with('success', 'Estudio finalizado con éxito');
     }
 
+    //Metodo reFinally para enviar recibe y tacos
+
     public function reFinally(Request $request, $nro_servicio)
     {
         // Verifica si el usuario tiene permiso para agregar recibe y tacos al estudio
@@ -502,10 +502,10 @@ class EstudioController extends Controller
         ])->with('success', 'Estudio entregado con éxito');
     }
 
+    //Metodo ampliarInforme para enviar la ampliación
 
     public function ampliarInforme(Request $request, $nro_servicio)
     {
-
         // Verifica si el usuario tiene permiso para agregar ampliar informe al estudio
         if (!auth()->user()->can('estudios.ampliarInforme')) {
             return redirect()->route('estudios.edit', ['nro_servicio' => $nro_servicio])
@@ -710,6 +710,4 @@ class EstudioController extends Controller
         $writer->save('php://output');
         exit;
     }
-
-
 }
