@@ -10,7 +10,13 @@
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="login-form card p-4 shadow-sm" style="max-width: 400px;">
-            <h2 class="card-title mb-4 text-center">Login Anatomía Patológica</h2>
+            <div>
+                <!-- Logo -->
+                <div class="flex justify-center mb-4" style="display: flex; justify-content: center; align-items: center;">
+                    <img src="{{ asset('img/hu_logo.png') }}" alt="Logo" class="h-12 w-auto">
+                </div>
+            </div>
+            <h2 class="card-title mb-4 text-center">Anatomía Patológica</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
