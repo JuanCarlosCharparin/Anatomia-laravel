@@ -21,6 +21,7 @@ class Especialidad extends Model
     {
         // Lista de ID de departamento para el filtro
         $departamentoIds = [6661180, 6661192, 6661178, 6661181, 6661162];
+        $especialidadIds = [6661573]; 
         
         return self::select(
                 'especialidad.id as servicio_salutte_id',
@@ -30,6 +31,7 @@ class Especialidad extends Model
             ->distinct()
             ->join('departamento as d', 'd.id', '=', 'especialidad.departamento_id')
             ->whereIn('especialidad.departamento_id', $departamentoIds)
+            ->orWhereIn('especialidad.id', $especialidadIds)
             ->get();
     }
 
