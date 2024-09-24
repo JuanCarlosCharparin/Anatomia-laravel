@@ -53,6 +53,7 @@ class EstudioController extends Controller
                     END AS genero
                 "),
                 'p.fecha_nacimiento as fecha_nacimiento',
+                'p.documento as documento',
                 DB::raw('TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad'),
                 'p.obra_social as obra_social',
                 'e.diagnostico_presuntivo as diagnostico',

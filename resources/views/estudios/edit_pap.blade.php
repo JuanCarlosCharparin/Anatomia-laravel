@@ -120,6 +120,11 @@
                 <label for="">Paciente: </label>
                 <strong>{{ $estudio->paciente }}</strong>
             </div>
+
+            <div class="form-group">
+                <label for="">DNI Paciente: </label>
+                <strong>{{ $estudio->documento }}</strong>
+            </div>
             
             <div class="form-group">
                 <label for="">Obra Social: </label>
