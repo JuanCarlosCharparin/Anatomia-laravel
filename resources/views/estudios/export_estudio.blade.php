@@ -248,23 +248,33 @@
                         {{ htmlspecialchars($tecnica) }}
                     @endif
                 </p>
-                <p style="margin-bottom: 20px;">
-                    <span class="bold-heading">MACROSCOPIA:</span> 
-                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($macroscopia)) !!}</span>
-                </p>
-                
-                <p style="margin-bottom: 20px;">
-                    <span class="bold-heading">MICROSCOPIA:</span> 
-                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($microscopia)) !!}</span>
-                </p>
-                <p style="margin-bottom: 20px;">
-                    <span class="bold-heading">DIAGNÓSTICO:</span> 
-                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
-                </p>
-                <p style="margin-bottom: 20px;">
-                    <span class="bold-heading">NOTAS:</span> 
-                    <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($observacion)) !!}</span>
-                </p>
+                @if(!empty($macroscopia))
+                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                        <span class="bold-heading" style="margin-bottom: 10px; display: block;">MACROSCOPIA:</span>
+                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($macroscopia)) !!}</span>
+                    </p>
+                @endif
+
+                @if(!empty($microscopia))
+                <p style="margin-bottom: 35px; margin-top: 35px;">
+                        <span class="bold-heading" style="margin-bottom: 10px; display: block;">MICROSCOPIA:</span>
+                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($microscopia)) !!}</span>
+                    </p>
+                @endif
+
+                @if(!empty($diagnostico))
+                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                        <span class="bold-heading" style="margin-bottom: 10px; display: block;">DIAGNÓSTICO:</span>
+                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
+                    </p>
+                @endif
+
+                @if(!empty($observacion))
+                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                        <span class="bold-heading" style="margin-bottom: 10px; display: block;">NOTAS:</span>
+                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($observacion)) !!}</span>
+                    </p>
+                @endif
             
 
                 @if ($ampliar_informe != '')
