@@ -297,25 +297,6 @@
             </div>
 
             <div class="form-group">
-                <label for="valor_hormonal_HC">Valor Hormonal HC:</label>
-                @php
-                    // Determinar si el campo debe estar deshabilitado
-                    $isFinalized = $estudio->estado === 'finalizado';
-                    $disabled = $isFinalized ? 'disabled' : '';
-            
-                    // Obtener el valor actual del campo, manejando old() para valores de sesión anteriores
-                    $valorHormonalHC = old('valor_hormonal_HC', $estudio->valor_hormonal_HC ?? '');
-                @endphp
-            
-                <select class="form-control" name="valor_hormonal_HC" id="valor_hormonal_HC" {{ $disabled }}>
-                    <option value="" disabled {{ empty($valorHormonalHC) ? 'selected' : '' }}>Selecciona un valor</option>
-                    <option value="SI" {{ $valorHormonalHC === 'SI' ? 'selected' : '' }}>Sí</option>
-                    <option value="NO" {{ $valorHormonalHC === 'NO' ? 'selected' : '' }}>No</option>
-                </select>
-                <p></p>
-            </div>
-
-            <div class="form-group">
                 <label for="cambios_reactivos">Cambios Reactivos:</label>
                 @php
                     // Determinar si el campo debe estar deshabilitado
