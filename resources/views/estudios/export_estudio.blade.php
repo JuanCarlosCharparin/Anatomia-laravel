@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -296,8 +296,10 @@
             <img class="firma" src="{{ asset('img/firma_fernanda-j.jpg') }}" alt="Firma Electrónica">
         @endif
 
-        @if(isset($createdPap) && $createdPap)
+        @if(isset($createdPap) && $createdPap == "Adriana Cecilia Torres")
             <img class="firma_cecilia" src="{{ asset('img/firma_cecilia.jpg') }}" alt="Firma Electrónica">
+        @elseif(isset($createdPap) && $createdPap == "María Fernanda Contreras")
+            <img class="firma" src="{{ asset('img/firma_fernanda-j.jpg') }}" alt="Firma Electrónica">
         @endif
 
         <p>Firmado electrónicamente por la Dra. {{ $createdPap ?? '' }} {{ $createdDetalle ?? '' }} - Matrícula: {{ $matriculaPap ?? '' }} {{ $matriculaDetalle ?? '' }} - Información confidencial - secreto médico - alcances del art. 156 del Código Penal  

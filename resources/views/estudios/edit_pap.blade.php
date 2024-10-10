@@ -504,7 +504,7 @@
                     <option value="Insactifactorio" {{ in_array('Insactifactorio', $resultado) ? 'selected' : '' }}>Insactifactorio</option>
                     <option value="NEGATIVO" {{ in_array('NEGATIVO', $resultado) ? 'selected' : '' }}>NEGATIVO</option>
                     <option value="Anormalidad celulas epiteliales" {{ in_array('Anormalidad celulas epiteliales', $resultado) ? 'selected' : '' }}>Anormalidad de células epiteliales</option>
-                    <option value="NEGATIVO LESION INTRAEPITELIAL" {{ in_array('NEGATIVO LESION INTRAEPITELIAL', $resultado) ? 'selected' : '' }}>NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD</option>
+                    <option value="NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD" {{ in_array('NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD', $resultado) ? 'selected' : '' }}>NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD</option>
                     <option value="ASC-US" {{ in_array('ASC-US', $resultado) ? 'selected' : '' }}>ASC-US</option>
                     <option value="ASC-H" {{ in_array('ASC-H', $resultado) ? 'selected' : '' }}>ASC-H</option>
                     <option value="L-SIL" {{ in_array('L-SIL', $resultado) ? 'selected' : '' }}>LSIL</option>
