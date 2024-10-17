@@ -204,13 +204,13 @@
                     <option value="Menor por hemorrragia" {{ in_array('Menor por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por hemorragia</option>
                     <option value="Menor por citolisis" {{ in_array('Menor por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por citólisis</option>
                     <option value="Menor por inflamacion" {{ in_array('Menor por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por inflamación</option>
-                    <option value="Insactifactorio por escasa celularidad" {{ in_array('Insactifactorio por escasa celularidad', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por escasa celularidad</option>
-                    <option value="Insactifactorio por defecto de fijacion" {{ in_array('Insactifactorio por defecto de fijacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por defecto de fijación o desecación</option>
-                    <option value="Insactifactorio por inflamacion" {{ in_array('Insactifactorio por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por inflamación</option>
-                    <option value="Insactifactorio por hemorrragia" {{ in_array('Insactifactorio por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por hemorragia</option>
-                    <option value="Insactifactorio por citolisis" {{ in_array('Insactifactorio por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por citólisis</option>
-                    <option value="Insactifactorio por componente endocervical" {{ in_array('Insactifactorio por componente endocervical', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por sin componente endocervical</option>
-                    <option value="Insactifactorio por otros" {{ in_array('Insactifactorio por otros', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por otros</option>
+                    <option value="Insatisfactorio por escasa celularidad" {{ in_array('Insatisfactorio por escasa celularidad', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por escasa celularidad</option>
+                    <option value="Insatisfactorio por defecto de fijacion" {{ in_array('Insatisfactorio por defecto de fijacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por defecto de fijación o desecación</option>
+                    <option value="Insatisfactorio por inflamacion" {{ in_array('Insatisfactorio por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por inflamación</option>
+                    <option value="Insatisfactorio por hemorrragia" {{ in_array('Insatisfactorio por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por hemorragia</option>
+                    <option value="Insatisfactorio por citolisis" {{ in_array('Insatisfactorio por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por citólisis</option>
+                    <option value="Insatisfactorio por componente endocervical" {{ in_array('Insatisfactorio por componente endocervical', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por sin componente endocervical</option>
+                    <option value="Insatisfactorio por otros" {{ in_array('Insatisfactorio por otros', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por otros</option>
                     <option value="Sin componente endocervical" {{ in_array('Sin componente endocervical', $estadoEspecimen) ? 'selected' : '' }}>Sin componente endocervical</option>
                 </select>
             </div>
@@ -501,8 +501,7 @@
                 @endphp
             
                 <select class="select2" id="resultado" name="resultado[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
-                    <option value="Insactifactorio" {{ in_array('Insactifactorio', $resultado) ? 'selected' : '' }}>Insactifactorio</option>
-                    <option value="NEGATIVO" {{ in_array('NEGATIVO', $resultado) ? 'selected' : '' }}>NEGATIVO</option>
+                    <option value="Insatisfactorio" {{ in_array('Insatisfactorio', $resultado) ? 'selected' : '' }}>Insatisfactorio</option>
                     <option value="Anormalidad celulas epiteliales" {{ in_array('Anormalidad celulas epiteliales', $resultado) ? 'selected' : '' }}>Anormalidad de células epiteliales</option>
                     <option value="NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD" {{ in_array('NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD', $resultado) ? 'selected' : '' }}>NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD</option>
                     <option value="ASC-US" {{ in_array('ASC-US', $resultado) ? 'selected' : '' }}>ASC-US</option>
