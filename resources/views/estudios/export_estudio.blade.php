@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 15px;
+            font-size: 12px;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -251,28 +251,28 @@
                 @if(!empty($macroscopia))
                     <p style="margin-bottom: 35px; margin-top: 35px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">MACROSCOPIA:</span>
-                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($macroscopia)) !!}</span>
+                        <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($macroscopia)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($microscopia))
                 <p style="margin-bottom: 35px; margin-top: 35px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">MICROSCOPIA:</span>
-                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($microscopia)) !!}</span>
+                        <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($microscopia)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($diagnostico))
                     <p style="margin-bottom: 35px; margin-top: 35px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">DIAGNÓSTICO:</span>
-                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
+                        <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($observacion))
                     <p style="margin-bottom: 35px; margin-top: 35px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">NOTAS:</span>
-                        <span style="display: block; margin-left: 80px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($observacion)) !!}</span>
+                        <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($observacion)) !!}</span>
                     </p>
                 @endif
             
