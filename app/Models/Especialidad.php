@@ -32,6 +32,7 @@ class Especialidad extends Model
             ->join('departamento as d', 'd.id', '=', 'especialidad.departamento_id')
             ->whereIn('especialidad.departamento_id', $departamentoIds)
             ->orWhereIn('especialidad.id', $especialidadIds)
+            ->orderBy('especialidad.nombre', 'asc')
             ->get();
     }
 
