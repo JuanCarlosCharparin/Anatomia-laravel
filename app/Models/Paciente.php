@@ -89,7 +89,7 @@ class Paciente extends Model
 
     public static function getProfessionals()
     {
-        $professionalIds = [198041, 106780];
+        $professionalIds = [198041, 106780, 216265];
         
         return self::select(
                 'persona.id as profesional_id', // Cambia 'id' a 'persona.id' para evitar ambigüedad

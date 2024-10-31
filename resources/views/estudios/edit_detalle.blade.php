@@ -298,11 +298,12 @@
                                    $estudio->estado === 'finalizado, ampliado y entregado' || 
                                    $estudio->estado === 'finalizado y ampliado';
                     
-                    // Determina si el usuario tiene el rol de administrador
+                    // Determina si el usuario tiene el rol de administrador o de doctor
                     $isAdmin = $roles->contains('admin');
+                    $isMedico = $roles->contains('doctor');
                     
                     // El campo será deshabilitado si está finalizado o el usuario no es admin
-                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
+                    $disabled = $isFinalized || (!$isAdmin && !$isMedico) ? 'disabled' : '';
                 @endphp
                 
                 <select id="maligno" name="maligno" class="form-control" {{ $disabled }}>
@@ -324,11 +325,12 @@
                                    $estudio->estado === 'finalizado, ampliado y entregado' || 
                                    $estudio->estado === 'finalizado y ampliado';
                     
-                    // Determina si el usuario tiene el rol de administrador
+                    // Determina si el usuario tiene el rol de administrador o de doctor
                     $isAdmin = $roles->contains('admin');
+                    $isMedico = $roles->contains('doctor');
                     
                     // El campo será deshabilitado si está finalizado o el usuario no es admin
-                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
+                    $disabled = $isFinalized || (!$isAdmin && !$isMedico) ? 'disabled' : '';
                 @endphp
                 
                 @if(!empty($estudio->observacion_interna))
@@ -349,11 +351,12 @@
                                    $estudio->estado === 'finalizado, ampliado y entregado' || 
                                    $estudio->estado === 'finalizado y ampliado';
                     
-                    // Determina si el usuario tiene el rol de administrador
+                    // Determina si el usuario tiene el rol de administrador o de doctor
                     $isAdmin = $roles->contains('admin');
+                    $isMedico = $roles->contains('doctor');
                     
                     // El campo será deshabilitado si está finalizado o el usuario no es admin
-                    $disabled = $isFinalized || !$isAdmin ? 'disabled' : '';
+                    $disabled = $isFinalized || (!$isAdmin && !$isMedico) ? 'disabled' : '';
                 @endphp
                 
                 @if(!empty($estudio->diagnostico_presuntivo))
