@@ -232,20 +232,20 @@ class EstudioController extends Controller
         } else {
             // Validar la entrada del usuario en caso detalle_estudio
             $validatedData = $request->validate([
-                'macro' => 'nullable|string|max:500',
+                'macro' => 'nullable|string',
                 'fecha_macro' => 'nullable|date',
-                'micro' => 'nullable|string|max:500',
+                'micro' => 'nullable|string',
                 'fecha_inclusion' => 'nullable|date',
                 'fecha_corte' => 'nullable|date',
                 'fecha_entrega' => 'nullable|date',
-                'observacion' => 'nullable|string|max:500',
+                'observacion' => 'nullable|string',
                 'maligno' => 'nullable|string|max:255',
-                'observacion_interna' => 'nullable|string|max:500',
+                'observacion_interna' => 'nullable|string',
                 /*'recibe' => 'nullable|string|max:255',
                 'tacos' => 'nullable|string|max:255',*/
-                'diagnostico_presuntivo' => 'nullable|string|max:500',
+                'diagnostico_presuntivo' => 'nullable|string',
                 'tecnicas' => 'nullable|array',
-                'tecnicas.*' => 'string|distinct|max:500',
+                'tecnicas.*' => 'string|distinct|max:1000',
             ]);
 
             $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;
@@ -370,19 +370,19 @@ class EstudioController extends Controller
         } else {
             // Validar la entrada del usuario en caso detalle_estudio_finalizado
             $validatedData = $request->validate([
-                'macro' => 'nullable|string|max:500',
+                'macro' => 'nullable|string',
                 'fecha_macro' => 'nullable|date',
-                'micro' => 'nullable|string|max:500',
+                'micro' => 'nullable|string',
                 'fecha_inclusion' => 'nullable|date',
                 'fecha_corte' => 'nullable|date',
                 'fecha_entrega' => 'nullable|date',
-                'observacion' => 'nullable|string|max:500',
-                'maligno' => 'nullable|string|max:500',
+                'observacion' => 'nullable|string',
+                'maligno' => 'nullable|string',
                 'observacion_interna' => 'nullable|string',
                 // No incluir 'recibe' y 'tacos' en la validación aquí
-                'diagnostico_presuntivo' => 'nullable|string|max:500',
+                'diagnostico_presuntivo' => 'nullable|string',
                 'tecnicas' => 'nullable|array',
-                'tecnicas.*' => 'string|distinct|max:500',
+                'tecnicas.*' => 'string|distinct|max:1000',
             ]);
 
             $validatedData['tecnicas'] = isset($validatedData['tecnicas']) ? json_encode($validatedData['tecnicas']) : null;

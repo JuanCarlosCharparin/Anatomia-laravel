@@ -131,7 +131,7 @@
         @if ($tipo_estudio === 3)
             <img src="{{ asset('img/Logo.jpeg') }}" alt="Logo">
             <section>
-                <h1 class="title">CITOLOGIA EXFOLIATIVA ONCOLOGICA (PAP) - CALSIFICACION BETHESDA</h1>
+                <h1 class="title">CITOLOGIA EXFOLIATIVA ONCOLOGICA (PAP) - CLASIFICACION BETHESDA</h1>
             </section>
 
             <div class="sections-container">
@@ -161,42 +161,117 @@
 
             <div class="section">
                 <p><span class="bold-heading">MATERIAL REMITIDO:</span> {{ $material_remitido }}</p>
-                <p><span class="bold-heading">ESTADO ESPÉCIMEN:</span>
-                    @if (is_array($estado_especimen))
-                        {{ implode(', ', array_map('htmlspecialchars', $estado_especimen)) }}
-                    @else
-                        {{ htmlspecialchars($estado_especimen) }}
-                    @endif
-                </p>
-                <p><span class="bold-heading">CÉLULAS PAVIMENTOSAS:</span>
-                    @if (is_array($celulas_pavimentosas))
-                        {{ implode(', ', array_map('htmlspecialchars', $celulas_pavimentosas)) }}
-                    @else
-                        {{ htmlspecialchars($celulas_pavimentosas) }}
-                    @endif
-                </p>
-                <p><span class="bold-heading">CÉLULAS CILÍNDRICAS:</span>
-                    @if (is_array($celulas_cilindricas))
-                        {{ implode(', ', array_map('htmlspecialchars', $celulas_cilindricas)) }}
-                    @else
-                        {{ htmlspecialchars($celulas_cilindricas) }}
-                    @endif
-                </p>
-                <p><span class="bold-heading">VALOR HORMONAL:</span> {{ $valor_hormonal }}</p>
-                <p><span class="bold-heading">MICROORGANISMOS:</span>
-                    @if (is_array($microorganismos))
-                        {{ implode(', ', array_map('htmlspecialchars', $microorganismos)) }}
-                    @else
-                        {{ htmlspecialchars($microorganismos) }}
-                    @endif
-                </p>
-                <p><span class="bold-heading">RESULTADO:</span>
-                    @if (is_array($resultado))
-                        {{ implode(', ', array_map('htmlspecialchars', $resultado)) }}
-                    @else
-                        {{ htmlspecialchars($resultado) }}
-                    @endif
-                </p>
+                @if (!empty($estado_especimen))
+                    <p><span class="bold-heading">ESTADO ESPÉCIMEN:</span>
+                        @if (is_array($estado_especimen))
+                            {{ implode(', ', array_map('htmlspecialchars', $estado_especimen)) }}
+                        @else
+                            {{ htmlspecialchars($estado_especimen) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($celulas_pavimentosas))
+                    <p><span class="bold-heading">CÉLULAS PAVIMENTOSAS:</span>
+                        @if (is_array($celulas_pavimentosas))
+                            {{ implode(', ', array_map('htmlspecialchars', $celulas_pavimentosas)) }}
+                        @else
+                            {{ htmlspecialchars($celulas_pavimentosas) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($celulas_cilindricas))
+                    <p><span class="bold-heading">CÉLULAS CILÍNDRICAS:</span>
+                        @if (is_array($celulas_cilindricas))
+                            {{ implode(', ', array_map('htmlspecialchars', $celulas_cilindricas)) }}
+                        @else
+                            {{ htmlspecialchars($celulas_cilindricas) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($valor_hormonal))
+                    <p><span class="bold-heading">VALOR HORMONAL:</span> {{ $valor_hormonal }}</p>
+                @endif
+
+                @if (!empty($cambios_reactivos))
+                    <p><span class="bold-heading">CAMBIOS REACTIVOS:</span>
+                        @if (is_array($cambios_reactivos))
+                            {{ implode(', ', array_map('htmlspecialchars', $cambios_reactivos)) }}
+                        @else
+                            {{ htmlspecialchars($cambios_reactivos) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($cambios_asoc_celula_pavimentosa))
+                    <p><span class="bold-heading">CAMBIOS ASOC. CÉLULA PAVIMENTOSA:</span>
+                        @if (is_array($cambios_asoc_celula_pavimentosa))
+                            {{ implode(', ', array_map('htmlspecialchars', $cambios_asoc_celula_pavimentosa)) }}
+                        @else
+                            {{ htmlspecialchars($cambios_asoc_celula_pavimentosa) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($cambios_celula_glandulares))
+                    <p><span class="bold-heading">CAMBIOS CÉLULA GLANDULARES:</span> {{ $cambios_celula_glandulares }}</p>
+                @endif
+
+                @if (!empty($celula_metaplastica))
+                    <p><span class="bold-heading">CÉLULA METAPLÁSTICA:</span>
+                        @if (is_array($celula_metaplastica))
+                            {{ implode(', ', array_map('htmlspecialchars', $celula_metaplastica)) }}
+                        @else
+                            {{ htmlspecialchars($celula_metaplastica) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($otras_neo_malignas))
+                    <p><span class="bold-heading">OTRAS NEOPLASIAS MALIGNAS:</span> {{ $otras_neo_malignas }}</p>
+                @endif
+
+                @if (!empty($toma))
+                    <p><span class="bold-heading">TOMA:</span>
+                        @if (is_array($toma))
+                            {{ implode(', ', array_map('htmlspecialchars', $toma)) }}
+                        @else
+                            {{ htmlspecialchars($toma) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($recomendaciones))
+                    <p><span class="bold-heading">RECOMENDACIONES:</span>
+                        @if (is_array($recomendaciones))
+                            {{ implode(', ', array_map('htmlspecialchars', $recomendaciones)) }}
+                        @else
+                            {{ htmlspecialchars($recomendaciones) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($microorganismos))
+                    <p><span class="bold-heading">MICROORGANISMOS:</span>
+                        @if (is_array($microorganismos))
+                            {{ implode(', ', array_map('htmlspecialchars', $microorganismos)) }}
+                        @else
+                            {{ htmlspecialchars($microorganismos) }}
+                        @endif
+                    </p>
+                @endif
+
+                @if (!empty($resultado))
+                    <p><span class="bold-heading">RESULTADO:</span>
+                        @if (is_array($resultado))
+                            {{ implode(', ', array_map('htmlspecialchars', $resultado)) }}
+                        @else
+                            {{ htmlspecialchars($resultado) }}
+                        @endif
+                    </p>
+                @endif
             </div>
         @else
             <img src="{{ asset('img/Logo.jpeg') }}" alt="Logo">

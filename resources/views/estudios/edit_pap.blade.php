@@ -344,7 +344,7 @@
                     <option value="Coilocitos" {{ in_array('Coilocitos', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Coilocitos</option>
                     <option value="Anisocariosis" {{ in_array('Anisocariosis', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Anisocariosis</option>
                     <option value="Anfofilia" {{ in_array('Anfofilia', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Anfofilia</option>
-                    <option value="Aros perinucleares" {{ in_array('Aros perinucleares', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Aros perinucleares</option>
+                    <option value="Halos perinucleares" {{ in_array('Halos perinucleares', $cambiosAsocCelulaPavimentosa) ? 'selected' : '' }}>Halos perinucleares</option>
                 </select>
                 <p></p>
             </div>
@@ -387,9 +387,9 @@
                     <option value="Presentes" {{ in_array('Presentes', $celulaMetaplastica) ? 'selected' : '' }}>Presentes</option>
                     <option value="Semi maduras" {{ in_array('Semi maduras', $celulaMetaplastica) ? 'selected' : '' }}>Semi maduras</option>
                     <option value="Inmaduras" {{ in_array('Inmaduras', $celulaMetaplastica) ? 'selected' : '' }}>Inmaduras</option>
-                    <option value="Megalocariosis_aspecto_reactivo" {{ in_array('Megalocariosis_aspecto_reactivo', $celulaMetaplastica) ? 'selected' : '' }}>Con megalocariosis de aspecto reactivo</option>
-                    <option value="Megalocariosis" {{ in_array('Megalocariosis', $celulaMetaplastica) ? 'selected' : '' }}>Con megalocariosis</option>
-                    <option value="Anisocariosis" {{ in_array('Anisocariosis', $celulaMetaplastica) ? 'selected' : '' }}>Con anisocariosis</option>
+                    <option value="Megalocariosis aspecto reactivo" {{ in_array('Megalocariosis aspecto reactivo', $celulaMetaplastica) ? 'selected' : '' }}>Megalocariosis de aspecto reactivo</option>
+                    <option value="Megalocariosis" {{ in_array('Megalocariosis', $celulaMetaplastica) ? 'selected' : '' }}>Megalocariosis</option>
+                    <option value="Anisocariosis" {{ in_array('Anisocariosis', $celulaMetaplastica) ? 'selected' : '' }}>Anisocariosis</option>
                     <option value="Hipercromasia" {{ in_array('Hipercromasia', $celulaMetaplastica) ? 'selected' : '' }}>Hipercromasia</option>
                 </select>
             </div>
@@ -503,7 +503,7 @@
                 <select class="select2" id="resultado" name="resultado[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Insatisfactorio" {{ in_array('Insatisfactorio', $resultado) ? 'selected' : '' }}>Insatisfactorio</option>
                     <option value="Anormalidad celulas epiteliales" {{ in_array('Anormalidad celulas epiteliales', $resultado) ? 'selected' : '' }}>Anormalidad de células epiteliales</option>
-                    <option value="NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD" {{ in_array('NEGATIVO LESION INTRAEPITELIAL O MALIGNIDAD', $resultado) ? 'selected' : '' }}>NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD</option>
+                    <option value="NEGATIVO PARA LESION INTRAEPITELIAL O MALIGNIDAD" {{ in_array('NEGATIVO PARA LESION INTRAEPITELIAL O MALIGNIDAD', $resultado) ? 'selected' : '' }}>NEGATIVO PARA LESIÓN INTRAEPITELIAL O MALIGNIDAD</option>
                     <option value="ASC-US" {{ in_array('ASC-US', $resultado) ? 'selected' : '' }}>ASC-US</option>
                     <option value="ASC-H" {{ in_array('ASC-H', $resultado) ? 'selected' : '' }}>ASC-H</option>
                     <option value="L-SIL" {{ in_array('L-SIL', $resultado) ? 'selected' : '' }}>LSIL</option>
