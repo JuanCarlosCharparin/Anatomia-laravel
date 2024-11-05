@@ -370,7 +370,7 @@
         @if(isset($createdDetalle) && $createdDetalle == "María Fernanda Contreras")
             <img class="firma" src="{{ asset('img/firma_fernanda-j.jpg') }}" alt="Firma Electrónica">
         @elseif(isset($createdDetalle) && $createdDetalle == "María José Fiorita")
-            <img class="firma" src="{{ asset('img/hu_logo.png') }}" alt="Firma Electrónica">
+            <img class="firma" src="{{ asset('img/firma-fiorita.jpg') }}" alt="Firma Electrónica">
         @elseif(isset($createdDetalle) && $createdDetalle == "Adriana Cecilia Torres")
             <img class="firma_cecilia" src="{{ asset('img/firma_cecilia.jpg') }}" alt="Firma Electrónica">
         @endif
@@ -380,7 +380,7 @@
         @elseif(isset($createdPap) && $createdPap == "María Fernanda Contreras")
             <img class="firma" src="{{ asset('img/firma_fernanda-j.jpg') }}" alt="Firma Electrónica">
         @elseif(isset($createdPap) && $createdPap == "María José Fiorita")
-            <img class="firma" src="{{ asset('img/img/hu_logo.png') }}" alt="Firma Electrónica">
+            <img class="firma" src="{{ asset('img/firma-fiorita.jpg') }}" alt="Firma Electrónica">
         @endif
 
         <p>Firmado electrónicamente por la Dra. {{ $createdPap ?? '' }} {{ $createdDetalle ?? '' }} - Matrícula: {{ $matriculaPap ?? '' }} {{ $matriculaDetalle ?? '' }} - Información confidencial - secreto médico - alcances del art. 156 del Código Penal  

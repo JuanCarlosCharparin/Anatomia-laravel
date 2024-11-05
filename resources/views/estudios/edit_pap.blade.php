@@ -200,10 +200,10 @@
                 
                 <select class="select2" id="estado_especimen" name="estado_especimen[]" multiple="multiple" style="width: 100%;" {{ $disabled }}>
                     <option value="Satisfactorio" {{ in_array('Satisfactorio', $estadoEspecimen) ? 'selected' : '' }}>Satisfactorio</option>
-                    <option value="Menor por defecto de fijacion" {{ in_array('Menor por defecto de fijacion', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por defecto de fijación o desecación</option>
-                    <option value="Menor por hemorrragia" {{ in_array('Menor por hemorrragia', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por hemorragia</option>
-                    <option value="Menor por citolisis" {{ in_array('Menor por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por citólisis</option>
-                    <option value="Menor por inflamacion" {{ in_array('Menor por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por inflamación</option>
+                    <option value="Menor de lo óptimo por defecto de fijación o desecación" {{ in_array('Menor de lo óptimo por defecto de fijación o desecación', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por defecto de fijación o desecación</option>
+                    <option value="Menor de lo óptimo por hemorragia" {{ in_array('Menor de lo óptimo por hemorragia', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por hemorragia</option>
+                    <option value="Menor de lo óptimo por citolisis" {{ in_array('Menor de lo óptimo por citolisis', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por citólisis</option>
+                    <option value="Menor de lo óptimo por inflamacion" {{ in_array('Menor de lo óptimo por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Menor de lo óptimo por inflamación</option>
                     <option value="Insatisfactorio por escasa celularidad" {{ in_array('Insatisfactorio por escasa celularidad', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por escasa celularidad</option>
                     <option value="Insatisfactorio por defecto de fijacion" {{ in_array('Insatisfactorio por defecto de fijacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por defecto de fijación o desecación</option>
                     <option value="Insatisfactorio por inflamacion" {{ in_array('Insatisfactorio por inflamacion', $estadoEspecimen) ? 'selected' : '' }}>Insatisfactorio por inflamación</option>
