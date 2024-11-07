@@ -31,28 +31,52 @@
                     @endif
 
                     <input type="text" name="search_tipo_estudio" value="{{ request()->input('search_tipo_estudio') }}"
-                        class="form-control" placeholder="Buscar Tipo Estudio">
+                        class="form-control" placeholder="Buscar Tipo Estudio" list="tipo_estudio">
+                        <!-- Datalist para las opciones de tipo de estudio -->
+                        <datalist id="tipo_estudio">
+                            @foreach($tipo_estudios as $tipoEstudio)
+                                <option value="{{ $tipoEstudio }}">
+                            @endforeach
+                        </datalist>
 
                     @if (request()->input('search_tipo_estudio'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
                     <input type="text" name="search_estado" value="{{ request()->input('search_estado') }}" class="form-control"
-                        placeholder="Buscar Estado">
+                        placeholder="Buscar Estado" list="estado">
+
+                        <datalist id="estado">
+                            @foreach($estados as $estado)
+                                <option value="{{ $estado }}">
+                            @endforeach
+                        </datalist> 
 
                     @if (request()->input('search_estado'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
                     <input type="text" name="search_paciente" value="{{ request()->input('search_paciente') }}" class="form-control"
-                        placeholder="Buscar Paciente o DNI">
+                        placeholder="Buscar Paciente o DNI" list="paciente">
+
+                        <datalist id="paciente">
+                            @foreach($pacientes as $paciente)
+                                <option value="{{ $paciente }}">
+                            @endforeach
+                        </datalist> 
 
                     @if (request()->input('search_paciente'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>
                     @endif
 
                     <input type="text" name="search_profesional" value="{{ request()->input('search_profesional') }}"
-                        class="form-control" placeholder="Buscar Profesional">
+                        class="form-control" placeholder="Buscar Profesional" list="profesional">
+
+                        <datalist id="profesional">
+                            @foreach($profesionales as $profesional)
+                                <option value="{{ $profesional }}">
+                            @endforeach
+                        </datalist> 
 
                     @if (request()->input('search_profesional'))
                         <a href="{{ route('estudios.index') }}" class="btn btn-secondary">×</a>

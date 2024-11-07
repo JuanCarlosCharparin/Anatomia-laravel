@@ -107,6 +107,12 @@ class CrearEstudioController extends Controller
         // Ejecuta la consulta y pagina los resultados
         $estudios = $query->paginate(20);
 
+        
+        $tipo_estudios = $estudios->pluck('tipo_estudio')->unique()->values();
+        $estados = $estudios->pluck('estado')->unique()->values();
+        $profesionales = $estudios->pluck('profesional')->unique()->values();
+        $pacientes = $estudios->pluck('paciente')->unique()->values();
+
         return view('estudios.index', compact(
             'estudios',
             'searchServicio',
@@ -117,7 +123,11 @@ class CrearEstudioController extends Controller
             'searchObraSocial',
             'searchDesde',
             'searchHasta',
-            'searchProfesional'
+            'searchProfesional',
+            'tipo_estudios',
+            'estados',
+            'profesionales',
+            'pacientes'
         )
         );
     }
