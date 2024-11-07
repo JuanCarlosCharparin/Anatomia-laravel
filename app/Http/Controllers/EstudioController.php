@@ -210,10 +210,8 @@ class EstudioController extends Controller
                 $detallePap = new DetallePap();
             }
 
-            // Actualizar el detalle_pap solo con los campos que tienen valores nuevos
-            $detallePap->fill(array_filter($validatedData, function ($value) {
-                return !is_null($value) && $value !== '';
-            }));
+            // Actualizar el detalle_pap con los datos validados, permitiendo 'null' como valor
+            $detallePap->fill($validatedData);
 
             $detallePap->updatedBy = Auth::id(); // Asegúrate de que el usuario esté autenticado
 
@@ -258,10 +256,8 @@ class EstudioController extends Controller
                 $detalleEstudio = new DetalleEstudio();
             }
 
-            // Actualizar el detalle_estudio solo con los campos que tienen valores nuevos
-            $detalleEstudio->fill(array_filter($validatedData, function ($value) {
-                return !is_null($value) && $value !== '';
-            }));
+            // Actualizar el detalle_estudio con los datos validados, permitiendo 'null' como valor
+            $detalleEstudio->fill($validatedData);
 
             // Establecer el ID del usuario que está haciendo la actualización
             $detalleEstudio->updatedBy = Auth::id(); // Asegúrate de que el usuario esté autenticado
