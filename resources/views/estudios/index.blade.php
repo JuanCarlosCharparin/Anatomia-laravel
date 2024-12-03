@@ -207,7 +207,7 @@
                                     @endif
                                     
                                     @if ($estudio->estado == 'creado')
-                                        @if (in_array('admin', $roles) || in_array('administrativo', $roles))
+                                        @if (in_array('admin', $roles) || in_array('administrativo', $roles) || in_array('doctor', $roles))
                                         <a href="{{ route('estudios.modify', ['nro_servicio' => $estudio->nro_servicio, 'page' => request('page')]) }}" class="btn btn-success btn-sm">
                                             <i class="fas fa-edit"></i>
                                          </a>
