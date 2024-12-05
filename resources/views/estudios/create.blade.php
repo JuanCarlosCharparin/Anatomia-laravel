@@ -119,11 +119,24 @@
             </div>
             <p></p>
 
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label for="codigos">Ingrese código nomenclador AP:</label>
                 <div id="input-container">
                     <div class="form-group input-group mb-3">
                         <input type="text" name="codigos[]" class="form-control" placeholder="Ingrese código">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary add-input" type="button">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="form-group">
+                <label for="codigos">Ingrese códigos nomencladores AP:</label>
+                <div id="input-container">
+                    <div class="form-group input-group mb-3">
+                        <input type="text" name="codigos[0][codigo]" class="form-control" placeholder="Ingrese código">
+                        <input type="number" name="codigos[0][cantidad]" class="form-control" placeholder="Cantidad" min="1">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary add-input" type="button">+</button>
                         </div>
@@ -227,13 +240,37 @@
 
             //Agregar mas campos en codigos
 
-            $(document).ready(function() {
+            /*$(document).ready(function() {
                 $(document).on('click', '.add-input', function() {
                     var inputGroup = $(this).closest('.input-group').clone();
                     inputGroup.find('input').val('');
                     inputGroup.find('.add-input').removeClass('add-input btn-outline-secondary')
                         .addClass('remove-input btn-outline-danger').text('-');
                     $('#input-container').append(inputGroup);
+                });
+
+                $(document).on('click', '.remove-input', function() {
+                    $(this).closest('.input-group').remove();
+                });
+            });*/
+
+            $(document).ready(function() {
+                let index = 1; // Índice para los nombres dinámicos
+
+                $(document).on('click', '.add-input', function() {
+                    const inputGroup = $(this).closest('.input-group').clone();
+                    inputGroup.find('input').val('');
+                    inputGroup.find('.add-input').removeClass('add-input btn-outline-secondary')
+                        .addClass('remove-input btn-outline-danger').text('-');
+                    
+                    inputGroup.find('input[name^="codigos"]').each(function() {
+                        const name = $(this).attr('name');
+                        const newName = name.replace(/\d+/, index);
+                        $(this).attr('name', newName);
+                    });
+
+                    $('#input-container').append(inputGroup);
+                    index++;
                 });
 
                 $(document).on('click', '.remove-input', function() {

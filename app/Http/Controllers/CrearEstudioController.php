@@ -183,8 +183,14 @@ class CrearEstudioController extends Controller
                 }
             ],
             'profesional_salutte_id' => 'required|exists:profesional,profesional_salutte_id',
+            /*'codigos' => 'nullable|array',
+            'codigos.*' => 'nullable|string|max:255',*/
+
             'codigos' => 'nullable|array',
-            'codigos.*' => 'nullable|string|max:255',
+            'codigos.*.codigo' => 'nullable|string|max:255',
+            'codigos.*.cantidad' => 'nullable|integer|min:1',
+
+
             'materiales' => 'nullable|array',
             'materiales.*' => 'nullable|string|max:255'
         ]);
@@ -254,13 +260,36 @@ class CrearEstudioController extends Controller
             ]);
 
             // Agregar códigos a la tabla codigo_nomenclador_ap
-            $codigosNomenclador = $validatedData['codigos'] ?? [];
+            /*$codigosNomenclador = $validatedData['codigos'] ?? [];
 
             if (!empty($codigosNomenclador)) {
                 $codigosToInsert = array_filter($codigosNomenclador, fn($codigo) => !empty ($codigo));
                 if (!empty($codigosToInsert)) {
                     CodigoNomencladorAP::upsert(
                         array_map(fn($codigo) => ['nro_servicio' => $validatedData['nro_servicio'], 'codigo' => $codigo], $codigosToInsert),
+                        ['nro_servicio', 'codigo']
+                    );
+                }
+            }*/
+            $nro_servicio = $validatedData['nro_servicio'] ?? null;
+            
+            if ($nro_servicio && !empty($validatedData['codigos'])) {
+                $codigosToInsert = [];
+        
+                foreach ($validatedData['codigos'] as $item) {
+                    if (!empty($item['codigo']) && !empty($item['cantidad'])) {
+                        for ($i = 0; $i < $item['cantidad']; $i++) {
+                            $codigosToInsert[] = [
+                                'nro_servicio' => $nro_servicio,
+                                'codigo' => $item['codigo'],
+                            ];
+                        }
+                    }
+                }
+        
+                if (!empty($codigosToInsert)) {
+                    CodigoNomencladorAP::upsert(
+                        $codigosToInsert,
                         ['nro_servicio', 'codigo']
                     );
                 }
