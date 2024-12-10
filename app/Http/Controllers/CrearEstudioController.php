@@ -45,9 +45,12 @@ class CrearEstudioController extends Controller
                 'tde.nombre as tipo_estudio',
                 'e.estado_estudio as estado',
                 DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as paciente"),
-                'p.documento as documento', // Alias correcto
+                'p.documento as documento',
                 'p.obra_social as obra_social',
-                'de.diagnostico_presuntivo as diagnostico',
+                DB::raw("CASE 
+                            WHEN tde.nombre = 'Pap' THEN JSON_UNQUOTE(JSON_EXTRACT(dpf.resultado, '$[0]'))
+                            ELSE def.diagnostico_presuntivo
+                        END as diagnostico"),
                 'e.fecha_carga as fecha_carga',
                 'e.enviado as enviado',
                 DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos) as profesional")
@@ -55,8 +58,9 @@ class CrearEstudioController extends Controller
             ->leftJoin('tipo_de_estudio as tde', 'e.tipo_estudio_id', '=', 'tde.id')
             ->leftJoin('servicio as s', 'e.servicio_id', '=', 's.id')
             ->leftJoin('personal as p', 'e.personal_id', '=', 'p.id')
-            ->leftJoin('detalle_estudio as de', 'e.detalle_estudio_id', '=', 'de.id')
-            ->leftJoin('profesional as prof', 'e.profesional_id', '=', 'prof.id');
+            ->leftJoin('detalle_estudio_finalizado as def', 'e.detalle_estudio_finalizado_id', '=', 'def.id')
+            ->leftJoin('profesional as prof', 'e.profesional_id', '=', 'prof.id')
+            ->leftJoin('detalle_pap_finalizado as dpf', 'e.detalle_pap_finalizado_id', '=', 'dpf.id');
 
         // Si el usuario tiene el rol 'visualizacion', agregar filtro para los estados permitidos
         if (in_array('visualizacion', $roles)) {

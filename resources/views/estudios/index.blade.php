@@ -160,7 +160,7 @@
                             <th class="paciente" style="width: 10%;">Paciente</th>
                             <th style="width: 10%;">DNI</th>
                             <th style="width: 5%;">Obra Social</th>
-                            <th class="diagnostico" style="width: 20%;">Diagnóstico</th>
+                            <th class="diagnostico" style="width: 20%;">Diagnóstico/Resultado</th>
                             <th style="width: 15%;">Fecha Carga</th>
                             <th style="width: 15%;">Profesional</th>
                             <th style="width: 15%;">Acciones</th>
