@@ -60,35 +60,35 @@ class EstudioController extends Controller
                 'e.medico_solicitante as medico',
                 'e.fecha_carga as fecha_carga',
                 DB::raw("CONCAT(prof.nombres, ' ', prof.apellidos) as profesional"),
-                'de.macro',
-                'de.fecha_macro',
-                'de.micro',
-                'de.fecha_inclusion',
-                'de.fecha_corte',
-                'de.fecha_entrega',
-                'de.observacion',
-                'de.maligno',
-                'de.observacion_interna',
+                DB::raw("COALESCE(de.macro, def.macro) as macro"),
+                DB::raw("COALESCE(de.fecha_macro, def.fecha_macro) as fecha_macro"),
+                DB::raw("COALESCE(de.micro, def.micro) as micro"),
+                DB::raw("COALESCE(de.fecha_inclusion, def.fecha_inclusion) as fecha_inclusion"),
+                DB::raw("COALESCE(de.fecha_corte, def.fecha_corte) as fecha_corte"),
+                DB::raw("COALESCE(de.fecha_entrega, def.fecha_entrega) as fecha_entrega"),
+                DB::raw("COALESCE(de.observacion, def.observacion) as observacion"),
+                DB::raw("COALESCE(de.maligno, def.maligno) as maligno"),
+                DB::raw("COALESCE(de.observacion_interna, def.observacion_interna) as observacion_interna"),
                 'def.recibe',
                 'def.tacos',
                 'def.ampliar_informe',
-                'de.diagnostico_presuntivo',
-                'de.tecnicas',
-                'dp.estado_especimen',
-                'dp.celulas_pavimentosas',
-                'dp.celulas_cilindricas',
-                'dp.valor_hormonal',
-                'dp.fecha_lectura',
-                'dp.valor_hormonal_HC',
-                'dp.cambios_reactivos',
-                'dp.cambios_asoc_celula_pavimentosa',
-                'dp.cambios_celula_glandulares',
-                'dp.celula_metaplastica',
-                'dp.otras_neo_malignas',
-                'dp.toma',
-                'dp.recomendaciones',
-                'dp.microorganismos',
-                'dp.resultado'
+                DB::raw("COALESCE(de.diagnostico_presuntivo, def.diagnostico_presuntivo) as diagnostico_presuntivo"),
+                DB::raw("COALESCE(de.tecnicas, def.tecnicas) as tecnicas"),
+                DB::raw("COALESCE(dp.estado_especimen, dpf.estado_especimen) as estado_especimen"),
+                DB::raw("COALESCE(dp.celulas_pavimentosas, dpf.celulas_pavimentosas) as celulas_pavimentosas"),
+                DB::raw("COALESCE(dp.celulas_cilindricas, dpf.celulas_cilindricas) as celulas_cilindricas"),
+                DB::raw("COALESCE(dp.valor_hormonal, dpf.valor_hormonal) as valor_hormonal"),
+                DB::raw("COALESCE(dp.fecha_lectura, dpf.fecha_lectura) as fecha_lectura"),
+                DB::raw("COALESCE(dp.valor_hormonal_HC, dpf.valor_hormonal_HC) as valor_hormonal_HC"),
+                DB::raw("COALESCE(dp.cambios_reactivos, dpf.cambios_reactivos) as cambios_reactivos"),
+                DB::raw("COALESCE(dp.cambios_asoc_celula_pavimentosa, dpf.cambios_asoc_celula_pavimentosa) as cambios_asoc_celula_pavimentosa"),
+                DB::raw("COALESCE(dp.cambios_celula_glandulares, dpf.cambios_celula_glandulares) as cambios_celula_glandulares"),
+                DB::raw("COALESCE(dp.celula_metaplastica, dpf.celula_metaplastica) as celula_metaplastica"),
+                DB::raw("COALESCE(dp.otras_neo_malignas, dpf.otras_neo_malignas) as otras_neo_malignas"),
+                DB::raw("COALESCE(dp.toma, dpf.toma) as toma"),
+                DB::raw("COALESCE(dp.recomendaciones, dpf.recomendaciones) as recomendaciones"),
+                DB::raw("COALESCE(dp.microorganismos, dpf.microorganismos) as microorganismos"),
+                DB::raw("COALESCE(dp.resultado, dpf.resultado) as resultado")
             )
             ->leftJoin('tipo_de_estudio as tde', 'e.tipo_estudio_id', '=', 'tde.id')
             ->leftJoin('servicio as s', 'e.servicio_id', '=', 's.id')
@@ -97,6 +97,7 @@ class EstudioController extends Controller
             ->leftJoin('detalle_estudio as de', 'e.detalle_estudio_id', '=', 'de.id')
             ->leftJoin('detalle_estudio_finalizado as def', 'e.detalle_estudio_finalizado_id', '=', 'def.id')
             ->leftJoin('detalle_pap as dp', 'e.detalle_pap_id', '=', 'dp.id')
+            ->leftJoin('detalle_pap_finalizado as dpf', 'e.detalle_pap_finalizado_id', '=', 'dpf.id')
             ->where('e.nro_servicio', $nro_servicio)
             ->first();
 
