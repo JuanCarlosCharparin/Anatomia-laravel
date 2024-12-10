@@ -58,8 +58,8 @@
         .firma {
             display: block;
             margin: 0 auto; /* Centra las imágenes horizontalmente dentro del footer */
-            width: 150px;
-            margin-bottom: 10px; /* Espacio entre la firma y el texto del footer */
+            width: 100px;
+            margin-bottom: 5px; /* Espacio entre la firma y el texto del footer */
         }
 
         .firma_cecilia {
@@ -284,12 +284,12 @@
                     <table class="inline-table">
                         <tr>
                             <td class="field"><span class="bold-heading">PACIENTE:</span> {{ $nombre }}</td>
-                            <td class="field field-right"><span class="bold-heading">DNI:</span> {{ $dni }}</td>
+                            <td class="field field-right"><span class="bold-heading" style="margin-left: 20px;">DNI:</span> {{ $dni }}</td>
                         </tr>
                         <tr>
                             <td class="field"><span class="bold-heading">MED. SOLICITANTE:</span> {{ $medico }}</td>
                             <td class="field field-right">
-                                <span class="bold-heading">N° INFORME:</span>
+                                <span class="bold-heading" style="margin-left: 20px;">N° INFORME:</span>
                                 <span class="highlighted-number">HU {{ $informe_numero }}</span>
                             </td>
                         </tr>
@@ -302,19 +302,15 @@
 
             <div class="section">
                 <h1 class="title">INFORME DE ANATOMÍA PATOLÓGICA</h1>
-                <p style="margin-bottom: 20px;">
+                <p style="margin-bottom: 5px;">
                     <span class="bold-heading">MATERIAL REMITIDO:</span>
-                    <ul>
-                        @php
-                            // Convertir la cadena de texto en un array usando comas como delimitador
-                            $materials = explode(',', $material_remitido);
-                        @endphp
-                        @foreach($materials as $material)
-                            @if(trim($material)) <!-- Evita mostrar elementos vacíos -->
-                                <li>{{ htmlspecialchars(trim($material)) }}</li>
-                            @endif
-                        @endforeach
-                    </ul>
+                    @php
+                        // Convertir la cadena de texto en un array usando comas como delimitador
+                        $materials = explode(',', $material_remitido);
+                        // Filtrar elementos vacíos y eliminar espacios extra
+                        $materials = array_filter(array_map('trim', $materials));
+                    @endphp
+                    {{ implode(', ', $materials) }}
                 </p>
                 <p><span class="bold-heading">TÉCNICA:</span>
                     @if (is_array($tecnica))
@@ -324,28 +320,28 @@
                     @endif
                 </p>
                 @if(!empty($macroscopia))
-                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                    <p style="margin-bottom: 5px; margin-top: 5px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">MACROSCOPIA:</span>
                         <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($macroscopia)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($microscopia))
-                <p style="margin-bottom: 35px; margin-top: 35px;">
+                <p style="margin-bottom: 5px; margin-top: 5px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">MICROSCOPIA:</span>
                         <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($microscopia)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($diagnostico))
-                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                    <p style="margin-bottom: 5px; margin-top: 5px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">DIAGNÓSTICO:</span>
                         <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px; font-weight: bold;">{!! nl2br(e($diagnostico)) !!}</span>
                     </p>
                 @endif
 
                 @if(!empty($observacion))
-                    <p style="margin-bottom: 35px; margin-top: 35px;">
+                    <p style="margin-bottom: 5px; margin-top: 5px;">
                         <span class="bold-heading" style="margin-bottom: 10px; display: block;">NOTAS:</span>
                         <span style="display: block; margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">{!! nl2br(e($observacion)) !!}</span>
                     </p>
