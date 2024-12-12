@@ -139,17 +139,18 @@
                     <table class="inline-table">
                         <tr>
                             <td class="field"><span class="bold-heading">PACIENTE:</span> {{ $nombre }}</td>
-                            <td class="field field-right"><span class="bold-heading">DNI:</span> {{ $dni }}</td>
+                            <td class="field field-right"><span class="bold-heading" style="margin-left: 20px;">DNI:</span> {{ $dni }}</td>
                         </tr>
                         <tr>
                             <td class="field"><span class="bold-heading">MED. SOLICITANTE:</span> {{ $medico }}</td>
                             <td class="field field-right">
-                                <span class="bold-heading">N° INFORME:</span>
+                                <span class="bold-heading" style="margin-left: 20px;">N° INFORME:</span>
                                 <span class="highlighted-number">HU {{ $informe_numero }}</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</td>
+                            <td class="field"><span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> {{ $fecha_pap_finalizado }}</td>
                         </tr>
                     </table>
                 </div>
@@ -295,6 +296,7 @@
                         </tr>
                         <tr>
                             <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</td>
+                            <td class="field"><span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> {{ $fecha_estudio_finalizado }}</td>
                         </tr>
                     </table>
                 </div>
