@@ -149,8 +149,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</td>
-                            <td class="field"><span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> {{ $fecha_pap_finalizado }}</td>
+                            <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ \Carbon\Carbon::parse($fecha_entrada)->format('d-m-Y') }}</td>
+                            <td class="field">
+                                <span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> 
+                                {{ \Carbon\Carbon::parse($fecha_pap_finalizado)->format('d-m-Y') }}
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -295,8 +298,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ $fecha_entrada }}</td>
-                            <td class="field"><span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> {{ $fecha_estudio_finalizado }}</td>
+                            <td class="field"><span class="bold-heading">FECHA ENTRADA:</span> {{ \Carbon\Carbon::parse($fecha_entrada)->format('d-m-Y') }}</td>
+                            <td class="field">
+                                <span class="bold-heading" style="margin-left: 20px;">FECHA SALIDA:</span> 
+                                {{ \Carbon\Carbon::parse($fecha_estudio_finalizado)->format('d-m-Y') }}
+                            </td>
                         </tr>
                     </table>
                 </div>
