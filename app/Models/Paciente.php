@@ -3,6 +3,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class Paciente extends Model
 {
@@ -23,7 +25,7 @@ class Paciente extends Model
     //Obtener Pacientes
 
 
-    public static function search($searchTerm)
+    /*public static function search($searchTerm)
     {
         return self::select(
                             'persona.id as id',
@@ -63,9 +65,9 @@ class Paciente extends Model
         ->where('persona.documento', 'LIKE', "%{$searchTerm}%")
         ->orWhere(DB::raw('CONCAT(persona.nombres, " ", persona.apellidos)'), 'LIKE', "%{$searchTerm}%")
         ->get();
-    }
+    }*/
 
-    public static function findByDni($dni)
+    /*public static function findByDni($dni)
     {
         return self::select(
                 'persona.id as id',
@@ -81,6 +83,57 @@ class Paciente extends Model
             ->join('persona_plan_por_defecto as pppd', 'pp.id', '=', 'pppd.persona_plan_id')
             ->where('persona.documento', $dni) // Ajustado para buscar por DNI exacto
             ->first(); // Retorna un solo resultado
+    }*/
+
+    public static function findByDni($dni)
+    {
+        if (empty($dni)) {
+            return response()->json(['error' => 'Debe proporcionar un DNI'], 400);
+        }
+
+        try {
+            // Realizar la solicitud a la API usando Http (Laravel HTTP Client)
+            $response = Http::get("http://172.22.118.101:81/apialephoo/public/api/v1/personas/{$dni}");
+
+            // Verificar si la solicitud falló
+            if ($response->failed()) {
+                return response()->json(['error' => 'No se pudo obtener información del paciente'], 500);
+            }
+
+            // Decodificar los datos de la API
+            $apiData = $response->json();
+
+            // Transformar los datos al formato esperado
+            $transformedData = [
+                'id' => $apiData['id'],
+                'documento' => $apiData['documento'],
+                'nombres' => $apiData['nombre'], // Cambiado para coincidir con tu ejemplo
+                'apellidos' => $apiData['apellidos'],
+                'fecha_nacimiento' => $apiData['fecha_nacimiento'],
+                'edad' => self::calculateAge($apiData['fecha_nacimiento'] ?? null), // Llamada a función para calcular la edad
+                'genero' => $apiData['genero'],
+                'obra_social' => $apiData['obra_social'] ?? 'No disponible', // Agregar valor predeterminado si no existe
+                'email' => $apiData['email'] ?? '',
+                'contacto_telefono' => $apiData['telefono_celular'] ?? '',
+                'contacto_telefono_2' => $apiData['telefono_fijo'] ?? '',
+            ];
+
+            return $transformedData;
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción y devolver un error genérico
+            \Log::error('Error al buscar por DNI en la API: ' . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error al procesar la solicitud'], 500);
+        }
+    }
+
+    public static function calculateAge($fechaNacimiento)
+    {
+        if (!$fechaNacimiento) {
+            return null;
+        }
+
+        $birthDate = \Carbon\Carbon::parse($fechaNacimiento);
+        return $birthDate->age;
     }
 
 

@@ -49,6 +49,10 @@
             </div>
             <p></p>
 
+            <div id="loading-spinner" style="display:none;">
+                <p>Cargando... Espere unos instantes, por favor!</p>
+            </div>
+
             <div id="results"></div>
             <p></p>
             <input type="text" id="selected-person" name="paciente" class="form-control" placeholder="Nombre del paciente seleccionado">
@@ -174,12 +178,16 @@
 
                 console.log('Buscando:', searchTerm); // Depuración: Verificar que el término de búsqueda se está enviando
 
+                $('#loading-spinner').show(); 
+
                 $.ajax({
                     url: '{{ route('estudios.searchPatient') }}',
                     method: 'GET',
                     data: { search: searchTerm },
                     success: function(data) {
                         console.log('Datos recibidos:', data); // Depuración: Verificar que se reciben datos
+
+                        $('#loading-spinner').hide();
 
                         var resultHtml = '';
                         if (data.length > 0) {

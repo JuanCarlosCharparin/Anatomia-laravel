@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Exception; // Asegúrate de importar Exception
+use Illuminate\Support\Facades\Http;
 
 class CrearEstudioController extends Controller
 {
@@ -222,17 +223,18 @@ class CrearEstudioController extends Controller
             // Obtener el DNI del paciente desde la base de datos secundaria
             $documento = $validatedData['documento'];
             $paciente = Paciente::findByDni($documento);
+            /*dd($paciente);*/
 
             // Crear o actualizar el paciente en la base de datos principal
             $pacienteDb = Personal::updateOrCreate(
-                ['documento' => $paciente->documento],
+                ['documento' => $paciente['documento']],
                 [
-                    'persona_salutte_id' => $paciente->id,
-                    'nombres' => $paciente->nombres,
-                    'apellidos' => $paciente->apellidos,
-                    'obra_social' => $paciente->obra_social,
-                    'fecha_nacimiento' => $paciente->fecha_nacimiento,
-                    'genero' => $paciente->genero,
+                    'persona_salutte_id' => $paciente['id'],
+                    'nombres' => $paciente['nombres'],
+                    'apellidos' => $paciente['apellidos'],
+                    'obra_social' => $paciente['obra_social'],
+                    'fecha_nacimiento' => $paciente['fecha_nacimiento'],
+                    'genero' => $paciente['genero'],
                 ]
             );
 
@@ -333,13 +335,63 @@ class CrearEstudioController extends Controller
     }
 
     // Función para buscar paciente
-    public function searchPatient(Request $request)
+    /*public function searchPatient(Request $request)
     {
         $searchTerm = $request->input('search');
-
+        //dd($searchTerm);
         // Llama al método search del modelo Paciente
         $patients = Paciente::search($searchTerm);
 
         return response()->json($patients);
+    }*/
+
+    public function searchPatient(Request $request){
+        $searchTerm = $request->input('search');
+
+        if (empty($searchTerm)) {
+            return response()->json(['error' => 'Debe proporcionar un término de búsqueda'], 400);
+        }
+
+        try {
+            $response = Http::get("http://172.22.118.101:81/apialephoo/public/api/v1/personas/{$searchTerm}");
+
+            if ($response->failed()) {
+                return response()->json(['error' => 'No se pudo obtener información del paciente'], 500);
+            }
+
+            $apiData = $response->json();
+
+            $transformedData = [
+                'id' => $apiData['id'],
+                'nombres' => $apiData['nombre'],
+                'apellidos' => $apiData['apellidos'],
+                'documento' => $apiData['documento'],
+                'fecha_nacimiento' => $apiData['fecha_nacimiento'],
+                'edad' => $this->calculateAge($apiData['fecha_nacimiento'] ?? null),
+                'genero' => $apiData['genero'],
+                'obra_social' => $apiData['obra_social'],
+                'email' => $apiData['email'],
+                'contacto_telefono' => $apiData['telefono_celular'],
+                'contacto_telefono_2' => $apiData['telefono_fijo'],
+            ];
+
+            return response()->json([$transformedData]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error al procesar la solicitud'], 500);
+        }
     }
+
+    private function calculateAge($birthDate){
+        if (!$birthDate) {
+            return 'No disponible';
+        }
+
+        $birthDate = new \DateTime($birthDate);
+        $today = new \DateTime();
+        $age = $today->diff($birthDate)->y;
+
+        return $age;
+    }
+
+    
 }
