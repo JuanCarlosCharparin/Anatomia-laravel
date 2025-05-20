@@ -345,7 +345,8 @@ class CrearEstudioController extends Controller
         return response()->json($patients);
     }*/
 
-    public function searchPatient(Request $request){
+    public function searchPatient(Request $request)
+    {
         $searchTerm = $request->input('search');
 
         if (empty($searchTerm)) {
@@ -353,26 +354,59 @@ class CrearEstudioController extends Controller
         }
 
         try {
-            $response = Http::get("http://172.22.118.101:81/apialephoo/public/api/v1/personas/{$searchTerm}");
+            // Paso 1: Buscar persona
+            $response = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                ->get('https://universitario.alephoo.com/api/v3/admin/personas?filter[documento]=' . $searchTerm);
 
             if ($response->failed()) {
                 return response()->json(['error' => 'No se pudo obtener información del paciente'], 500);
             }
 
             $apiData = $response->json();
+            $personaData = $apiData['data'][0];
+
+            $persona = $personaData['attributes'];
+            $personaPlanId = $personaData['relationships']['personaPlanPorDefecto']['data']['id'] ?? null;
+
+            $nombreObraSocial = null;
+
+            // Paso 2: Buscar personaPlan y obtener ID del plan
+            if ($personaPlanId) {
+                $personaPlanResponse = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                    ->get("https://universitario.alephoo.com/api/v3/admin/personaPlanes/{$personaPlanId}");
+
+                if ($personaPlanResponse->ok()) {
+                    $planId = $personaPlanResponse['data']['relationships']['plan']['data']['id'] ?? null;
+
+                    // Paso 3: Buscar plan y obtener nombre de obra social
+                    if ($planId) {
+                        $planResponse = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                            ->get("https://universitario.alephoo.com/api/v3/admin/Planes/{$planId}");
+
+                        if ($planResponse->ok()) {
+                            $planData = $planResponse['data'];
+                            $nombreObraSocial = $planData['attributes']['nombre'] ?? null;
+
+                            // (Opcional) Si querés ir más allá:
+                            // $obraSocialId = $planData['relationships']['obraSocial']['data']['id'] ?? null;
+                            // podrías luego buscar /admin/Coberturas/{id}
+                        }
+                    }
+                }
+            }
 
             $transformedData = [
-                'id' => $apiData['id'],
-                'nombres' => $apiData['nombre'],
-                'apellidos' => $apiData['apellidos'],
-                'documento' => $apiData['documento'],
-                'fecha_nacimiento' => $apiData['fecha_nacimiento'],
-                'edad' => $this->calculateAge($apiData['fecha_nacimiento'] ?? null),
-                'genero' => $apiData['genero'],
-                'obra_social' => $apiData['obra_social'],
-                'email' => $apiData['email'],
-                'contacto_telefono' => $apiData['telefono_celular'],
-                'contacto_telefono_2' => $apiData['telefono_fijo'],
+                'id' => $personaData['id'],
+                'nombres' => $persona['nombres'],
+                'apellidos' => $persona['apellidos'],
+                'documento' => $persona['documento'],
+                'fecha_nacimiento' => $persona['fechaNacimiento'],
+                'edad' => $this->calculateAge($persona['fechaNacimiento'] ?? null),
+                'genero' => $persona['sexo'],
+                'obra_social' => $nombreObraSocial,
+                'email' => $persona['email'],
+                'contacto_telefono' => $persona['telefono'],
+                'contacto_telefono_2' => $persona['celular'],
             ];
 
             return response()->json([$transformedData]);
