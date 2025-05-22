@@ -223,20 +223,27 @@ class CrearEstudioController extends Controller
             // Obtener el DNI del paciente desde la base de datos secundaria
             $documento = $validatedData['documento'];
             $paciente = Paciente::findByDni($documento);
-            /*dd($paciente);*/
+            
+            //dd($paciente);
 
             // Crear o actualizar el paciente en la base de datos principal
-            $pacienteDb = Personal::updateOrCreate(
-                ['documento' => $paciente['documento']],
-                [
-                    'persona_salutte_id' => $paciente['id'],
-                    'nombres' => $paciente['nombres'],
-                    'apellidos' => $paciente['apellidos'],
-                    'obra_social' => $paciente['obra_social'],
-                    'fecha_nacimiento' => $paciente['fecha_nacimiento'],
-                    'genero' => $paciente['genero'],
-                ]
-            );
+            $pacientes = $paciente->getData(); // getData() devuelve el array original de la respuesta JSON
+
+            //dd($pacientes);
+
+            foreach ($pacientes as $paciente) {
+                $pacienteDb = Personal::updateOrCreate(
+                    ['documento' => $paciente->documento],
+                    [
+                        'persona_salutte_id' => $paciente->id,
+                        'nombres' => $paciente->nombres,
+                        'apellidos' => $paciente->apellidos,
+                        'obra_social' => $paciente->obra_social,
+                        'fecha_nacimiento' => $paciente->fecha_nacimiento,
+                        'genero' => $paciente->genero,
+                    ]
+                );
+            }
 
             // Obtener el ID del paciente en la base de datos principal
             $pacienteId = $pacienteDb->id;

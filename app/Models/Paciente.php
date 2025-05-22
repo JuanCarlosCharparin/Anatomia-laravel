@@ -92,36 +92,63 @@ class Paciente extends Model
         }
 
         try {
-            // Realizar la solicitud a la API usando Http (Laravel HTTP Client)
-            $response = Http::get("http://172.22.118.101:81/apialephoo/public/api/v1/personas/{$dni}");
+            // Paso 1: Buscar persona
+            $response = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                ->get('https://universitario.alephoo.com/api/v3/admin/personas?filter[documento]=' . $dni);
 
-            // Verificar si la solicitud falló
             if ($response->failed()) {
                 return response()->json(['error' => 'No se pudo obtener información del paciente'], 500);
             }
 
-            // Decodificar los datos de la API
             $apiData = $response->json();
+            $personaData = $apiData['data'][0];
 
-            // Transformar los datos al formato esperado
+            $persona = $personaData['attributes'];
+            $personaPlanId = $personaData['relationships']['personaPlanPorDefecto']['data']['id'] ?? null;
+
+            $nombreObraSocial = null;
+
+            // Paso 2: Buscar personaPlan y obtener ID del plan
+            if ($personaPlanId) {
+                $personaPlanResponse = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                    ->get("https://universitario.alephoo.com/api/v3/admin/personaPlanes/{$personaPlanId}");
+
+                if ($personaPlanResponse->ok()) {
+                    $planId = $personaPlanResponse['data']['relationships']['plan']['data']['id'] ?? null;
+
+                    // Paso 3: Buscar plan y obtener nombre de obra social
+                    if ($planId) {
+                        $planResponse = Http::withBasicAuth(env('usernamealephoo'), env('userpw'))
+                            ->get("https://universitario.alephoo.com/api/v3/admin/Planes/{$planId}");
+
+                        if ($planResponse->ok()) {
+                            $planData = $planResponse['data'];
+                            $nombreObraSocial = $planData['attributes']['nombre'] ?? null;
+
+                            // (Opcional) Si querés ir más allá:
+                            // $obraSocialId = $planData['relationships']['obraSocial']['data']['id'] ?? null;
+                            // podrías luego buscar /admin/Coberturas/{id}
+                        }
+                    }
+                }
+            }
+
             $transformedData = [
-                'id' => $apiData['id'],
-                'documento' => $apiData['documento'],
-                'nombres' => $apiData['nombre'], // Cambiado para coincidir con tu ejemplo
-                'apellidos' => $apiData['apellidos'],
-                'fecha_nacimiento' => $apiData['fecha_nacimiento'],
-                'edad' => self::calculateAge($apiData['fecha_nacimiento'] ?? null), // Llamada a función para calcular la edad
-                'genero' => $apiData['genero'],
-                'obra_social' => $apiData['obra_social'] ?? 'No disponible', // Agregar valor predeterminado si no existe
-                'email' => $apiData['email'] ?? '',
-                'contacto_telefono' => $apiData['telefono_celular'] ?? '',
-                'contacto_telefono_2' => $apiData['telefono_fijo'] ?? '',
+                'id' => $personaData['id'],
+                'nombres' => $persona['nombres'],
+                'apellidos' => $persona['apellidos'],
+                'documento' => $persona['documento'],
+                'fecha_nacimiento' => $persona['fechaNacimiento'],
+                //'edad' => $this->calculateAge($persona['fechaNacimiento'] ?? null),
+                'genero' => $persona['sexo'],
+                'obra_social' => $nombreObraSocial,
+                //'email' => $persona['email'],
+                //'contacto_telefono' => $persona['telefono'],
+                //'contacto_telefono_2' => $persona['celular'],
             ];
 
-            return $transformedData;
+            return response()->json([$transformedData]);
         } catch (\Exception $e) {
-            // Manejar cualquier excepción y devolver un error genérico
-            \Log::error('Error al buscar por DNI en la API: ' . $e->getMessage());
             return response()->json(['error' => 'Ocurrió un error al procesar la solicitud'], 500);
         }
     }
